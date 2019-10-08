@@ -14,7 +14,8 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.main.product.adapter.ListProductAdapter
+import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.main.product.adapter.ProductDetailApdater
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
 import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.fragment_continue_shopping.*
@@ -28,7 +29,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     //Viewed product
     private var arrIdProductViewed = ArrayList<String>()
-    private var productViewedAdapter: ListProductAdapter? = null
+    private var productViewedAdapter: ProductDetailApdater? = null
     private var productViewedList = ArrayList<Product>()
 
     private var query = ""
@@ -43,7 +44,7 @@ class FavoriteActivity : AppCompatActivity() {
 
         // product viewed init
         productViewedAdapter =
-            ListProductAdapter(
+            ProductDetailApdater(
                 productViewedList,
                 this
             )
@@ -71,7 +72,14 @@ class FavoriteActivity : AppCompatActivity() {
         if (numViewMore == 0) {
             if (childKey != null) {
                 println("key: " + childKey)
-                getListIdProductViewed(childKey)
+                var user: FirebaseUser? = mAuth?.getCurrentUser();
+                // Check user loged in firebase yet?
+                if (user != null) {
+                    getListIdProductViewed(childKey)
+                }else{
+                    var intent = Intent(this, SignInUpActivity::class.java)
+                   startActivity(intent)
+                }
             } else {
                 //showDialog()
             }

@@ -16,13 +16,13 @@ import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
 import com.thuypham.ptithcm.mytiki.main.product.activity.ProductDetailActivity
-import com.thuypham.ptithcm.mytiki.main.product.model.Product
-import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.item_product_cart.view.*
-import kotlinx.android.synthetic.main.item_product_favorite.view.*
-import kotlinx.android.synthetic.main.item_product_viewed.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
+import android.util.Log
+
 
 class ProductCartAdapter(
     private var items: ArrayList<ProductCartDetail>,
@@ -35,6 +35,10 @@ class ProductCartAdapter(
             .from(viewGroup.context)
             .inflate(R.layout.item_product_cart, viewGroup, false);
         return ProductSaleViewholder(view)
+    }
+
+    fun notifidataSetCahnge(){
+        notifidataSetCahnge()
     }
 
 
@@ -90,7 +94,6 @@ class ProductCartAdapter(
                     itemView.tv_number_pr_cart.text = num_of_pr.toString()
                 }
             }
-
             // button plus click
             itemView.btn_plus.setOnClickListener() {
                 if (product.number_product!! < 20 && product.product_count > product.number_product!!) {
@@ -105,6 +108,35 @@ class ProductCartAdapter(
                     Toast.makeText(context, R.string.plus_cart_error_not_enough, Toast.LENGTH_LONG)
                         .show()
                 }
+            }
+
+            itemView.btn_del_item_cart.setOnClickListener() {
+                deleteProductFromCart(product.id, product)
+            }
+
+            Log.d("text123", items.size.toString())
+
+        }
+    }
+
+    private fun deleteProductFromCart(
+        id: String?,
+        product: ProductCartDetail
+    ) {
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        val user: FirebaseUser? = mAuth.getCurrentUser();
+        val uid = user!!.uid
+        var mDatabase: FirebaseDatabase? = FirebaseDatabase.getInstance()
+        var mDatabaseReference: DatabaseReference = mDatabase!!.reference
+        if (id != null) {
+            val currentUserDb = mDatabaseReference.child(PhysicsConstants.CART)
+                .child(user.uid)
+                .child(id)
+
+            if(currentUserDb!=null){
+                currentUserDb.removeValue()
+                items.remove(product)
+                notifyDataSetChanged()
             }
 
         }
@@ -145,6 +177,7 @@ class ProductCartAdapter(
                             }
                         }
                         i++
+                        notifyDataSetChanged()
                     }
                 }
 

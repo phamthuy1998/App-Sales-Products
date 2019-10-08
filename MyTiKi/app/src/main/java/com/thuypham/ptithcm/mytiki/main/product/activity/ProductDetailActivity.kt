@@ -32,6 +32,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var productDetail: Product? = null
 
+    var checkAddcart: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,45 +46,53 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun addEvent() {
         btn_buy_product_detail.setOnClickListener() {
-            val mBottomSheetDialog = RoundedBottomSheetDialog(this)
-            val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_add_cart, null)
+            checkAddcart = true
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            // Check user loged in firebase yet?
+            if (user != null) {
+                // Add this product into list cart
+                addCart(productDetail?.id)
+                val mBottomSheetDialog = RoundedBottomSheetDialog(this)
+                val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_add_cart, null)
 
-            //Set image in bottom dialog
-            Glide.with(applicationContext)
-                .load(productDetail?.image)
-                .into(sheetView.iv_product_add_cart)
-            sheetView.tv_product_name_add_cart.text = productDetail?.name
+                //Set image in bottom dialog
+                Glide.with(applicationContext)
+                    .load(productDetail?.image)
+                    .into(sheetView.iv_product_add_cart)
+                sheetView.tv_product_name_add_cart.text = productDetail?.name
 
-            val pricesale =
-                productDetail?.price?.minus(((productDetail?.sale!! * 0.01) * productDetail?.price!!))
-            // format price sale
-            val df = DecimalFormat("#,###,###")
-            df.roundingMode = RoundingMode.CEILING
-            val priceDiscount = df.format(pricesale) + " đ"
-            sheetView.tv_product_price_addcart.text = priceDiscount
+                val pricesale =
+                    productDetail?.price?.minus(((productDetail?.sale!! * 0.01) * productDetail?.price!!))
+                // format price sale
+                val df = DecimalFormat("#,###,###")
+                df.roundingMode = RoundingMode.CEILING
+                val priceDiscount = df.format(pricesale) + " đ"
+                sheetView.tv_product_price_addcart.text = priceDiscount
 
-            mBottomSheetDialog.setContentView(sheetView)
-            mBottomSheetDialog.show()
+                mBottomSheetDialog.setContentView(sheetView)
+                mBottomSheetDialog.show()
 
-            sheetView.btn_cancel_dialog_add_cart.setOnClickListener() {
-                mBottomSheetDialog.dismiss()
-            }
+                sheetView.btn_cancel_dialog_add_cart.setOnClickListener() {
+                    mBottomSheetDialog.dismiss()
+                }
 
-            sheetView.btn_view_cart.setOnClickListener() {
-                var intent = Intent(this, CartActivity::class.java)
+                sheetView.btn_view_cart.setOnClickListener() {
+                    var intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                }
+
+            } else {// if user not login
+                var intent = Intent(this, SignInUpActivity::class.java)
                 startActivity(intent)
             }
-
-            addCart(productDetail?.id)
         }
     }
 
     private fun addCart(id: String?) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
 
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
         // Check user loged in firebase yet?
         if (user != null) {
-
             var i = 1// use i to exit add number of cart, because it run anyway
             mDatabase = FirebaseDatabase.getInstance()
             println("id: " + id)
@@ -93,12 +102,14 @@ class ProductDetailActivity : AppCompatActivity() {
                 .child(PhysicsConstants.CART)
                 .child(user.uid)
                 .child(id.toString())
+
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
+                        // if this cart is not exist in list cart
                         if (i == 1) {
-                            println("ton tai")
-                            // If this product exist in cart, then number++
+                            println("Cart da ton tai trong danh sach sasch ")
+                            // If this product exist in cart, then number ++
                             var number = ds.child(PhysicsConstants.CART_NUMBER).value as Long
                             println("number:" + number)
                             number++
@@ -107,13 +118,14 @@ class ProductDetailActivity : AppCompatActivity() {
                         }
                         i++
 
-                    } else {
+                    } else if (checkAddcart == true) {
                         i++
-                        println("khong ton tai")
+                        println("cart khong ton tai trong danh sach")
                         query.child(PhysicsConstants.CART_ID)
                             .setValue(id)
                         query.child(PhysicsConstants.CART_NUMBER)
                             .setValue(1)
+                        checkAddcart = false
                     }
                 }
 
@@ -253,6 +265,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     .child(PhysicsConstants.FAVORITE_PRODUCT)
                 currentUserDb.child(id!!).child(PhysicsConstants.FAVORITE_ID)
                     .setValue(id)
+
             } else {// Del product from list
                 mDatabaseReference = mDatabase!!.reference
                 val currentUserDb = mDatabaseReference.child(PhysicsConstants.USERS)
@@ -310,9 +323,7 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
         query.addValueEventListener(valueEventListener)
-
     }
-
 
     fun onClickQuiteProduct(view: View) {
         finish()

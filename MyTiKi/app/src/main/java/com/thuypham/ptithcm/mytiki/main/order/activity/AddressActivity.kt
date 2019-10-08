@@ -1,6 +1,5 @@
 package com.thuypham.ptithcm.mytiki.main.order.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,8 +13,4 @@ class AddressActivity : AppCompatActivity() {
     }
 
     fun onClickQuiteAddress(view: View) {finish()}
-    fun onClickConfirmOrder(view: View) {
-        val intent = Intent(this, ConfirmOrderActivity::class.java)
-        startActivity(intent)
-    }
 }

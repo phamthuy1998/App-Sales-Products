@@ -170,7 +170,7 @@ class UserFragment : Fragment() {
                 // intent to FavoriteActivity
                 val intentFV = Intent(context, FavoriteActivity::class.java)
                 intentFV.putExtra("childKey", PhysicsConstants.VIEWED_PRODUCT)
-                intentFV.putExtra("nameToolbar", getString(R.string.favorite_product))
+                intentFV.putExtra("nameToolbar", getString(R.string.viewd_products))
                 startActivity(intentFV)
             } else {
                 // If user haven't login yet, intent to sign in

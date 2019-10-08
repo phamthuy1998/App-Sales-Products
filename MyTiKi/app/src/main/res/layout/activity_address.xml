@@ -77,7 +77,6 @@
     </androidx.core.widget.NestedScrollView>
 
     <TextView
-        android:onClick="onClickConfirmOrder"
         android:id="@+id/btn_address_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

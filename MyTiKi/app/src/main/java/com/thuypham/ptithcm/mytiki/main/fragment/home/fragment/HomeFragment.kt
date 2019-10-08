@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
 
         // view more product sale
         tv_viewmore_product_sale.setOnClickListener() {
-            var intent = Intent(context, FavoriteActivity::class.java)
+            val intent = Intent(context, FavoriteActivity::class.java)
             intent.putExtra("nameToolbar", getString(R.string.saling_product))
             intent.putExtra("viewMore", 3)
             startActivity(intent)
@@ -106,7 +106,8 @@ class HomeFragment : Fragment() {
             // intent to FavoriteActivity
             val intentFV = Intent(context, FavoriteActivity::class.java)
             intentFV.putExtra("childKey", PhysicsConstants.VIEWED_PRODUCT)
-            intentFV.putExtra("nameToolbar", getString(R.string.favorite_product))
+            intentFV.putExtra("nameToolbar", getString(R.string.viewd_products))
+            intentFV.putExtra("viewMore", 0)
             startActivity(intentFV)
         }
 

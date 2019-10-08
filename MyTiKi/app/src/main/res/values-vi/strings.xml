@@ -110,5 +110,29 @@
     <string name="sale_percent">%sale</string>
     <string name="pulll_up_to_load_more">Kéo lên để tải thêm thông tin</string>
     <string name="pull_to_refresh">Kéo để tải lại trang</string>
+    <string name="add_like_product">Đã thêm vào danh sách sản phẩm yêu thích</string>
+    <string name="all_product">Tất cả sản phẩm</string>
+    <string name="amount">Tổng tiền</string>
+    <string name="best_seller">Sản phẩm bán chạy nhất</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="change">Thay đổi</string>
+    <string name="choose_to_buy">Chọn mua</string>
+    <string name="color">Màu:</string>
+    <string name="comment_count">Số lượng bình luận</string>
+    <string name="content_of_product_detail">Nội dung chi tiết của sản phẩm</string>
+    <string name="customer_comment">Bình luận của khách hàng</string>
+    <string name="empty_list">Danh sách đang rỗng</string>
+    <string name="including_vat">Đã bao gồm thuế VAT</string>
+    <string name="make_a_comment">Viết bình luận</string>
+    <string name="out_of_product">Hết hàng</string>
+    <string name="plus_cart_error">Bạn chỉ được đặt tối đa 100 sản phẩm</string>
+    <string name="plus_cart_error_not_enough">Số lượng sản phẩm không đủ</string>
+    <string name="proceed_to_ordering">Tiến  hành đặt hàng</string>
+    <string name="product_details">Chi tiết sản phẩm</string>
+    <string name="product_list_is_empty">Danh sách đang rỗng</string>
+    <string name="text_add_cart">Sản phẩm này đã được thêm vào giỏ hàng</string>
+    <string name="time_commnent">Thời gian bình luận</string>
+    <string name="title_comment">Tiêu đề comment</string>
+    <string name="view_cart">Xem giỏ hàng</string>
 
 </resources>

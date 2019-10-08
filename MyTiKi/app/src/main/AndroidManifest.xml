@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".main.cart.activity.CartActivity"></activity>
+        <activity android:name=".main.order.activity.ConfirmOrderActivity"></activity>
+        <activity android:name=".main.order.activity.AddressActivity" />
+        <activity android:name=".main.cart.activity.CartActivity" />
         <activity android:name=".main.fragment.category.activity.ProductOfCategory" />
         <activity android:name=".main.product.activity.FavoriteActivity" />
         <activity android:name=".main.product.activity.ProductDetailActivity" />

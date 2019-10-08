@@ -148,7 +148,7 @@
     <string name="product_list_is_empty">Product list is empty</string>
     <string name="text_add_cart">This product has been added to the cart</string>
     <string name="view_cart">View cart</string>
-    <string name="cart">Cart ()</string>
+    <string name="cart">Cart </string>
     <string name="plus_cart_error">You must order a maximum of 100 products</string>
     <string name="plus_cart_error_not_enough">The remaining product is not enough</string>
     <string name="proceed_to_ordering">Proceed to ordering</string>
@@ -157,6 +157,9 @@
     <string name="btn_minus">-</string>
     <string name="btn_plus">+</string>
     <string name="_1">1</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="add_new_address">Add new address</string>
+    <string name="continue_address">continue</string>
 
 
 </resources>
