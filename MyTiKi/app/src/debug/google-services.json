@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "381441532038",
+    "firebase_url": "https://mytiki-8a013.firebaseio.com",
+    "project_id": "mytiki-8a013",
+    "storage_bucket": "mytiki-8a013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381441532038:android:cc7b8f3853e7ad01",
+        "android_client_info": {
+          "package_name": "com.thuypham.ptithcm.mytiki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381441532038-a4q12lcd1h8uhoi0rbhpaqtiuciav7sa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi2iyJTC3C4pRTmX_Hg0Q-JkOP9_bF1Wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381441532038-a4q12lcd1h8uhoi0rbhpaqtiuciav7sa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

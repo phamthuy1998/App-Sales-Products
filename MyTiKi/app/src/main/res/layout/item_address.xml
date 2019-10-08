@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_product_cart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/colorWhiteBG">
+
+    <RadioButton
+        android:id="@+id/rad_defaul_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:checked="true"
+        android:theme="@style/MyRadioButtonStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_edit_address" />
+
+    <TextView
+        android:id="@+id/tv_name_address"
+        android:layout_width="0dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorTextHint"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/name_sign_up"
+        app:layout_constraintEnd_toStartOf="@id/btn_del_address"
+        app:layout_constraintStart_toEndOf="@id/rad_defaul_address"
+        app:layout_constraintTop_toTopOf="@id/rad_defaul_address" />
+
+    <TextView
+        android:id="@+id/tv_phone_address"
+        android:layout_width="0dp"
+        android:textColor="@color/colorTextHint"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/name_sign_up"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_del_address"
+        app:layout_constraintStart_toEndOf="@id/rad_defaul_address"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_address" />
+
+    <TextView
+        android:id="@+id/tv_real_address"
+        android:layout_width="0dp"
+        android:textColor="@color/colorTextHint"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/name_sign_up"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_del_address"
+        app:layout_constraintStart_toEndOf="@id/rad_defaul_address"
+        app:layout_constraintTop_toBottomOf="@id/tv_phone_address"
+        android:layout_marginBottom="16dp"
+        />
+
+
+    <ImageView
+        android:id="@+id/btn_del_address"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:padding="15dp"
+        android:tint="@color/colorDarkGray"
+        app:srcCompat="@drawable/ic_cancel"
+        app:layout_constraintEnd_toStartOf="@id/btn_edit_address"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btn_edit_address"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:padding="10dp"
+        app:srcCompat="@drawable/ic_edit"
+        android:tint="@color/colorDarkGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrayBg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

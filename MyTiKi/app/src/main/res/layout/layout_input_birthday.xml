@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ll_text_birthday"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextLabel">
+
+        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+            android:id="@+id/edt_birthday_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:focusableInTouchMode="false"
+            android:hint="@string/birthday"
+            android:inputType="number"
+            android:singleLine="true"
+            android:theme="@style/EditTextTheme" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/btn_edt_birthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:padding="10dp"
+        android:src="@drawable/ic_edit" />
+
+</FrameLayout>

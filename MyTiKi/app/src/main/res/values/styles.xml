@@ -1,0 +1,49 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/bg_launcher</item>
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/colorGray</item>
+        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="colorControlHighlight">@color/colorBlue</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/colorTextHint</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/colorGray</item>
+        <item name="colorControlNormal">@color/colorBlue</item>
+        <item name="colorControlActivated">@color/colorBlue</item>
+    </style>
+
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+
+        <item name="android:textSize">16sp</item>
+
+        <!--Color normal-->
+        <item name="colorPrimary">@color/colorGray</item>
+        <!--Color when click-->
+        <item name="colorControlActivated">@color/colorBlue</item>
+    </style>
+
+
+    <!--Checkbox color style-->
+    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/colorBlue</item>
+        <item name="android:textColorSecondary">@color/colorGray</item>
+    </style>
+
+</resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorBlue">
+
+        <ImageView
+            android:id="@+id/btn_cancel_active_acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:linksClickable="true"
+            android:onClick="onClickBackToSignInFragment"
+            android:padding="16dp"
+            android:src="@drawable/ic_left_arrow"
+            android:tint="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/active_account"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_verified_mail" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/verified_email_1"
+        android:textColor="@color/colorTextHint" />
+
+
+    <TextView
+        android:id="@+id/tv_email_verified"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/tv_email_user"
+        android:textColor="@color/colorBlue" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="@string/verified_email_2"
+        android:textColor="@color/colorTextHint" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="@string/check_verifire_mail"
+        android:textColor="@color/colorTextHint" />
+
+
+    <Button
+        android:id="@+id/btn_ok_verifi"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/edit_btn_sign_in"
+        android:text="@string/btn_ok_verifi"
+        android:textColor="@color/colorWhiteBG" />
+</LinearLayout>

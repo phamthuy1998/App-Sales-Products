@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
+
+    <!--TextView comment tilte-->
+    <TextView
+        android:id="@+id/tv_acc_cmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/customer_comment"
+        android:textColor="@color/colorTextHint"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--TextView star count-->
+    <TextView
+        android:id="@+id/tv_count_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16sp"
+        android:text="@string/_4_5_5"
+        android:textColor="@color/colorTextHint"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_acc_cmt" />
+
+    <!--Layout star of product-->
+    <ImageView
+        android:id="@+id/iv_stars_avr"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/five_stars"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_count_star" />
+
+    <!-- TextView col-->
+    <TextView
+        android:layout_width="2dp"
+        android:layout_height="190dp"
+        android:layout_margin="16dp"
+        android:background="@color/colorGrayBghint"
+        app:layout_constraintEnd_toStartOf="@id/iv_3star"
+        app:layout_constraintTop_toBottomOf="@id/tv_acc_cmt" />
+
+    <ImageView
+        android:id="@+id/iv_5_stars"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/five_stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
+        app:layout_constraintTop_toBottomOf="@id/tv_acc_cmt" />
+
+    <TextView
+        android:id="@+id/tv_5star_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/_100"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_5_stars"
+        app:layout_constraintStart_toEndOf="@id/iv_5_stars"
+        app:layout_constraintTop_toTopOf="@id/iv_5_stars" />
+
+    <ImageView
+        android:id="@+id/iv_four_stars"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/four_stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
+        app:layout_constraintTop_toBottomOf="@id/iv_5_stars" />
+
+    <TextView
+        android:id="@+id/tv_4star_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/_100"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_four_stars"
+        app:layout_constraintStart_toEndOf="@id/iv_four_stars"
+        app:layout_constraintTop_toTopOf="@id/iv_four_stars" />
+
+
+    <ImageView
+        android:id="@+id/iv_3star"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/three_stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
+        app:layout_constraintTop_toBottomOf="@id/iv_four_stars" />
+
+    <TextView
+
+        android:id="@+id/tv_3star_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/_100"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_3star"
+        app:layout_constraintStart_toEndOf="@id/iv_3star"
+        app:layout_constraintTop_toTopOf="@id/iv_3star" />
+
+
+    <ImageView
+        android:id="@+id/iv_2star"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/two_stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
+        app:layout_constraintTop_toBottomOf="@id/iv_3star" />
+
+    <TextView
+        android:id="@+id/tv_2star_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/_100"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_2star"
+        app:layout_constraintStart_toEndOf="@id/iv_2star"
+        app:layout_constraintTop_toTopOf="@id/iv_2star" />
+
+
+    <ImageView
+        android:id="@+id/iv_1star"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/once_stars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
+        app:layout_constraintTop_toBottomOf="@id/iv_2star" />
+
+    <TextView
+        android:id="@+id/tv_1star_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/_100"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_1star"
+        app:layout_constraintStart_toEndOf="@id/iv_1star"
+        app:layout_constraintTop_toTopOf="@id/iv_1star" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

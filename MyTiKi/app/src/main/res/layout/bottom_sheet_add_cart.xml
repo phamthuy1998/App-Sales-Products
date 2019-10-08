@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_add_cart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_add_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawableStart="@drawable/ic_success"
+        android:drawablePadding="10dp"
+        android:text="@string/text_add_cart"
+        android:textColor="@color/greenColor"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btn_cancel_dialog_add_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:src="@drawable/cancel"
+        app:layout_constraintBottom_toBottomOf="@id/tv_add_cart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_add_cart" />
+
+    <ImageView
+        android:id="@+id/iv_product_add_cart"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_add_cart" />
+
+    <TextView
+        android:id="@+id/tv_product_name_add_cart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/product_name"
+        android:textColor="@color/colorTextHint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_product_add_cart"
+        app:layout_constraintTop_toTopOf="@id/iv_product_add_cart" />
+
+    <TextView
+        android:id="@+id/tv_product_price_addcart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/_1_290_000"
+        android:textColor="@color/colorRedError"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/tv_product_name_add_cart"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_name_add_cart" />
+
+    <TextView
+        android:id="@+id/btn_view_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/edit_btn_sign_in"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/view_cart"
+        android:textColor="@color/colorWhiteBG"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/iv_product_add_cart"
+        app:layout_constraintTop_toBottomOf="@id/iv_product_add_cart" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
