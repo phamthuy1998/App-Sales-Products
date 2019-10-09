@@ -16,6 +16,7 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpAct
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import android.graphics.Paint
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -50,35 +51,39 @@ class ProductDetailActivity : AppCompatActivity() {
             val user: FirebaseUser? = mAuth?.getCurrentUser();
             // Check user loged in firebase yet?
             if (user != null) {
-                // Add this product into list cart
-                addCart(productDetail?.id)
-                val mBottomSheetDialog = RoundedBottomSheetDialog(this)
-                val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_add_cart, null)
+                if (productDetail?.product_count!! > 0) {
+                    // Add this product into list cart
+                    addCart(productDetail?.id)
+                    val mBottomSheetDialog = RoundedBottomSheetDialog(this)
+                    val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_add_cart, null)
 
-                //Set image in bottom dialog
-                Glide.with(applicationContext)
-                    .load(productDetail?.image)
-                    .into(sheetView.iv_product_add_cart)
-                sheetView.tv_product_name_add_cart.text = productDetail?.name
+                    //Set image in bottom dialog
+                    Glide.with(applicationContext)
+                        .load(productDetail?.   image)
+                        .into(sheetView.iv_product_add_cart)
+                    sheetView.tv_product_name_add_cart.text = productDetail?.name
 
-                val pricesale =
-                    productDetail?.price?.minus(((productDetail?.sale!! * 0.01) * productDetail?.price!!))
-                // format price sale
-                val df = DecimalFormat("#,###,###")
-                df.roundingMode = RoundingMode.CEILING
-                val priceDiscount = df.format(pricesale) + " đ"
-                sheetView.tv_product_price_addcart.text = priceDiscount
+                    val pricesale =
+                        productDetail?.price?.minus(((productDetail?.sale!! * 0.01) * productDetail?.price!!))
+                    // format price sale
+                    val df = DecimalFormat("#,###,###")
+                    df.roundingMode = RoundingMode.CEILING
+                    val priceDiscount = df.format(pricesale) + " đ"
+                    sheetView.tv_product_price_addcart.text = priceDiscount
 
-                mBottomSheetDialog.setContentView(sheetView)
-                mBottomSheetDialog.show()
+                    mBottomSheetDialog.setContentView(sheetView)
+                    mBottomSheetDialog.show()
 
-                sheetView.btn_cancel_dialog_add_cart.setOnClickListener() {
-                    mBottomSheetDialog.dismiss()
-                }
+                    sheetView.btn_cancel_dialog_add_cart.setOnClickListener() {
+                        mBottomSheetDialog.dismiss()
+                    }
 
-                sheetView.btn_view_cart.setOnClickListener() {
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
+                    sheetView.btn_view_cart.setOnClickListener() {
+                        var intent = Intent(this, CartActivity::class.java)
+                        startActivity(intent)
+                    }
+                } else {
+                    Toast.makeText(this, R.string.err_add_cart, Toast.LENGTH_LONG).show()
                 }
 
             } else {// if user not login

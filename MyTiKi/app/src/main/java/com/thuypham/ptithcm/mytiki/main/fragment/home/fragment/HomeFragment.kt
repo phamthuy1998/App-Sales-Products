@@ -319,6 +319,7 @@ class HomeFragment : Fragment() {
         productAdapter = ProductAdapter(productList, requireContext())
         rv_product_home.adapter = productAdapter
         rv_product_home.layoutManager = GridLayoutManager(requireContext(), 2)
+
         //This will for default android divider
         rv_product_home.addItemDecoration(GridItemDecoration(10, 2))
     }

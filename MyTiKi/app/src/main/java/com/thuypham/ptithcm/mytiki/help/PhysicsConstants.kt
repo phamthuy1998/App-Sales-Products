@@ -62,11 +62,18 @@ object PhysicsConstants {
     const val FAVORITE_PRODUCT = "favorite_product"
     const val FAVORITE_ID = "id"
 
-
     //Cart
     const val CART = "cart"
     const val CART_ID = "id"
     const val CART_NUMBER = "number"
+
+    //Cart
+    const val ADDRESS = "ADDRESS"
+    const val ADDRESS_ID = "id"
+    const val ADDRESS_PHONE = "phone"
+    const val ADDRESS_name = "name"
+    const val ADDRESS_DEFAULT = "default"
+    const val ADDRESS_REAL = "address"
 
 
 }

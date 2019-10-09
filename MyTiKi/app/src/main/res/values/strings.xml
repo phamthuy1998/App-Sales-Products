@@ -24,6 +24,7 @@
     <string name="hot_line_1800_6963_free">Hot line: 0373865759</string>
     <string name="support">Support</string>
     <string name="sign_out">Sign out</string>
+    <string name="update">Update</string>
     <string name="title_sign_in_sign_up">Sign in/Sign up</string>
     <string name="email_phone_number">Email/phone number</string>
     <string name="password">Password</string>
@@ -99,6 +100,7 @@
     <string name="error_input_email_exists">Email already exists</string>
     <string name="error_signup">Registration failed</string>
     <string name="error_input_email_not_exists">The email does not exist or is not registered</string>
+    <string name="error_input_address_not_entered">Please enter your address</string>
     <string name="error_input_name_not_entered">Please enter your name</string>
     <string name="error_input_name_not_length">The name must be 1 character or more</string>
     <string name="error_input_phone_not_entered">Please enter your phone</string>
@@ -135,6 +137,7 @@
     <string name="customer_comment">Customer comment</string>
     <string name="_4_5_5">4.5/5</string>
     <string name="_100">100%</string>
+    <string name="err_add_cart">Number of products is not enough, can not be added to the cart</string>
     <string name="content_of_product_detail">Content of product detail</string>
     <string name="make_a_comment">Make a comment</string>
     <string name="title_comment">Title comment</string>
@@ -158,8 +161,11 @@
     <string name="btn_plus">+</string>
     <string name="_1">1</string>
     <string name="shipping_address">Shipping Address</string>
-    <string name="add_new_address">Add new address</string>
+    <string name="add_new_address1">Add new address</string>
     <string name="continue_address">continue</string>
+    <string name="address">Address</string>
+    <string name="add_address">Add address</string>
+    <string name="add_new_address">Add new address</string>
 
 
 </resources>
