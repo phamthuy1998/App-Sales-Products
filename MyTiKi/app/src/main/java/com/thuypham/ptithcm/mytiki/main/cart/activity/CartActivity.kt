@@ -32,7 +32,7 @@ class CartActivity : AppCompatActivity() {
     private var arrIdProductCart = ArrayList<ProductCart>()
     private var productCartAdapter: ProductCartAdapter? = null
     private var productCartList = ArrayList<ProductCartDetail>()
-    private var priceCart:Long = 0
+    private var priceCart: Long = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +69,14 @@ class CartActivity : AppCompatActivity() {
 
     private fun addEvent() {
         // If list product cart is empty, click button continue to shopping, intent to main activity
-        btn_continue_shopping_cart.setOnClickListener(){
+        btn_continue_shopping_cart.setOnClickListener() {
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        btn_order_cart.setOnClickListener(){
+        btn_order_cart.setOnClickListener() {
             var intent = Intent(this, AddressActivity::class.java)
+            intent.putParcelableArrayListExtra("listProductCart", productCartList)
             startActivity(intent)
         }
     }
@@ -96,7 +97,7 @@ class CartActivity : AppCompatActivity() {
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    ll_list_cart_empty.visibility= View.GONE
+                    ll_list_cart_empty.visibility = View.GONE
                     arrIdProductCart.clear()
                     println("viewed favorite product co du lieu")
                     for (ds in dataSnapshot.children) {
@@ -121,7 +122,7 @@ class CartActivity : AppCompatActivity() {
 
                 } else {
                     tv_price_cart.text = "0 đ"
-                    ll_list_cart_empty.visibility= View.VISIBLE
+                    ll_list_cart_empty.visibility = View.VISIBLE
                     println("k co dl favorite viewed")
                 }
             }
@@ -173,7 +174,7 @@ class CartActivity : AppCompatActivity() {
                                 sale
                             )
 
-                        priceCart += price.minus(((sale * 0.01) * price))*productCart.product_count
+                        priceCart += price.minus(((sale * 0.01) * price)) * productCart.product_count
 
                         // format price viewed
                         val df = DecimalFormat("#,###,###")

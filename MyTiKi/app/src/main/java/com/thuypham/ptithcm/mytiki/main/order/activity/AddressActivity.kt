@@ -13,11 +13,16 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.help.isPhoneValid
+import com.thuypham.ptithcm.mytiki.main.cart.adapter.ProductCartAdapter
+import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.order.adapter.AddressAdapter
+import com.thuypham.ptithcm.mytiki.main.order.adapter.ProductConfirmAdapter
 import com.thuypham.ptithcm.mytiki.main.order.model.Address
 import kotlinx.android.synthetic.main.activity_address.*
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
-import kotlinx.android.synthetic.main.fragment_sign_up.*
+import kotlinx.android.synthetic.main.dialog_cofirm_order.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class AddressActivity : AppCompatActivity() {
 
@@ -29,7 +34,10 @@ class AddressActivity : AppCompatActivity() {
     //product
     private var addressAdapter: AddressAdapter? = null
     private var addressList = ArrayList<Address>()
+    private lateinit var currentAddress: Address
 
+    var productList = ArrayList<ProductCartDetail>()
+    private var productAdapter: ProductConfirmAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +84,9 @@ class AddressActivity : AppCompatActivity() {
                         Log.d("adress", default.toString())
                     }
                     Log.d("sizemang123", addressList.size.toString())
+                    addressList[0].default = true
                     addressAdapter?.notifyDataSetChanged()
+
                 }
             }
 
@@ -98,8 +108,72 @@ class AddressActivity : AppCompatActivity() {
         }
 
         btn_address_continue.setOnClickListener() {
+            showDialogConfirmOrder()
+        }
+    }
+
+    private fun showDialogConfirmOrder() {
+        val dialog = Dialog(
+            this, android.R.style.Theme_Light_NoTitleBar
+        )
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_cofirm_order)
+
+        // set address
+        for (address in addressList) {
+            if (address.default == true)
+                currentAddress = address
+        }
+        dialog.tv_name_address_conf.text = currentAddress.name
+        dialog.tv_phone_conf.text = currentAddress.phone
+        dialog.tv_address_conf.text = currentAddress.address
+
+        // get list cart
+        productList = intent.getParcelableArrayListExtra<ProductCartDetail>("listProductCart")
+        productAdapter = ProductConfirmAdapter(productList, this)
+        // Set rcyclerview vertial
+        dialog.rv_product_confirm.layoutManager = LinearLayoutManager(
+            application,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        dialog.rv_product_confirm.adapter = productAdapter
+
+
+        var priceTemp = 0.0
+        for (p in productList) {
+            priceTemp += p.price!!.minus(((p.sale * 0.01) * p.price!!)) * p.number_product!!
+        }
+        // format price viewed
+        val df = DecimalFormat("#,###,###")
+        df.roundingMode = RoundingMode.CEILING
+        var priceTxt = df.format(priceTemp) + " đ"
+        dialog.tv_price_temp_order.text = priceTxt
+
+        var priceAmount = priceTemp
+
+        if (priceTemp > 100000) {
+            dialog.tv_price_shipping.text = "0 đ"
+        } else {
+            priceAmount += PhysicsConstants.Shipping
+            Log.d("price", PhysicsConstants.Shipping.toString())
+            priceTxt = df.format(PhysicsConstants.Shipping) + " đ"
+            dialog.tv_price_shipping.text = priceTxt
+        }
+
+        priceTxt = df.format(priceAmount) + " đ"
+        dialog.tv_price_cart_conf.text = priceTxt
+
+        // exit dialog
+        dialog.btn_cancel_confirm.setOnClickListener { dialog.dismiss() }
+
+        // add in oerder
+        dialog.btn_payment_conf.setOnClickListener {
 
         }
+
+        dialog.show()
+
     }
 
     //Theme_Light_NoTitleBar_Fullscreen

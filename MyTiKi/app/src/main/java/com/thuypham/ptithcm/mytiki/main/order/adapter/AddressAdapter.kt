@@ -62,16 +62,18 @@ class AddressAdapter(
 
                 // choose this address to use it to address defaul
                 itemView.ll_item_address.setOnClickListener() {
-                    setAddressDefault(address)
+                    for (addressObj in items) {
+                        addressObj.default = false
+                    }
+                    address.default = true
+                    itemView.rad_defaul_address.isChecked = true
+                    notifyDataSetChanged()
                 }
             }
         }
 
     }
 
-    private fun setAddressDefault(addressObj: Address) {
-
-    }
 
     private fun editAddress(addressObj: Address) {
 

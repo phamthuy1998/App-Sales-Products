@@ -75,5 +75,7 @@ object PhysicsConstants {
     const val ADDRESS_DEFAULT = "default"
     const val ADDRESS_REAL = "address"
 
+    const val Shipping = 20000
+
 
 }

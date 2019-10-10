@@ -166,6 +166,14 @@
     <string name="address">Address</string>
     <string name="add_address">Add address</string>
     <string name="add_new_address">Add new address</string>
+    <string name="receiver_s_address">Receiver\'s address</string>
+    <string name="payments">Payments</string>
+    <string name="payment_by_cash_on_delivery">Payment by cash on delivery</string>
+    <string name="confirm">Confirm</string>
+    <string name="payment">Payment</string>
+    <string name="order_information">Order Information</string>
+    <string name="the_provisional_amount">The provisional amount</string>
+    <string name="transportation_fee">Transportation fee</string>
 
 
 </resources>

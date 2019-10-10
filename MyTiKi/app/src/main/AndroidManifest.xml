@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".main.order.activity.ConfirmOrderActivity" />
         <activity android:name=".main.order.activity.AddressActivity" />
         <activity android:name=".main.cart.activity.CartActivity" />
         <activity android:name=".main.fragment.category.activity.ProductOfCategory" />
@@ -30,12 +29,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".AddressActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" >
-
         </activity>
 
         <activity
