@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F8F8"
-    tools:context=".main.order.activity.AddressActivity">
+    tools:context=".main.fragment.user.order.activity.AddressActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_order_address"

@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.order.adapter
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter
 
 import android.app.Dialog
 import android.content.Context
@@ -17,7 +17,7 @@ import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.help.isPhoneValid
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.main.order.model.Address
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Address
 import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.ProductDetailActivity
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
@@ -157,7 +157,14 @@ class AddressAdapter(
                         .child(addressObj.id!!)
 
                     // add this address into address firebase using key = push() of firebase
-                    val addressOj = Address(addressObj.id!!, name, phone, address, false)
+                    val addressOj =
+                        Address(
+                            addressObj.id!!,
+                            name,
+                            phone,
+                            address,
+                            false
+                        )
                     query.setValue(addressOj)
                     dialog.dismiss()
 

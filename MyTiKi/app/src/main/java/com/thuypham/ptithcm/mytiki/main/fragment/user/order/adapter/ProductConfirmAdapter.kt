@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.order.adapter
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter
 
 import android.app.Dialog
 import android.content.Context
@@ -15,10 +15,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.help.isPhoneValid
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCart
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCart
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.main.order.model.Address
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Address
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
 import kotlinx.android.synthetic.main.item_address.view.*
 import kotlinx.android.synthetic.main.item_product_cart.view.*

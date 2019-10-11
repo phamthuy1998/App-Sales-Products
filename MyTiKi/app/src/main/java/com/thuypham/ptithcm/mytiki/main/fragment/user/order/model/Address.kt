@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.order.model
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

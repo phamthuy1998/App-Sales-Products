@@ -22,6 +22,8 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.user_fragment.*
 import android.net.Uri
+import androidx.core.app.ActivityCompat
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.OrderActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
 
 
@@ -133,7 +135,6 @@ class UserFragment : Fragment() {
             if (user != null) {
                 showOrderFragment()
             } else {
-                println("m co vo day k m")
                 onOpentSigInUpFragment()
             }
         }
@@ -146,7 +147,6 @@ class UserFragment : Fragment() {
         //sign out
         btn_sign_out.setOnClickListener {
             clearInforLogin()
-            println("dang xuat")
             progress.visibility = View.VISIBLE
 
             after(1000, process = {
@@ -155,6 +155,7 @@ class UserFragment : Fragment() {
             })
             mAuth?.signOut()
             val intent = Intent(context, MainActivity::class.java)
+            ActivityCompat.finishAffinity(requireActivity())
             startActivity(intent)
         }
 
@@ -177,7 +178,6 @@ class UserFragment : Fragment() {
                 val intent = Intent(context, SignInUpActivity::class.java)
                 startActivity(intent)
 
-                println("dang nhap xong")
                 user = mAuth?.getCurrentUser()
 
                 // intent to FavoriteActivity
@@ -216,6 +216,30 @@ class UserFragment : Fragment() {
                 }
             }
 
+        }
+
+        tv_received_order.setOnClickListener {
+            val intent = Intent(context, OrderActivity::class.java)
+            intent.putExtra("type_order", 1)
+            startActivity(intent)
+        }
+
+        tv_order_waiting_shiping.setOnClickListener {
+            val intent = Intent(context, OrderActivity::class.java)
+            intent.putExtra("type_order", 2)
+            startActivity(intent)
+        }
+
+        tv_order_success.setOnClickListener {
+            val intent = Intent(context, OrderActivity::class.java)
+            intent.putExtra("type_order", 3)
+            startActivity(intent)
+        }
+
+        tv_order_canceled.setOnClickListener {
+            val intent = Intent(context, OrderActivity::class.java)
+            intent.putExtra("type_order", 4)
+            startActivity(intent)
         }
     }
 

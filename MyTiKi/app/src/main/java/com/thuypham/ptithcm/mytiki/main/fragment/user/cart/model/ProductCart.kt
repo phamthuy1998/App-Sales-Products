@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.cart.model
+package com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

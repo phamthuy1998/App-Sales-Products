@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.cart.activity
+package com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +12,11 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.main.cart.adapter.ProductCartAdapter
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCart
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.adapter.ProductCartAdapter
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCart
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.main.order.activity.AddressActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.AddressActivity
 import kotlinx.android.synthetic.main.activity_cart.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -46,7 +46,11 @@ class CartActivity : AppCompatActivity() {
         // Check user loged in firebase yet?
         if (user != null) {
             // product cart init
-            productCartAdapter = ProductCartAdapter(productCartList, this)
+            productCartAdapter =
+                ProductCartAdapter(
+                    productCartList,
+                    this
+                )
             // Set rcyclerview vertical
             rv_product_cart.layoutManager = LinearLayoutManager(
                 application,
@@ -106,7 +110,12 @@ class CartActivity : AppCompatActivity() {
                             val cart_number = ds.child(PhysicsConstants.CART_NUMBER).value as Long?
                             println(" id product: $id")
                             if (id != null && cart_number != null) {
-                                arrIdProductCart.add(ProductCart(id, cart_number))
+                                arrIdProductCart.add(
+                                    ProductCart(
+                                        id,
+                                        cart_number
+                                    )
+                                )
                             }
                         }
                     }

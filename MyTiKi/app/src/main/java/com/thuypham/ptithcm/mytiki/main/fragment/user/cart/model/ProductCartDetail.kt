@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.cart.model
+package com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -62,7 +62,9 @@ class ProductCartDetail (
 
     companion object CREATOR : Parcelable.Creator<ProductCartDetail> {
         override fun createFromParcel(parcel: Parcel): ProductCartDetail {
-            return ProductCartDetail(parcel)
+            return ProductCartDetail(
+                parcel
+            )
         }
 
         override fun newArray(size: Int): Array<ProductCartDetail?> {

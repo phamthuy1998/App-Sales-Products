@@ -63,7 +63,7 @@ object PhysicsConstants {
     const val FAVORITE_ID = "id"
 
     //Cart
-    const val CART = "cart"
+    const val CART = "CART"
     const val CART_ID = "id"
     const val CART_NUMBER = "number"
 
@@ -77,5 +77,21 @@ object PhysicsConstants {
 
     const val Shipping = 20000
 
+    //Order
+    const val ORDER = "ORDER"
+    const val ORDER_ID = "id"
+    const val ORDER_DATE = "date"
+    const val ORDER_PRICE = "price"
+    const val ORDER_STATUS = "status"
+    const val ORDER_ID_USER = "id_user"
+
+    //Order
+    const val ORDER_DETAIL = "ORDER_DETAIL"
+    const val ORDER_DETAIL_ID = "id"
+    const val ORDER_DETAIL_PRODUCT_NAME = "product_name"
+    const val ORDER_DETAIL_ID_PRODUCT = "id_product"
+    const val ORDER_DETAIL_PRODUCT_COUNT = "product_count"
+    const val ORDER_DETAIL_PRODUCT_PRICE = "product_price"
+    const val ORDER_DETAIL_ID_ORDER = "id_order"
 
 }

@@ -19,6 +19,12 @@
     <string name="billing_information">Billing Information</string>
     <string name="products_purchased">Products purchased</string>
     <string name="viewd_products">Viewd products</string>
+
+    <string name="status_1">The order has been received</string>
+    <string name="status_2">Orders are being delivered</string>
+    <string name="status_3">Orders have been shipped</string>
+    <string name="status_4">Order canceled</string>
+
     <string name="products_purchased_later">Products purchased later</string>
     <string name="mycomment">Mycomment</string>
     <string name="hot_line_1800_6963_free">Hot line: 0373865759</string>
@@ -61,7 +67,6 @@
     <string name="you_have_no_orders_yet">You have no orders yet</string>
     <string name="continue_shopping">Continue shopping</string>
     <string name="product_name">Product name</string>
-    <string name="order_date">Order date</string>
     <string name="order_code">Order code</string>
     <string name="status">Status</string>
     <string name="order_management">Order management</string>
@@ -174,6 +179,11 @@
     <string name="order_information">Order Information</string>
     <string name="the_provisional_amount">The provisional amount</string>
     <string name="transportation_fee">Transportation fee</string>
+    <string name="thanks_order">Thank you for purchasing our store.</string>
+    <string name="view_orders">View orders</string>
+    <string name="order_id">Order ID:</string>
+    <string name="order_date">Order date:</string>
+    <string name="order_status">Order status:</string>
 
 
 </resources>

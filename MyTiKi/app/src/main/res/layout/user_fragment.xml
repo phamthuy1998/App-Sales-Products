@@ -155,19 +155,6 @@
                         android:textSize="@dimen/ts_name" />
 
                     <TextView
-                        android:id="@+id/tv_order_waiting_payment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@android:color/white"
-                        android:drawableEnd="@drawable/ic_gray_right_arrow"
-                        android:padding="16dp"
-                        android:text="@string/tv_order_waiting"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/ts_name" />
-
-
-                    <TextView
                         android:id="@+id/tv_order_waiting_shiping"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

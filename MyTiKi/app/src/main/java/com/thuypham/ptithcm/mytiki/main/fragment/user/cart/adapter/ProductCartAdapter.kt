@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.cart.adapter
+package com.thuypham.ptithcm.mytiki.main.fragment.user.cart.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
 import com.thuypham.ptithcm.mytiki.main.product.activity.ProductDetailActivity
 import kotlinx.android.synthetic.main.item_product_cart.view.*

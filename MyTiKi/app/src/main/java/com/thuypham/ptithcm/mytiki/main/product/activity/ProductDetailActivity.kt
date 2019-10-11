@@ -20,7 +20,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.thuypham.ptithcm.mytiki.main.cart.activity.CartActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
 
 

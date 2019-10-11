@@ -1,55 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:id="@+id/ll_item_order"
+    android:layout_marginBottom="16dp"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_product_order_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/product_name"
-        android:textColor="@color/colorTextHint"
-        android:textSize="18sp" />
-
-    <TextView
-        android:drawableEnd="@drawable/ic_success"
-        android:id="@+id/tv_order_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textSize="16sp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/order_code" />
-
-
-    <TextView
-        android:textSize="16sp"
-        android:id="@+id/tv_day_order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/order_date" />
-
-
-    <TextView
-        android:id="@+id/tv_status_order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/status" />
-
-    <TextView
+        android:id="@+id/tv_line_item_order"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#C9C7C7" />
-</LinearLayout>
+        android:background="@color/colorGrayBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name_item_order"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/name_sign_up"
+        android:textColor="@color/colorTextHint"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_line_item_order" />
+
+    <TextView
+        android:id="@+id/tv_tt_order_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/order_id"
+        app:layout_constraintStart_toStartOf="@id/tv_name_item_order"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_item_order" />
+
+    <TextView
+        android:id="@+id/tv_item_order_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/order_id"
+        app:layout_constraintStart_toEndOf="@id/tv_tt_order_id"
+        app:layout_constraintTop_toTopOf="@id/tv_tt_order_id" />
+
+    <TextView
+        android:id="@+id/tv_tt_order_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/order_date"
+        app:layout_constraintStart_toStartOf="@id/tv_name_item_order"
+        app:layout_constraintTop_toBottomOf="@id/tv_tt_order_id" />
+
+    <TextView
+        android:id="@+id/tv_item_order_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/order_id"
+        app:layout_constraintStart_toEndOf="@id/tv_tt_order_date"
+        app:layout_constraintTop_toTopOf="@id/tv_tt_order_date" />
+
+    <TextView
+        android:id="@+id/tv_tt_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/order_status"
+        app:layout_constraintStart_toStartOf="@id/tv_name_item_order"
+        app:layout_constraintTop_toBottomOf="@id/tv_tt_order_date" />
+
+    <TextView
+        android:id="@+id/tv_item_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/order_id"
+        app:layout_constraintStart_toEndOf="@id/tv_tt_order_status"
+        app:layout_constraintTop_toTopOf="@id/tv_tt_order_status" />
+
+    <ImageView
+        android:id="@+id/iv_order_ic_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_item_order_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_item_order_id"
+        app:srcCompat="@drawable/ic_success" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

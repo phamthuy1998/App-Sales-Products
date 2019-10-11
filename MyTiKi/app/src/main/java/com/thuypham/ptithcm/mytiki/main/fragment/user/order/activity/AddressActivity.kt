@@ -1,6 +1,9 @@
-package com.thuypham.ptithcm.mytiki.main.order.activity
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity
 
+import android.annotation.TargetApi
 import android.app.Dialog
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,19 +13,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.thuypham.ptithcm.mytiki.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.help.isPhoneValid
-import com.thuypham.ptithcm.mytiki.main.cart.adapter.ProductCartAdapter
-import com.thuypham.ptithcm.mytiki.main.cart.model.ProductCartDetail
-import com.thuypham.ptithcm.mytiki.main.order.adapter.AddressAdapter
-import com.thuypham.ptithcm.mytiki.main.order.adapter.ProductConfirmAdapter
-import com.thuypham.ptithcm.mytiki.main.order.model.Address
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.adapter.ProductCartAdapter
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.AddressAdapter
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.ProductConfirmAdapter
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Address
+import com.thuypham.ptithcm.mytiki.main.product.model.Order
+import com.thuypham.ptithcm.mytiki.main.product.model.OrderDetail
 import kotlinx.android.synthetic.main.activity_address.*
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
 import kotlinx.android.synthetic.main.dialog_cofirm_order.*
+import kotlinx.android.synthetic.main.dialog_order_success.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AddressActivity : AppCompatActivity() {
 
@@ -46,7 +56,11 @@ class AddressActivity : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference.child("Users")
 
-        addressAdapter = AddressAdapter(addressList, this)
+        addressAdapter =
+            AddressAdapter(
+                addressList,
+                this
+            )
         rv_address_order.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
@@ -75,7 +89,14 @@ class AddressActivity : AppCompatActivity() {
                         val name = ds.child(PhysicsConstants.ADDRESS_name).value as String
                         val address = ds.child(PhysicsConstants.ADDRESS_REAL).value as String
                         val default = ds.child(PhysicsConstants.ADDRESS_DEFAULT).value as Boolean
-                        val addressObj = Address(id, name, phone, address, default)
+                        val addressObj =
+                            Address(
+                                id,
+                                name,
+                                phone,
+                                address,
+                                default
+                            )
                         addressList.add(addressObj)
                         Log.d("adress", id)
                         Log.d("adress", phone)
@@ -112,6 +133,7 @@ class AddressActivity : AppCompatActivity() {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     private fun showDialogConfirmOrder() {
         val dialog = Dialog(
             this, android.R.style.Theme_Light_NoTitleBar
@@ -130,7 +152,11 @@ class AddressActivity : AppCompatActivity() {
 
         // get list cart
         productList = intent.getParcelableArrayListExtra<ProductCartDetail>("listProductCart")
-        productAdapter = ProductConfirmAdapter(productList, this)
+        productAdapter =
+            ProductConfirmAdapter(
+                productList,
+                this
+            )
         // Set rcyclerview vertial
         dialog.rv_product_confirm.layoutManager = LinearLayoutManager(
             application,
@@ -156,7 +182,6 @@ class AddressActivity : AppCompatActivity() {
             dialog.tv_price_shipping.text = "0 đ"
         } else {
             priceAmount += PhysicsConstants.Shipping
-            Log.d("price", PhysicsConstants.Shipping.toString())
             priceTxt = df.format(PhysicsConstants.Shipping) + " đ"
             dialog.tv_price_shipping.text = priceTxt
         }
@@ -169,11 +194,83 @@ class AddressActivity : AppCompatActivity() {
 
         // add in oerder
         dialog.btn_payment_conf.setOnClickListener {
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            // Check user loged in firebase yet?
+            if (user != null) {
+                mDatabase = FirebaseDatabase.getInstance()
+                var query = mDatabase!!
+                    .reference
+                    .child(PhysicsConstants.ORDER)
+                    .child(user.uid)
+                    .push()
 
+                val key = query.key
+                // add order into
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
+                val formatted = current.format(formatter)
+
+                val order = Order(key, formatted, priceAmount.toLong(), 1)
+                query.setValue(order)
+
+
+                for (p in productList) {
+                    query = mDatabase!!
+                        .reference
+                        .child(PhysicsConstants.ORDER_DETAIL)
+                        .child(user.uid)
+                        .push()
+
+                    val keyDetail = query.key
+                    query.setValue(OrderDetail(keyDetail,p.name, p.id, p.number_product, p.price, key))
+                }
+
+                delAllCartOfUser()
+
+                dialog.dismiss()
+                showDialogInforOrder()
+            }
         }
 
         dialog.show()
 
+    }
+
+    // Delete all cart of user
+    private fun delAllCartOfUser() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        mDatabaseReference = mDatabase!!.reference
+        val currentUserDb = mDatabaseReference.child(PhysicsConstants.CART)
+            .child(user!!.uid)
+            .removeValue()
+    }
+
+    private fun showDialogInforOrder() {
+        val dialog = Dialog(
+            this, android.R.style.Theme_Light_NoTitleBar
+        )
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_order_success)
+
+        // exit dialog
+        dialog.btn_cancel_dialog_success_order.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
+            finish()
+        }
+        dialog.btn_continue_shopping_dialog.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
+            finish()
+        }
+        dialog.btn_view_order.setOnClickListener {
+            val intent = Intent(this, OrderActivity::class.java)
+            intent.putExtra("type_order", 0)
+            startActivity(intent)
+        }
+        dialog.show()
     }
 
     //Theme_Light_NoTitleBar_Fullscreen
@@ -239,7 +336,14 @@ class AddressActivity : AppCompatActivity() {
 
                     val key = query.key
                     // add this address into address firebase using key = push() of firebase
-                    val addressOj = Address(key, name, phone, address, false)
+                    val addressOj =
+                        Address(
+                            key,
+                            name,
+                            phone,
+                            address,
+                            false
+                        )
                     query.setValue(addressOj)
                     dialog.dismiss()
                 }

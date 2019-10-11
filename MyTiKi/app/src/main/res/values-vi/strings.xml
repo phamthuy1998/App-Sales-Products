@@ -134,5 +134,31 @@
     <string name="time_commnent">Thời gian bình luận</string>
     <string name="title_comment">Tiêu đề comment</string>
     <string name="view_cart">Xem giỏ hàng</string>
+    <string name="add_address">Thêm địa chỉ</string>
+    <string name="add_new_address">Thêm địa chỉ mới</string>
+    <string name="add_new_address1">Thêm địa chỉ mới</string>
+    <string name="address">Địa chỉ</string>
+    <string name="cmt_count">(1)</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="continue_address">tiếp tục</string>
+    <string name="err_add_cart">Số lượng sản phẩm không đủ, không thể thêm vào giỏ hàng</string>
+    <string name="error_input_address_not_entered">Vui lòng nhập địa chỉ của bạn</string>
+    <string name="order_id">Mã đơn hàng:</string>
+    <string name="order_information">Thông tin đơn hàng</string>
+    <string name="order_status">Trạng thái đơn hàng</string>
+    <string name="payment">Thanh toán</string>
+    <string name="payment_by_cash_on_delivery">Thanh toán bằng tiền mặt khi nhận hàng</string>
+    <string name="payments">Hình thức thanh toán</string>
+    <string name="receiver_s_address">Địa chỉ nhận</string>
+    <string name="shipping_address">Địa chỉ giao hàng</string>
+    <string name="status_1">Đơn hàng đã được tiếp nhận</string>
+    <string name="status_2">Đơn hàng đang vận chuyển</string>
+    <string name="status_3">Đơn hàng đã giao</string>
+    <string name="status_4">Đơn hàng đã hủy</string>
+    <string name="thanks_order">Cảm ơn bạn đã mua hàng tại của hàng.</string>
+    <string name="the_provisional_amount">Tổng tiền tạm thời</string>
+    <string name="transportation_fee">Phí vận chuyển</string>
+    <string name="update">Cập nhật</string>
+    <string name="view_orders">Xem đơn hàng</string>
 
 </resources>
