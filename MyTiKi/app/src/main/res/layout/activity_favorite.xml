@@ -26,24 +26,25 @@
             android:tint="@color/colorWhiteBG"
             app:srcCompat="@drawable/ic_left_arrow" />
 
-        <TextView
-            android:id="@+id/tv_List_product_toolbar_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/favorite_product"
-            android:textColor="@color/colorWhiteBG"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/btn_cart_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:onClick="onClickCart"
-            android:padding="10dp"
-            android:tint="@color/colorWhiteBG"
-            app:srcCompat="@drawable/ic_shopping_cart" />
+            <TextView
+                android:id="@+id/tv_List_product_toolbar_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/favorite_product"
+                android:textColor="@color/colorWhiteBG"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <include layout="@layout/ll_cart" />
+
+        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 

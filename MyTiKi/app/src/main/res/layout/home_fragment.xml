@@ -34,20 +34,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="48dp"
-                    android:background="@drawable/edit_seach_bg"
-                    android:drawableStart="@drawable/ic_search"
-                    android:drawablePadding="10dp"
-                    android:ellipsize="end"
-                    android:padding="8dp"
-                    android:singleLine="true"
-                    android:text="@string/what_do_you_find_today"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edit_seach_bg"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="10dp"
+                        android:ellipsize="end"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text="@string/search"
+                        android:textColor="@color/colorTextHint"
+                        android:textSize="16sp" />
+
+                    <include layout="@layout/ll_cart"/>
+                </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -305,6 +313,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_no_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorWhiteBG"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_search_home">
+
+                <include
+                    layout="@layout/no_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.thuypham.ptithcm.mytiki.main.fragment.user.view
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +23,15 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpAct
 import com.thuypham.ptithcm.mytiki.main.fragment.user.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.user_fragment.*
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.OrderActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
+import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.android.synthetic.main.ll_cart.*
+import kotlinx.android.synthetic.main.no_wifi.*
 
 
 class UserFragment : Fragment() {
@@ -61,9 +70,23 @@ class UserFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         //Open Order activity if isShowOrder = true
-        checkLoginFirebase()
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (isConnected) {
+            ll_no_wifi_user.visibility = View.GONE
+            checkLoginFirebase()
+            setIconOrderNumber()
+            getCartCount()
+        } else {
+            Toast.makeText(requireContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT)
+                .show()
+            ll_no_wifi_user.visibility = View.VISIBLE
+            Log.d("abc", "khong co ket noi internet")
+        }
         addEvent()
-        setIconOrderNumber()
     }
 
     //Check user has logged firebase yet
@@ -101,10 +124,12 @@ class UserFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val name = snapshot.child(PhysicsConstants.NAME).value as String
                     if (!name.isEmpty()) tv_user_name?.text = name
-                    val daycreate =
-                        getString(R.string.day_create) + ": " + snapshot.child(PhysicsConstants.DAY_CREATE).value as String
-                    if (!daycreate.isEmpty())
-                        tv_time_member?.text = daycreate
+                    if (isAdded()) {
+                        val daycreate =
+                            getString(R.string.day_create) + ": " + snapshot.child(PhysicsConstants.DAY_CREATE).value as String
+                        if (!daycreate.isEmpty())
+                            tv_time_member?.text = daycreate
+                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {}
@@ -112,7 +137,64 @@ class UserFragment : Fragment() {
         }
     }
 
+    // get cart count
+    private fun getCartCount() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            val uid = user!!.uid
+            mDatabase = FirebaseDatabase.getInstance()
+
+            val query = mDatabase!!
+                .reference
+                .child(PhysicsConstants.CART)
+                .child(uid)
+            var cartCount = 0
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        cartCount = 0
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists()) {
+                                cartCount++
+                            }
+                        }
+                        if (cartCount > 0 && tv_number_cart != null) {
+                            tv_number_cart.visibility = View.VISIBLE
+                            tv_number_cart.text = cartCount.toString()
+                        } else if (tv_number_cart != null) {
+                            tv_number_cart.visibility = View.GONE
+                        }
+                    } else if (tv_number_cart != null) {
+                        tv_number_cart.visibility = View.GONE
+                        cartCount = 0
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            query.addValueEventListener(valueEventListener)
+        } else {
+            tv_number_cart.visibility = View.GONE
+        }
+    }
+
     private fun addEvent() {
+        ll_cart_number.setOnClickListener() {
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            if (user != null) {
+                val intentCart = Intent(context, CartActivity::class.java)
+                startActivity(intentCart)
+            } else {
+                val intentCart = Intent(context, SignInUpActivity::class.java)
+                startActivity(intentCart)
+            }
+        }
+
+        btn_try_connect.setOnClickListener(){
+            view?.let { it1 -> onViewCreated(it1,null) }
+        }
 
         var user: FirebaseUser? = mAuth?.getCurrentUser();
         // Check user loged in firebase yet?

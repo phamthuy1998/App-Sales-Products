@@ -22,17 +22,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:background="@color/colorBlue">
+                android:gravity="center"
+                android:background="@color/colorBlue"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:text="@string/tv_title_user_fragment"
                     android:textColor="@android:color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
+
+                <include layout="@layout/ll_cart" />
             </LinearLayout>
 
             <ScrollView
@@ -58,8 +63,8 @@
                             android:id="@+id/imageView"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
                             android:layout_weight="0.2"
                             app:srcCompat="@drawable/ic_user_profile" />
 
@@ -160,13 +165,12 @@
 
                         <TextView
                             android:id="@+id/tv_num_order_recieved_user"
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center|end"
                             android:layout_marginEnd="60dp"
                             android:background="@drawable/edt_btn_count_number"
                             android:gravity="center"
-                            android:padding="10dp"
                             android:text="@string/_1"
                             android:textColor="@color/colorWhiteBG"
                             android:textSize="13sp"
@@ -191,13 +195,12 @@
 
                         <TextView
                             android:id="@+id/tv_num_of_list_order_shipping_user"
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center|end"
                             android:layout_marginEnd="60dp"
                             android:background="@drawable/edt_btn_count_number"
                             android:gravity="center"
-                            android:padding="10dp"
                             android:text="@string/_1"
                             android:textColor="@color/colorWhiteBG"
                             android:textSize="13sp"
@@ -341,6 +344,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_no_wifi_user"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorWhiteBG"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_search_category">
+
+            <include
+                layout="@layout/no_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

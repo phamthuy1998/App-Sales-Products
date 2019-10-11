@@ -1,6 +1,9 @@
 package com.thuypham.ptithcm.mytiki.main.fragment.home.fragment
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -27,6 +30,8 @@ import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.ProductAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.ProductSaleAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.ProductViewedAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.home.support.GridItemDecoration
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
 import com.thuypham.ptithcm.mytiki.viewsHelp.SlidingImage_Adapter
@@ -36,6 +41,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 import com.todou.nestrefresh.base.OnRefreshListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.ll_cart.*
+import kotlinx.android.synthetic.main.no_wifi.*
 
 
 class HomeFragment : Fragment() {
@@ -69,29 +76,52 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(tag, "\nonCreateView");
         return inflater.inflate(R.layout.home_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(tag, "\non onViewCreated")
-        println("save install null")
-        inItView()
-        getDataAVT()
-        getListProductSale()
 
-        //   Get list product sviewed
-        getListIdProductViewed()
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
-        println("12hg " + arrIdProductViewed.size)
-
-        getDataCategory()
-        getListProduct()
+        if (isConnected) {
+            ll_no_wifi.visibility = View.GONE
+            Log.d("abc", "co ket noi internet")
+            inItView()
+            getDataAVT()
+            getListProductSale()
+            //   Get list product sviewed
+            getListIdProductViewed()
+            getDataCategory()
+            getListProduct()
+            getCartCount()
+        } else {
+            Toast.makeText(requireContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT)
+                .show()
+            ll_no_wifi.visibility = View.VISIBLE
+            Log.d("abc", "khong co ket noi internet")
+        }
         addEvent()
     }
 
     private fun addEvent() {
+        ll_cart_number.setOnClickListener() {
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            if (user != null) {
+                val intentCart = Intent(context, CartActivity::class.java)
+                startActivity(intentCart)
+            } else {
+                val intentCart = Intent(context, SignInUpActivity::class.java)
+                startActivity(intentCart)
+            }
+        }
+
+        btn_try_connect.setOnClickListener() {
+            view?.let { it1 -> onViewCreated(it1, null) }
+        }
 
         // view more product sale
         tv_viewmore_product_sale.setOnClickListener() {
@@ -111,6 +141,49 @@ class HomeFragment : Fragment() {
             startActivity(intentFV)
         }
 
+    }
+
+    // get cart count
+    private fun getCartCount() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            val uid = user!!.uid
+            mDatabase = FirebaseDatabase.getInstance()
+
+            val query = mDatabase!!
+                .reference
+                .child(PhysicsConstants.CART)
+                .child(uid)
+            var cartCount = 0
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        cartCount = 0
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists()) {
+                                cartCount++
+                            }
+                        }
+                        if (cartCount > 0 && tv_number_cart != null) {
+                            tv_number_cart.visibility = View.VISIBLE
+                            tv_number_cart.text = cartCount.toString()
+                        } else if (tv_number_cart != null) {
+                            tv_number_cart.visibility = View.GONE
+                        }
+                    } else if (tv_number_cart != null) {
+                        tv_number_cart.visibility = View.GONE
+                        cartCount = 0
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            query.addValueEventListener(valueEventListener)
+        } else {
+            tv_number_cart.visibility = View.GONE
+        }
     }
 
     private fun getListProduct() {
@@ -139,7 +212,7 @@ class HomeFragment : Fragment() {
                         productList.add(product)
 
                     }
-                    if(!productList.isEmpty()){
+                    if (!productList.isEmpty()) {
                         productList.reverse()
                     }
                     // product
@@ -160,9 +233,10 @@ class HomeFragment : Fragment() {
         query.addValueEventListener(valueEventListener)
     }
 
+
     // get list of id product inside user
-    // then map id product to product root child
-    // show into home fragment if it have data
+// then map id product to product root child
+// show into home fragment if it have data
     private fun getListIdProductViewed() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
@@ -195,11 +269,10 @@ class HomeFragment : Fragment() {
 
                         // get product viewed infor
                         if (!arrIdProductViewed.isEmpty()) {
-                            arrIdProductViewed.reverse()
                             getListProductByID(arrIdProductViewed)
                         }
 
-                    } else if(ll_viewed_product!=null) {
+                    } else if (ll_viewed_product != null) {
                         arrIdProductViewed.clear()
                         ll_viewed_product.visibility = View.GONE
                     }

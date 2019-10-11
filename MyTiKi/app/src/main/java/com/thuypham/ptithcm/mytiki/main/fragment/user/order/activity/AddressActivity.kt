@@ -127,7 +127,11 @@ class AddressActivity : AppCompatActivity() {
         }
 
         btn_address_continue.setOnClickListener() {
-            showDialogConfirmOrder()
+            if(addressList.isEmpty()){
+                Toast.makeText(this, R.string.err_address_empty, Toast.LENGTH_LONG).show()
+            }else{
+                showDialogConfirmOrder()
+            }
         }
     }
 

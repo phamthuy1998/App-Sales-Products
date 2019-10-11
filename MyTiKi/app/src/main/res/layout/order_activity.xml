@@ -22,14 +22,25 @@
             android:tint="@android:color/white"
             app:srcCompat="@drawable/ic_left_arrow" />
 
-        <TextView
-            android:id="@+id/tv_name_toolbar_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/order_management"
-            android:textColor="@android:color/white"
-            android:textSize="22sp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_name_toolbar_order"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/order_management"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
+
+            <include layout="@layout/ll_cart"/>
+
+        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 

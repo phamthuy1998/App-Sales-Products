@@ -1,5 +1,9 @@
 package com.thuypham.ptithcm.mytiki.main.fragment.category.fragment
 
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
@@ -18,7 +23,11 @@ import kotlinx.android.synthetic.main.category_fragment.*
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
+import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
+import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import kotlinx.android.synthetic.main.no_wifi.*
 
 
 class CategoryFragment : Fragment() {
@@ -31,7 +40,11 @@ class CategoryFragment : Fragment() {
     private var adapter: CategoryAdapter? = null
     private var categoryList = ArrayList<Category>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.category_fragment, container, false)
     }
 
@@ -39,9 +52,21 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         inIt()
 
-        getDataCategory()
 
-//
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if (isConnected) {
+            ll_no_wifi_category.visibility = View.GONE
+            getDataCategory()
+        } else {
+            Toast.makeText(requireContext(),R.string.no_internet_connection,Toast.LENGTH_SHORT  ).show()
+            ll_no_wifi_category.visibility = View.VISIBLE
+            Log.d("abc", "khong co ket noi internet")
+        }
+
 //        mDatabaseReference = mDatabase!!.reference
 //        val currentUserDb = mDatabaseReference!!.child(PhysicsConstants.PRODUCT).push()
 //        currentUserDb.child(PhysicsConstants.PRODUCT_ID).setValue(id)
@@ -61,9 +86,68 @@ class CategoryFragment : Fragment() {
 //        currentUserDb.child(PhysicsConstants.ID_CATEGORY_PRODUCT).setValue("-Lmwzjdledim2IDvaAy-")
 
         addEvent()
+        getCartCount()
+    }
+
+    // get cart count
+    private fun getCartCount() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            val uid = user!!.uid
+            mDatabase = FirebaseDatabase.getInstance()
+
+            val query = mDatabase!!
+                .reference
+                .child(PhysicsConstants.CART)
+                .child(uid)
+            var cartCount = 0
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        cartCount = 0
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists()) {
+                                cartCount++
+                            }
+                        }
+                        if (cartCount > 0 && tv_number_cart != null) {
+                            tv_number_cart.visibility = View.VISIBLE
+                            tv_number_cart.text = cartCount.toString()
+                        } else if (tv_number_cart != null) {
+                            tv_number_cart.visibility = View.GONE
+                        }
+                    } else if (tv_number_cart != null) {
+                        tv_number_cart.visibility = View.GONE
+                        cartCount = 0
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            query.addValueEventListener(valueEventListener)
+        } else {
+            tv_number_cart.visibility = View.GONE
+        }
     }
 
     private fun addEvent() {
+        btn_try_connect.setOnClickListener(){
+            view?.let { it1 -> onViewCreated(it1,null) }
+        }
+
+        ll_cart_number.setOnClickListener() {
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            if (user != null) {
+                val intentCart = Intent(context, CartActivity::class.java)
+                startActivity(intentCart)
+            } else {
+                val intentCart = Intent(context, SignInUpActivity::class.java)
+                startActivity(intentCart)
+            }
+        }
+
         gv_category.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 // Get the GridView selected/clicked item text
@@ -71,9 +155,9 @@ class CategoryFragment : Fragment() {
 
                 // Display the selected/clicked item text and position on TextView
                 Toast.makeText(
-                        requireContext(),
-                        "GridView item clicked : ${categoryList[position].nameCategory} \\nAt index position : $position\"",
-                        Toast.LENGTH_LONG
+                    requireContext(),
+                    "GridView item clicked : ${categoryList[position].nameCategory} \\nAt index position : $position\"",
+                    Toast.LENGTH_LONG
                 ).show()
             }
         }
@@ -106,8 +190,9 @@ class CategoryFragment : Fragment() {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Toast.makeText(
-                        requireContext(), getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
-                        Toast.LENGTH_LONG
+                    requireContext(),
+                    getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
+                    Toast.LENGTH_LONG
                 ).show()
                 Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }

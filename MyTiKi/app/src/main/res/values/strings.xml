@@ -55,7 +55,7 @@
     <string name="create_acc_success">Successful account creation, please verify your email!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="list_orders">List orders</string>
     <string name="my_vouchers">My vouchers</string>
     <string name="old_password">Old password</string>
@@ -140,15 +140,15 @@
     <string name="choose_to_buy">Choose to buy</string>
     <string name="product_details">Product details</string>
     <string name="customer_comment">Customer comment</string>
-    <string name="_4_5_5">4.5/5</string>
+    <string name="_4_5_5" translatable="false">4.5/5</string>
     <string name="err_del_address">You cannot delete the default address</string>
-    <string name="_100">100%</string>
+    <string name="_100" translatable="false">100%</string>
     <string name="err_add_cart">Number of products is not enough, can not be added to the cart</string>
     <string name="content_of_product_detail">Content of product detail</string>
     <string name="make_a_comment">Make a comment</string>
     <string name="title_comment">Title comment</string>
     <string name="time_commnent">Time commnent</string>
-    <string name="have_purchase">Have purchase</string>
+    <string name="have_purchase" translatable="false">Have purchase</string>
     <string name="cmt_count">(1)</string>
     <string name="favorite_product">Favorite product</string>
     <string name="empty_list">The list is empty</string>
@@ -165,7 +165,7 @@
     <string name="including_vat">Including VAT</string>
     <string name="btn_minus">-</string>
     <string name="btn_plus">+</string>
-    <string name="_1">1</string>
+    <string name="_1" translatable="false">1</string>
     <string name="shipping_address">Shipping Address</string>
     <string name="add_new_address1">Add new address</string>
     <string name="continue_address">continue</string>
@@ -183,9 +183,14 @@
     <string name="thanks_order">Thank you for purchasing our store.</string>
     <string name="view_orders">View orders</string>
     <string name="order_id">Order ID:</string>
+    <string name="err_address_empty">You have not selected an address, please enter a new address to continue</string>
     <string name="order_date">Order date:</string>
     <string name="order_status">Order status:</string>
     <string name="cancel_order">Cancel order</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="please_touch_to_try_again">Please touch to try again</string>
+    <string name="retry">Retry</string>
+    <string name="search">Search</string>
 
 
 </resources>

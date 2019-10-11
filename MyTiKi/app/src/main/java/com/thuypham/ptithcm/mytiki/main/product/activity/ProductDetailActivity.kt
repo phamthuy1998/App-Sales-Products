@@ -22,6 +22,7 @@ import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
+import kotlinx.android.synthetic.main.ll_cart.*
 
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -43,9 +44,21 @@ class ProductDetailActivity : AppCompatActivity() {
         mDatabaseReference = mDatabase!!.reference.child("Users")
         getData()
         addEvent()
+        getCartCount()
     }
 
     private fun addEvent() {
+        ll_cart_number.setOnClickListener() {
+            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            if (user != null) {
+                val intentCart = Intent(this, CartActivity::class.java)
+                startActivity(intentCart)
+            } else {
+                val intentCart = Intent(this, SignInUpActivity::class.java)
+                startActivity(intentCart)
+            }
+        }
+
         btn_buy_product_detail.setOnClickListener() {
             checkAddcart = true
             val user: FirebaseUser? = mAuth?.getCurrentUser();
@@ -90,6 +103,49 @@ class ProductDetailActivity : AppCompatActivity() {
                 val intent = Intent(this, SignInUpActivity::class.java)
                 startActivity(intent)
             }
+        }
+    }
+
+    // get cart count
+    private fun getCartCount() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            val uid = user!!.uid
+            mDatabase = FirebaseDatabase.getInstance()
+
+            val query = mDatabase!!
+                .reference
+                .child(PhysicsConstants.CART)
+                .child(uid)
+            var cartCount = 0
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        cartCount = 0
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists()) {
+                                cartCount++
+                            }
+                        }
+                        if (cartCount > 0 && tv_number_cart != null) {
+                            tv_number_cart.visibility = View.VISIBLE
+                            tv_number_cart.text = cartCount.toString()
+                        } else if (tv_number_cart != null) {
+                            tv_number_cart.visibility = View.GONE
+                        }
+                    } else if (tv_number_cart != null) {
+                        tv_number_cart.visibility = View.GONE
+                        cartCount = 0
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            query.addValueEventListener(valueEventListener)
+        } else {
+            tv_number_cart.visibility = View.GONE
         }
     }
 

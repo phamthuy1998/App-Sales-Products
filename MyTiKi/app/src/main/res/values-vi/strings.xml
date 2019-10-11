@@ -160,5 +160,13 @@
     <string name="transportation_fee">Phí vận chuyển</string>
     <string name="update">Cập nhật</string>
     <string name="view_orders">Xem đơn hàng</string>
+    <string name="err_address_empty">Bạn chưa chọn địa chỉ, vui lòng nhập địa chỉ mới để tiếp tục</string>
+    <string name="err_del_address">Bạn không được xóa địa chỉ mặc định</string>
+    <string name="btn_minus">" - "</string>
+    <string name="btn_plus">+</string>
+    <string name="cancel_order">Hủy đơn hàng</string>
+    <string name="no_internet_connection">Không có kết nối mạng</string>
+    <string name="please_touch_to_try_again">Vui lòng chạm để thử lại</string>
+    <string name="retry">Thử lại</string>
 
 </resources>

@@ -32,7 +32,6 @@ class CartActivity : AppCompatActivity() {
     private var arrIdProductCart = ArrayList<ProductCart>()
     private var productCartAdapter: ProductCartAdapter? = null
     private var productCartList = ArrayList<ProductCartDetail>()
-    private var priceCart: Long = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +57,6 @@ class CartActivity : AppCompatActivity() {
                 false
             )
             rv_product_cart.adapter = productCartAdapter
-
-            tv_tb_cart_title.text = getString(R.string.cart) + "(" + productCartList.size + ")"
 
             getListCart()
 
@@ -90,7 +87,6 @@ class CartActivity : AppCompatActivity() {
     private fun getListCart() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         val uid = user!!.uid
-        println("user id: $uid")
         mDatabase = FirebaseDatabase.getInstance()
 
         val query = mDatabase!!
@@ -103,7 +99,6 @@ class CartActivity : AppCompatActivity() {
                 if (dataSnapshot.exists()) {
                     ll_list_cart_empty.visibility = View.GONE
                     arrIdProductCart.clear()
-                    println("viewed favorite product co du lieu")
                     for (ds in dataSnapshot.children) {
                         if (ds.exists()) {
                             val id: String? = ds.child(PhysicsConstants.CART_ID).value as String?
@@ -121,7 +116,6 @@ class CartActivity : AppCompatActivity() {
                     }
                     // get product viewed infor
                     if (!arrIdProductCart.isEmpty()) {
-                        println("list cart khong rong")
                         productCartAdapter?.notifyDataSetChanged()
                         getListProductByID(arrIdProductCart)
                     } else {
@@ -132,16 +126,13 @@ class CartActivity : AppCompatActivity() {
                 } else {
                     tv_price_cart.text = "0 đ"
                     ll_list_cart_empty.visibility = View.VISIBLE
-                    println("k co dl favorite viewed")
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
-
     }
 
     // From list product id, then get all infor
