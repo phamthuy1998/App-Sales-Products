@@ -39,28 +39,21 @@ class Launcher : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         val isLogin = sharedPreference.getValueBoolien(PhysicsConstants.IS_LOGIN, false)
         if (isLogin) {
-            println("Chua dang nhap")
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            println("chuwa dangg nhap co tai khoan")
             val email = sharedPreference.getValueString(PhysicsConstants.EMAIL_OR_PHONE).toString()
-            println("name: ${email}")
             val password = sharedPreference.getValueString(PhysicsConstants.PASSWORD).toString()
-            println("pass: ${password}")
 
             if (!email.equals("") && !password.equals("")) {
                 mAuth?.signInWithEmailAndPassword(
                         email, password)
                         ?.addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                println("dang nhap thanh cong")
 
                             } else {
                                 // If sign in fails, display a message to the user.
-                                println("dang nhap that bai")
-
                             }
                         }
             }

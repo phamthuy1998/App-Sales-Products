@@ -178,22 +178,26 @@ class AddressAdapter(
 
     // del address
     private fun delAddressFromListAddress(address: Address) {
-        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-        val user: FirebaseUser? = mAuth.getCurrentUser();
-        val uid = user!!.uid
-        var mDatabase: FirebaseDatabase? = FirebaseDatabase.getInstance()
-        var mDatabaseReference: DatabaseReference = mDatabase!!.reference
-        if (address.id != null) {
-            val currentUserDb = mDatabaseReference.child(PhysicsConstants.ADDRESS)
-                .child(user.uid)
-                .child(address.id!!)
+        if (address.default != true) {
+            val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+            val user: FirebaseUser? = mAuth.getCurrentUser();
+            val uid = user!!.uid
+            var mDatabase: FirebaseDatabase? = FirebaseDatabase.getInstance()
+            var mDatabaseReference: DatabaseReference = mDatabase!!.reference
+            if (address.id != null) {
+                val currentUserDb = mDatabaseReference.child(PhysicsConstants.ADDRESS)
+                    .child(user.uid)
+                    .child(address.id!!)
 
-            if (currentUserDb != null) {
-                currentUserDb.removeValue()
-                items.remove(address)
-                notifyDataSetChanged()
+                if (currentUserDb != null) {
+                    currentUserDb.removeValue()
+                    items.remove(address)
+                    notifyDataSetChanged()
+                }
+
             }
-
+        } else {
+            Toast.makeText(context, R.string.err_del_address, Toast.LENGTH_LONG).show()
         }
     }
 

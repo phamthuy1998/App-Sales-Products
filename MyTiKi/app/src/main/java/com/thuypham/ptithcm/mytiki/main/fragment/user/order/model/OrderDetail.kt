@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.product.model
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -12,6 +12,9 @@ class OrderDetail(
 
     @SerializedName("id_product")
     var id_product: String?,
+
+    @SerializedName("image_product")
+    var image_product: String?,
 
     @SerializedName("product_count")
     var product_count: Long?,

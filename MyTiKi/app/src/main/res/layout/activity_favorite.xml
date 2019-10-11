@@ -28,19 +28,19 @@
 
         <TextView
             android:id="@+id/tv_List_product_toolbar_name"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorWhiteBG"
-            android:text="@string/favorite_product"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/favorite_product"
+            android:textColor="@color/colorWhiteBG"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageView
-            android:onClick="onClickCart"
             android:id="@+id/btn_cart_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:onClick="onClickCart"
             android:padding="10dp"
             android:tint="@color/colorWhiteBG"
             app:srcCompat="@drawable/ic_shopping_cart" />
@@ -51,11 +51,48 @@
         android:id="@+id/rv_product_favorite"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
         android:background="@color/colorWhiteBG"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_favorite"
         tools:itemCount="3"
         tools:listitem="@layout/item_product_favorite" />
+
+    <LinearLayout
+        android:id="@+id/ll_favorite_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#F8F8F8"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_favorite">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/no_voucher" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/empty_list"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_continue_shopping_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/edit_btn_sign_in"
+            android:text="@string/continue_shopping"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

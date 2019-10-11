@@ -15,11 +15,9 @@ import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.SharedPreference
 import com.thuypham.ptithcm.mytiki.databinding.UserFragmentBinding
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.help.after
 import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.EditProfileActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.viewmodel.UserViewModel
-import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.user_fragment.*
 import android.net.Uri
 import androidx.core.app.ActivityCompat
@@ -38,6 +36,10 @@ class UserFragment : Fragment() {
             .get(UserViewModel::class.java)
     }
 
+    private var haveRecieved = 0
+    private var shipping = 0
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,17 +54,16 @@ class UserFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child("Users")
         mAuth = FirebaseAuth.getInstance()
-        println("co vo on create")
     }
 
     override fun onResume() {
         super.onResume()
-        println("vo onresume")
         //Open Order activity if isShowOrder = true
         checkLoginFirebase()
         addEvent()
+        setIconOrderNumber()
     }
 
     //Check user has logged firebase yet
@@ -78,16 +79,13 @@ class UserFragment : Fragment() {
             ll_infor_not_logged.visibility = View.GONE
             ll_infor_logged.visibility = View.VISIBLE
 
-            println("user fragment dda dang nhap")
             // hiên button đăng xuất
             btn_sign_out.visibility = View.VISIBLE
         } else {
-            println("chuwa dang nhap")
             ll_infor_not_logged.visibility = View.VISIBLE
             ll_infor_logged.visibility = View.GONE
             // chưa đăng nhập thì ẩn button đăng xuất
             btn_sign_out.visibility = View.GONE
-
         }
     }
 
@@ -96,21 +94,22 @@ class UserFragment : Fragment() {
         val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
         val email = mUser.email.toString()
         tv_email?.text = email
-        val checkVerified = mUser?.isEmailVerified
+        val checkVerified = mUser.isEmailVerified
 
-        println("Co vo đay hk dạ")
+        if (mUserReference != null) {
+            mUserReference.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val name = snapshot.child(PhysicsConstants.NAME).value as String
+                    if (!name.isEmpty()) tv_user_name?.text = name
+                    val daycreate =
+                        getString(R.string.day_create) + ": " + snapshot.child(PhysicsConstants.DAY_CREATE).value as String
+                    if (!daycreate.isEmpty())
+                        tv_time_member?.text = daycreate
+                }
 
-        mUserReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val name = snapshot.child(PhysicsConstants.NAME).value as String
-                if (!name.isEmpty()) tv_user_name?.text = name
-                val daycreate =
-                    getString(R.string.day_create) + ": " + snapshot.child(PhysicsConstants.DAY_CREATE).value as String
-                if (!daycreate.isEmpty()) tv_time_member?.text = daycreate
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }
     }
 
     private fun addEvent() {
@@ -122,6 +121,8 @@ class UserFragment : Fragment() {
             ll_infor_not_logged.visibility = View.GONE
             btn_sign_out.visibility = View.VISIBLE
         } else {
+            tv_num_of_list_order_shipping_user.visibility = View.GONE
+            tv_num_order_recieved_user.visibility = View.GONE
             ll_infor_not_logged.visibility = View.VISIBLE
             btn_sign_out.visibility = View.GONE
         }
@@ -147,12 +148,6 @@ class UserFragment : Fragment() {
         //sign out
         btn_sign_out.setOnClickListener {
             clearInforLogin()
-            progress.visibility = View.VISIBLE
-
-            after(1000, process = {
-                progress.visibility = View.GONE
-                checkLoginFirebase()
-            })
             mAuth?.signOut()
             val intent = Intent(context, MainActivity::class.java)
             ActivityCompat.finishAffinity(requireActivity())
@@ -219,27 +214,103 @@ class UserFragment : Fragment() {
         }
 
         tv_received_order.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra("type_order", 1)
-            startActivity(intent)
+            if (user != null) {
+                val intent = Intent(context, OrderActivity::class.java)
+                intent.putExtra("type_order", 1)
+                startActivity(intent)
+            } else {
+                val intent = Intent(context, SignInUpActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         tv_order_waiting_shiping.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra("type_order", 2)
-            startActivity(intent)
+            if (user != null) {
+                val intent = Intent(context, OrderActivity::class.java)
+                intent.putExtra("type_order", 2)
+                startActivity(intent)
+            } else {
+                val intent = Intent(context, SignInUpActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         tv_order_success.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra("type_order", 3)
-            startActivity(intent)
+            if (user != null) {
+                val intent = Intent(context, OrderActivity::class.java)
+                intent.putExtra("type_order", 3)
+                startActivity(intent)
+            } else {
+                val intent = Intent(context, SignInUpActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         tv_order_canceled.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra("type_order", 4)
-            startActivity(intent)
+            if (user != null) {
+                val intent = Intent(context, OrderActivity::class.java)
+                intent.putExtra("type_order", 4)
+                startActivity(intent)
+            } else {
+                val intent = Intent(context, SignInUpActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun setIconOrderNumber() {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            val uid = user!!.uid
+            mDatabase = FirebaseDatabase.getInstance()
+
+            val query = mDatabase!!
+                .reference
+                .child(PhysicsConstants.ORDER)
+                .child(uid)
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        haveRecieved = 0
+                        shipping = 0
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists()) {
+                                val id = ds.child(PhysicsConstants.ORDER_ID).value as String?
+                                val date = ds.child(PhysicsConstants.ORDER_DATE).value as String?
+                                val price = ds.child(PhysicsConstants.ORDER_PRICE).value as Long?
+                                val status = ds.child(PhysicsConstants.ORDER_STATUS).value as Long?
+                                if (id != null && date != null && price != null && status != null) {
+                                    if (status == 1.toLong()) {
+                                        haveRecieved++
+                                    } else if (status == 2.toLong()) {
+                                        shipping++
+                                    }
+                                }
+                            }
+                        }
+                        if (haveRecieved > 0 && tv_num_order_recieved_user != null) {
+                            tv_num_order_recieved_user.visibility = View.VISIBLE
+                            tv_num_order_recieved_user.setText(haveRecieved.toString())
+                        } else if (tv_num_order_recieved_user != null) {
+                            tv_num_order_recieved_user.visibility = View.GONE
+                        }
+                        if (shipping > 0 && tv_num_of_list_order_shipping_user != null) {
+                            tv_num_of_list_order_shipping_user.visibility = View.VISIBLE
+                            tv_num_of_list_order_shipping_user.setText(shipping.toString())
+                        } else if (tv_num_of_list_order_shipping_user != null) {
+                            tv_num_of_list_order_shipping_user.visibility = View.GONE
+                        }
+                    } else if (tv_num_of_list_order_shipping_user != null && tv_num_order_recieved_user != null) {
+                        tv_num_of_list_order_shipping_user.visibility = View.GONE
+                        tv_num_order_recieved_user.visibility = View.GONE
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            query.addValueEventListener(valueEventListener)
         }
     }
 

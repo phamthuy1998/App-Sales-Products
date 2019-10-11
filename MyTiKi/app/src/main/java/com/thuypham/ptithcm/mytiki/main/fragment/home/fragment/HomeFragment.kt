@@ -137,10 +137,11 @@ class HomeFragment : Fragment() {
                         val product =
                             Product(id, name, price, image, infor, product_count, id_category, sale)
                         productList.add(product)
-                        println("ten san pham: ${name}")
 
                     }
-                    println("so phan tu cua product: ${productList.size}")
+                    if(!productList.isEmpty()){
+                        productList.reverse()
+                    }
                     // product
                     productAdapter?.notifyDataSetChanged()
                 }
@@ -191,16 +192,15 @@ class HomeFragment : Fragment() {
                             }
                         }
                         productViewedAdapter?.notifyDataSetChanged()
-                        println("so phan tu id product: ${arrIdProductViewed.size}")
 
                         // get product viewed infor
                         if (!arrIdProductViewed.isEmpty()) {
-                            println("list khong rong")
+                            arrIdProductViewed.reverse()
                             getListProductByID(arrIdProductViewed)
                         }
 
-                    } else {
-                        println("k co dl viewed")
+                    } else if(ll_viewed_product!=null) {
+                        arrIdProductViewed.clear()
                         ll_viewed_product.visibility = View.GONE
                     }
                 }

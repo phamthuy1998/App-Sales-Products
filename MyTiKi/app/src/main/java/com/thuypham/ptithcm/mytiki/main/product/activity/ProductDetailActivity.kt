@@ -79,7 +79,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     }
 
                     sheetView.btn_view_cart.setOnClickListener() {
-                        var intent = Intent(this, CartActivity::class.java)
+                        val intent = Intent(this, CartActivity::class.java)
                         startActivity(intent)
                     }
                 } else {
@@ -87,7 +87,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
             } else {// if user not login
-                var intent = Intent(this, SignInUpActivity::class.java)
+                val intent = Intent(this, SignInUpActivity::class.java)
                 startActivity(intent)
             }
         }

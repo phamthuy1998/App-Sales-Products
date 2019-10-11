@@ -17,14 +17,12 @@ import com.thuypham.ptithcm.mytiki.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.help.isPhoneValid
-import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.adapter.ProductCartAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
-import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.AddressAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.ProductConfirmAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Address
-import com.thuypham.ptithcm.mytiki.main.product.model.Order
-import com.thuypham.ptithcm.mytiki.main.product.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Order
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.OrderDetail
 import kotlinx.android.synthetic.main.activity_address.*
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
 import kotlinx.android.synthetic.main.dialog_cofirm_order.*
@@ -170,7 +168,7 @@ class AddressActivity : AppCompatActivity() {
         for (p in productList) {
             priceTemp += p.price!!.minus(((p.sale * 0.01) * p.price!!)) * p.number_product!!
         }
-        // format price viewed
+        // format price
         val df = DecimalFormat("#,###,###")
         df.roundingMode = RoundingMode.CEILING
         var priceTxt = df.format(priceTemp) + " đ"
@@ -207,10 +205,19 @@ class AddressActivity : AppCompatActivity() {
                 val key = query.key
                 // add order into
                 val current = LocalDateTime.now()
-                val formatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
-                val formatted = current.format(formatter)
+                val dateFormatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
+                val dateFormatted = current.format(dateFormatter)
 
-                val order = Order(key, formatted, priceAmount.toLong(), 1)
+//                id, name, phone, address, date, price, status
+                val order = Order(
+                    key,
+                    currentAddress.name,
+                    currentAddress.phone,
+                    currentAddress.address,
+                    dateFormatted,
+                    priceAmount.toLong(),
+                    1
+                )
                 query.setValue(order)
 
 
@@ -219,10 +226,21 @@ class AddressActivity : AppCompatActivity() {
                         .reference
                         .child(PhysicsConstants.ORDER_DETAIL)
                         .child(user.uid)
+                        .child(key.toString())
                         .push()
 
                     val keyDetail = query.key
-                    query.setValue(OrderDetail(keyDetail,p.name, p.id, p.number_product, p.price, key))
+                    query.setValue(
+                        OrderDetail(
+                            keyDetail,
+                            p.name,
+                            p.id,
+                            p.image,
+                            p.number_product,
+                            p.price,
+                            key
+                        )
+                    )
                 }
 
                 delAllCartOfUser()

@@ -141,6 +141,7 @@
     <string name="product_details">Product details</string>
     <string name="customer_comment">Customer comment</string>
     <string name="_4_5_5">4.5/5</string>
+    <string name="err_del_address">You cannot delete the default address</string>
     <string name="_100">100%</string>
     <string name="err_add_cart">Number of products is not enough, can not be added to the cart</string>
     <string name="content_of_product_detail">Content of product detail</string>
@@ -184,6 +185,7 @@
     <string name="order_id">Order ID:</string>
     <string name="order_date">Order date:</string>
     <string name="order_status">Order status:</string>
+    <string name="cancel_order">Cancel order</string>
 
 
 </resources>

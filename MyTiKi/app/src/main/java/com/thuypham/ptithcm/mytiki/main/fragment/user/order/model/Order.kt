@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.main.product.model
+package com.thuypham.ptithcm.mytiki.main.fragment.user.order.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -6,6 +6,15 @@ import java.io.Serializable
 class Order (
     @SerializedName("id")
     var id: String?,
+
+    @SerializedName("name")
+    var name: String?,
+
+    @SerializedName("phone")
+    var phone: String?,
+
+    @SerializedName("address")
+    var address: String?,
 
     @SerializedName("date")
     var date: String?,

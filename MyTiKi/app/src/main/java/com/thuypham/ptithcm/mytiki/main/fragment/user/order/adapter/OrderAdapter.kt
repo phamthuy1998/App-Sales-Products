@@ -7,17 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.OrderDetailActivity
-import com.thuypham.ptithcm.mytiki.main.product.model.Order
-import com.thuypham.ptithcm.mytiki.main.product.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Order
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.OrderDetail
 import kotlinx.android.synthetic.main.item_order.view.*
-import kotlinx.android.synthetic.main.item_product_confirm.view.*
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class OrderAdapter(
     private var items: ArrayList<Order>,
@@ -47,9 +42,9 @@ class OrderAdapter(
             itemView.tv_name_item_order.text = name
 
             // set order id
-            itemView.tv_item_order_id.text = order.id
+            itemView.tv_item_order_detail_id.text = order.id
             // set order date
-            itemView.tv_item_order_date.text = order.date
+            itemView.tv_item_order_detail_date.text = order.date
             // set status for order
             var status = ""
             // have recieved
@@ -76,7 +71,7 @@ class OrderAdapter(
 
             itemView.ll_item_order.setOnClickListener(){
                 val intent = Intent(context, OrderDetailActivity::class.java)
-                intent.putExtra("id_product", order.id)
+                intent.putExtra("order_id", order.id)
                 context.startActivity(intent)
             }
         }

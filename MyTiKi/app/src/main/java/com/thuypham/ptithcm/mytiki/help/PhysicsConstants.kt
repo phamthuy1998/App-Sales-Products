@@ -76,10 +76,12 @@ object PhysicsConstants {
     const val ADDRESS_REAL = "address"
 
     const val Shipping = 20000
+    const val PriceLeast = 100000
 
     //Order
     const val ORDER = "ORDER"
     const val ORDER_ID = "id"
+    const val ORDER_ID_ADDRESS = "id_address"
     const val ORDER_DATE = "date"
     const val ORDER_PRICE = "price"
     const val ORDER_STATUS = "status"
@@ -88,6 +90,7 @@ object PhysicsConstants {
     //Order
     const val ORDER_DETAIL = "ORDER_DETAIL"
     const val ORDER_DETAIL_ID = "id"
+    const val ORDER_DETAIL_PRODUCT_IMAGE = "image_product"
     const val ORDER_DETAIL_PRODUCT_NAME = "product_name"
     const val ORDER_DETAIL_ID_PRODUCT = "id_product"
     const val ORDER_DETAIL_PRODUCT_COUNT = "product_count"

@@ -141,8 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhiteBG"
-                tools:itemCount="0"
-                tools:listitem="@layout/item_product_cart" />
+                tools:itemCount="1"
+                tools:listitem="@layout/item_product_confirm" />
 
             <LinearLayout
                 android:layout_width="match_parent"

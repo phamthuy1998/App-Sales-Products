@@ -76,12 +76,12 @@ class FavoriteActivity : AppCompatActivity() {
                 // Check user loged in firebase yet?
                 if (user != null) {
                     getListIdProductViewed(childKey)
-                }else{
+                } else {
                     var intent = Intent(this, SignInUpActivity::class.java)
-                   startActivity(intent)
+                    startActivity(intent)
                 }
             } else {
-                //showDialog()
+                ll_favorite_empty.visibility = View.VISIBLE
             }
         }
         // get product sale and viewed by category id
@@ -92,7 +92,17 @@ class FavoriteActivity : AppCompatActivity() {
         else if (numViewMore == 3) {
             getListProductSale()
         }
+        addEvent()
 
+    }
+
+    private fun addEvent() {
+        btn_continue_shopping_favorite.setOnClickListener(){
+            val intent = Intent(this, MainActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
+            finish()
+        }
     }
 
     // get list product best seller or sale
@@ -127,16 +137,22 @@ class FavoriteActivity : AppCompatActivity() {
                         if (sold > 10 && numViewMore == 2) {
                             productViewedList.add(product)
                         }
-                        println("ten san pham: ${name}")
-
+                    }
+                    if (!productViewedList.isEmpty()) {
+                        productViewedList.reverse()
+                        ll_favorite_empty.visibility = View.GONE
+                    } else {
+                        ll_favorite_empty.visibility = View.VISIBLE
                     }
                     // product
                     productViewedAdapter?.notifyDataSetChanged()
+                } else {
+                    ll_favorite_empty.visibility = View.VISIBLE
                 }
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                ll_favorite_empty.visibility = View.VISIBLE
                 Toast.makeText(
                     applicationContext,
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
@@ -176,17 +192,23 @@ class FavoriteActivity : AppCompatActivity() {
                         if (sale > 1) {
                             productViewedList.add(product)
                         }
-
-                        println("ten san pham: ${name}")
-
+                    }
+                    if (!productViewedList.isEmpty()) {
+                        ll_favorite_empty.visibility = View.GONE
+                        productViewedList.reverse()
+                    } else {
+                        ll_favorite_empty.visibility = View.VISIBLE
                     }
                     // product
                     productViewedAdapter?.notifyDataSetChanged()
+                } else {
+                    ll_favorite_empty.visibility = View.VISIBLE
                 }
 
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                ll_favorite_empty.visibility = View.VISIBLE
                 Toast.makeText(
                     applicationContext,
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
@@ -196,27 +218,6 @@ class FavoriteActivity : AppCompatActivity() {
             }
         }
         query.addValueEventListener(valueEventListener)
-    }
-
-
-    //  show dialog to warning that user not Verified email when they create acc
-    private fun showDialog() {
-//                Theme_Black_NoTitleBar_Fullscreen
-        val dialog = Dialog(applicationContext, android.R.style.Theme_Light_NoTitleBar_Fullscreen)
-        dialog.setCancelable(false)
-        dialog.toString()
-        dialog.setContentView(com.thuypham.ptithcm.mytiki.R.layout.fragment_continue_shopping)
-
-        dialog.btn_continue_shopping.setOnClickListener {
-            dialog.dismiss()
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
-            dialog.dismiss()
-        }
-        // dialog.btn_cancel_active_acc.setOnClickListener { dialog.dismiss() }
-
-        dialog.show()
-
     }
 
     // get list of id product inside user
@@ -251,17 +252,22 @@ class FavoriteActivity : AppCompatActivity() {
 
                     // get product viewed infor
                     if (!arrIdProductViewed.isEmpty()) {
+                        ll_favorite_empty.visibility = View.GONE
                         println("list khong  favorite rong")
                         getListProductByID(arrIdProductViewed)
+                    } else {
+                        ll_favorite_empty.visibility = View.VISIBLE
                     }
 
                 } else {
+                    ll_favorite_empty.visibility = View.VISIBLE
                     println("k co dl favorite viewed")
                     //  showDialog()
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                ll_favorite_empty.visibility = View.VISIBLE
                 Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }

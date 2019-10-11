@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.thuypham.ptithcm.mytiki.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.OrderAdapter
-import com.thuypham.ptithcm.mytiki.main.product.model.Order
-import com.thuypham.ptithcm.mytiki.main.product.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Order
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.OrderDetail
 import kotlinx.android.synthetic.main.order_activity.*
 
 class OrderActivity : AppCompatActivity() {
@@ -53,73 +54,90 @@ class OrderActivity : AppCompatActivity() {
         numViewMore = intent.getIntExtra("type_order", 0)
 
         getListOrder(numViewMore)
-        getListOrderDetail()
+
+        addEvent()
     }
 
-    private fun getListOrderDetail() {
+    private fun addEvent() {
+        btn_continue_shopping_order.setOnClickListener() {
+            val intent = Intent(this, MainActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun getListOrderDetail(orderList: ArrayList<Order>) {
         if (orderList.isEmpty())
             ll_order_empty.visibility = View.VISIBLE
         else {
             val user: FirebaseUser? = mAuth?.getCurrentUser();
             val uid = user!!.uid
-            mDatabase = FirebaseDatabase.getInstance()
+            for (o in orderList) {
+                mDatabase = FirebaseDatabase.getInstance()
+                val query = mDatabase!!
+                    .reference
+                    .child(PhysicsConstants.ORDER_DETAIL)
+                    .child(uid)
+                    .child(o.id.toString())
 
-            val query = mDatabase!!
-                .reference
-                .child(PhysicsConstants.ORDER_DETAIL)
-                .child(uid)
-
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        ll_order_empty.visibility = View.GONE
-                        orderDetailList.clear()
-                        for (ds in dataSnapshot.children) {
-                            if (ds.exists()) {
-                                val id = ds.child(PhysicsConstants.ORDER_DETAIL_ID).value as String?
-                                val product_name =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_NAME).value as String?
-                                val id_product =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_ID_PRODUCT).value as String?
-                                val product_count =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_COUNT).value as Long?
-                                val product_price =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_PRICE).value as Long?
-                                val id_order =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_ID_ORDER).value as String?
-                                if (id != null
-                                    && product_name != null
-                                    && id_product != null
-                                    && product_count != null
-                                    && product_price != null
-                                    && id_order != null
-                                ) {
-                                    orderDetailList.add(
-                                        OrderDetail(
-                                            id,
-                                            product_name,
-                                            id_product,
-                                            product_count,
-                                            product_price,
-                                            id_order
+                val valueEventListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            ll_order_empty.visibility = View.GONE
+                            for (ds in dataSnapshot.children) {
+                                if (ds.exists()) {
+                                    val id =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_ID).value as String?
+                                    val product_name =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_NAME).value as String?
+                                    val id_product =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_ID_PRODUCT).value as String?
+                                    val product_count =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_COUNT).value as Long?
+                                    val product_price =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_PRICE).value as Long?
+                                    val id_order =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_ID_ORDER).value as String?
+                                    val image =
+                                        ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_IMAGE).value as String?
+                                    Log.d("sizemangac", id.toString())
+                                    Log.d("sizemangac", product_name.toString())
+                                    Log.d("sizemangac", product_count.toString())
+                                    Log.d("sizemangac", id_product.toString())
+                                    Log.d("sizemangac", product_price.toString())
+                                    if (id != null && image != null && product_name != null && id_product != null
+                                        && product_count != null && product_price != null && id_order != null
+                                    ) {
+                                        orderDetailList.add(
+                                            OrderDetail(
+                                                id,
+                                                product_name,
+                                                id_product,
+                                                image,
+                                                product_count,
+                                                product_price,
+                                                id_order
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             }
+                            Log.d("sizemangac", orderDetailList.size.toString())
+                            orderAdapter?.notifyDataSetChanged()
+                        } else {
+                            ll_order_empty.visibility = View.VISIBLE
+                            println("k co dl favorite viewed")
                         }
-                        Log.d("sizemangac", orderDetailList.size.toString())
-                        orderAdapter?.notifyDataSetChanged()
-                    } else {
-                        ll_order_empty.visibility = View.VISIBLE
-                        println("k co dl favorite viewed")
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                     }
                 }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
-                }
+                query.addValueEventListener(valueEventListener)
             }
-            query.addValueEventListener(valueEventListener)
+
         }
     }
 
@@ -146,23 +164,83 @@ class OrderActivity : AppCompatActivity() {
                                 val date = ds.child(PhysicsConstants.ORDER_DATE).value as String?
                                 val price = ds.child(PhysicsConstants.ORDER_PRICE).value as Long?
                                 val status = ds.child(PhysicsConstants.ORDER_STATUS).value as Long?
+
+                                val phone = ds.child(PhysicsConstants.ADDRESS_PHONE).value as String
+                                val name = ds.child(PhysicsConstants.ADDRESS_name).value as String
+                                val address =
+                                    ds.child(PhysicsConstants.ADDRESS_REAL).value as String
                                 if (id != null && date != null && price != null && status != null) {
                                     if (numViewMore == 0) {
-                                        orderList.add(Order(id, date, price, status))
+                                        orderList.add(
+                                            Order(
+                                                id,
+                                                name,
+                                                phone,
+                                                address,
+                                                date,
+                                                price,
+                                                status
+                                            )
+                                        )
                                     } else if (numViewMore == 1 && status == 1.toLong()) {
-                                        orderList.add(Order(id, date, price, status))
+                                        orderList.add(
+                                            Order(
+                                                id,
+                                                name,
+                                                phone,
+                                                address,
+                                                date,
+                                                price,
+                                                status
+                                            )
+                                        )
                                     } else if (numViewMore == 2 && status == 2.toLong()) {
-                                        orderList.add(Order(id, date, price, status))
+                                        orderList.add(
+                                            Order(
+                                                id,
+                                                name,
+                                                phone,
+                                                address,
+                                                date,
+                                                price,
+                                                status
+                                            )
+                                        )
                                     } else if (numViewMore == 3 && status == 3.toLong()) {
-                                        orderList.add(Order(id, date, price, status))
+                                        orderList.add(
+                                            Order(
+                                                id,
+                                                name,
+                                                phone,
+                                                address,
+                                                date,
+                                                price,
+                                                status
+                                            )
+                                        )
                                     } else if (numViewMore == 4 && status == 4.toLong()) {
-                                        orderList.add(Order(id, date, price, status))
+                                        orderList.add(
+                                            Order(
+                                                id,
+                                                name,
+                                                phone,
+                                                address,
+                                                date,
+                                                price,
+                                                status
+                                            )
+                                        )
                                     }
 
                                 }
                             }
                         }
-                        if (orderList.isEmpty()) ll_order_empty.visibility = View.VISIBLE
+                        if (orderList.isEmpty())
+                            ll_order_empty.visibility = View.VISIBLE
+                        else {
+                            orderList.reverse()
+                            getListOrderDetail(orderList)
+                        }
                         orderAdapter?.notifyDataSetChanged()
 
                     } else {
