@@ -167,7 +167,6 @@ class OrderDetailActivity : AppCompatActivity() {
                             setInfororder(order)
                         }
                     } else {
-                        Log.d("address", "khong co address")
                     }
                 }
 
@@ -271,7 +270,6 @@ class OrderDetailActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        Log.d("mang", productList.size.toString())
                         productAdapter?.notifyDataSetChanged()
 
                     } else {

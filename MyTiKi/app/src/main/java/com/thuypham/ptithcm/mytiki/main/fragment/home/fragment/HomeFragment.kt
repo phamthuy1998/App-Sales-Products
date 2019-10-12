@@ -89,7 +89,6 @@ class HomeFragment : Fragment() {
 
         if (isConnected) {
             ll_no_wifi.visibility = View.GONE
-            Log.d("abc", "co ket noi internet")
             inItView()
             getDataAVT()
             getListProductSale()
@@ -102,7 +101,6 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT)
                 .show()
             ll_no_wifi.visibility = View.VISIBLE
-            Log.d("abc", "khong co ket noi internet")
         }
         addEvent()
     }
@@ -154,6 +152,7 @@ class HomeFragment : Fragment() {
                 .reference
                 .child(PhysicsConstants.CART)
                 .child(uid)
+
             var cartCount = 0
 
             val valueEventListener = object : ValueEventListener {
@@ -190,7 +189,6 @@ class HomeFragment : Fragment() {
         val query = mDatabase!!
             .reference
             .child(PhysicsConstants.PRODUCT)
-            .limitToLast(30)
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -241,7 +239,6 @@ class HomeFragment : Fragment() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
             //product viewed
-
             val uid = user.uid
             println("user id: $uid")
             mDatabase = FirebaseDatabase.getInstance()
@@ -250,17 +247,15 @@ class HomeFragment : Fragment() {
                 .child(PhysicsConstants.USERS)
                 .child(uid)
                 .child(PhysicsConstants.VIEWED_PRODUCT)
-                .limitToLast(20)
+                .limitToLast(10)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         arrIdProductViewed.clear()
-                        println("viewed product co du lieu")
                         for (ds in dataSnapshot.children) {
                             val id: String? =
                                 ds.child(PhysicsConstants.VIEWED_PRODUCT_ID).value as String?
-                            println(" id product: $id")
                             if (id != null) {
                                 arrIdProductViewed.add(id)
                             }
@@ -269,6 +264,7 @@ class HomeFragment : Fragment() {
 
                         // get product viewed infor
                         if (!arrIdProductViewed.isEmpty()) {
+                            arrIdProductViewed.reverse()
                             getListProductByID(arrIdProductViewed)
                         }
 
@@ -403,7 +399,7 @@ class HomeFragment : Fragment() {
         val query = mDatabase!!
             .reference.child(PhysicsConstants.PRODUCT)
             .orderByChild(PhysicsConstants.PRODUCT_SALE)
-            .limitToLast(20)
+            .limitToLast(10)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {

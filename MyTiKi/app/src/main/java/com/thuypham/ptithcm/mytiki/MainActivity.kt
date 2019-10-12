@@ -83,6 +83,11 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
         viewPagerMain.addOnPageChangeListener(this)
 
+        val checkShowSearch = intent.getBooleanExtra("search", false)
+        if(checkShowSearch==true){
+            viewPagerMain.currentItem = 2
+        }
+
         botNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.bot_nav_home -> {
@@ -140,5 +145,9 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     fun showCategoryFragment(view: View) {
         viewPagerMain.currentItem = 1
+    }
+
+    fun showSearchFragment(view: View) {
+        viewPagerMain.currentItem = 2
     }
 }

@@ -20,6 +20,8 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.thuypham.ptithcm.mytiki.MainActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.search.SearchFragment
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
 import kotlinx.android.synthetic.main.ll_cart.*
@@ -48,6 +50,12 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
+        btn_search_pr_đetail.setOnClickListener(){
+            val intentSearch = Intent(this, MainActivity::class.java)
+            intentSearch.putExtra("search", true)
+            startActivity(intentSearch)
+        }
+
         ll_cart_number.setOnClickListener() {
             val user: FirebaseUser? = mAuth?.getCurrentUser();
             if (user != null) {
@@ -72,7 +80,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
                     //Set image in bottom dialog
                     Glide.with(applicationContext)
-                        .load(productDetail?.   image)
+                        .load(productDetail?.image)
                         .into(sheetView.iv_product_add_cart)
                     sheetView.tv_product_name_add_cart.text = productDetail?.name
 
@@ -156,8 +164,6 @@ class ProductDetailActivity : AppCompatActivity() {
         if (user != null) {
             var i = 1// use i to exit add number of cart, because it run anyway
             mDatabase = FirebaseDatabase.getInstance()
-            println("id: " + id)
-            println("userid: " + user.uid)
             val query = mDatabase!!
                 .reference
                 .child(PhysicsConstants.CART)
@@ -169,10 +175,8 @@ class ProductDetailActivity : AppCompatActivity() {
                     if (ds.exists()) {
                         // if this cart is not exist in list cart
                         if (i == 1) {
-                            println("Cart da ton tai trong danh sach sasch ")
                             // If this product exist in cart, then number ++
                             var number = ds.child(PhysicsConstants.CART_NUMBER).value as Long
-                            println("number:" + number)
                             number++
                             query.child(PhysicsConstants.CART_NUMBER)
                                 .setValue(number)
@@ -181,7 +185,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
                     } else if (checkAddcart == true) {
                         i++
-                        println("cart khong ton tai trong danh sach")
                         query.child(PhysicsConstants.CART_ID)
                             .setValue(id)
                         query.child(PhysicsConstants.CART_NUMBER)
@@ -191,7 +194,6 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("lay 1 sp k thanh cong")
                 }
             }
             query.addValueEventListener(valueEventListener)
@@ -245,8 +247,13 @@ class ProductDetailActivity : AppCompatActivity() {
         tv_price_product_detail.setPaintFlags(tv_price_product_detail.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
 
         // Show or hide discount percent
-        if (product.sale > 0) tv_discount_percent.visibility = View.VISIBLE
-        else tv_discount_percent.visibility = View.GONE
+        if (product.sale > 0) {
+            tv_price_product_detail.visibility = View.VISIBLE
+            tv_discount_percent.visibility = View.VISIBLE
+        } else {
+            tv_discount_percent.visibility = View.GONE
+            tv_price_product_detail.visibility = View.GONE
+        }
 
         // Product count >0,
         if (product.product_count > 0) tv_out_of_product.visibility = View.GONE
@@ -269,14 +276,11 @@ class ProductDetailActivity : AppCompatActivity() {
                 // If user haven't login yet, intent to sign in
                 val intent = Intent(baseContext, SignInUpActivity::class.java)
                 startActivity(intent)
-                println("dang nhap xong")
                 user = mAuth?.getCurrentUser()
                 if (user != null) {
-                    println("user khac null")
                     checkFavoriteProduct(product.id, like)
                     btn_like.isSelected = like
                 } else {
-                    println("dang nhap k thanh cong")
                 }
             }
         }
@@ -306,7 +310,6 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("lay 1 sp k thanh cong")
                 }
             }
             query.addValueEventListener(valueEventListener)
@@ -335,7 +338,6 @@ class ProductDetailActivity : AppCompatActivity() {
                     .child(id!!)
                     .removeValue()
             }
-
         }
     }
 
@@ -351,7 +353,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun getProductById(id: String) {
         var product: Product
-        println("vo toi day luon nhi")
         mDatabase = FirebaseDatabase.getInstance()
         val query = mDatabase!!
             .reference
@@ -361,7 +362,6 @@ class ProductDetailActivity : AppCompatActivity() {
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(ds: DataSnapshot) {
                 if (ds.exists()) {
-                    println("co vo day lay thong tin k")
                     val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
                     val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
                     val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
@@ -370,8 +370,6 @@ class ProductDetailActivity : AppCompatActivity() {
                     val id_category =
                         ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
                     val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
-
-                    println("name of product : $name")
                     product =
                         Product(id, name, price, image, infor, product_count, id_category, sale)
                     productDetail = product
@@ -380,7 +378,6 @@ class ProductDetailActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                println("lay 1 sp k thanh cong")
             }
         }
         query.addValueEventListener(valueEventListener)

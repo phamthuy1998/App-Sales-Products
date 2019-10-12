@@ -57,7 +57,7 @@ class ProductOfCategory : AppCompatActivity() {
     private var productBestSellerAdapter: ProductViewedAdapter? = null
     private var productBestSellerList = ArrayList<Product>()
 
-    private var id_category =""
+    private var id_category = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,9 +91,9 @@ class ProductOfCategory : AppCompatActivity() {
         }
 
         //show more best seller product
-        tv_viewmore_best_slae.setOnClickListener(){
+        tv_viewmore_best_slae.setOnClickListener() {
             var intent = Intent(this, FavoriteActivity::class.java)
-            intent.putExtra("nameToolbar", getString(R.string.saling_product))
+            intent.putExtra("nameToolbar", getString(R.string.best_seller))
             intent.putExtra("id_category", id_category)
             intent.putExtra("viewMore", 2)
             startActivity(intent)
@@ -199,10 +199,8 @@ class ProductOfCategory : AppCompatActivity() {
                             productBestSellerList.add(product)
                         }
                         productList.add(product)
-                        println("ten san pham: ${name}")
 
                     }
-                    println("so phan tu cua product: ${productList.size}")
                     if (productSaleList.isEmpty() && productBestSellerList.isEmpty() && productList.isEmpty())
                         tv_list_empty.visibility = View.VISIBLE
                     else tv_list_empty.visibility = View.GONE
@@ -221,7 +219,6 @@ class ProductOfCategory : AppCompatActivity() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -267,8 +264,6 @@ class ProductOfCategory : AppCompatActivity() {
             .orderByChild(PhysicsConstants.AVT_ID_CATEGORY)
             .equalTo(idCategory)
 
-        println("max category" + idCategory)
-
         // Show progressbar
         progress.visibility = View.VISIBLE
 
@@ -288,11 +283,9 @@ class ProductOfCategory : AppCompatActivity() {
                             Advertisement(name, id, image, id_category, name_category)
                         arrAdvertisement.add(advertisement)
                     }
-                    println("mang quang cao size: " + arrAdvertisement.size)
                     inIt()
                     progress.visibility = View.GONE
                 } else {
-                    println("mang quang cao rong")
                     progress.visibility = View.GONE
                 }
 
@@ -304,7 +297,6 @@ class ProductOfCategory : AppCompatActivity() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                 progress.visibility = View.GONE
             }
 
@@ -320,7 +312,6 @@ class ProductOfCategory : AppCompatActivity() {
 
         //Set circle indicator radius
         indicator_category.setRadius(5 * density)
-        println("so trang ne: ${arrAdvertisement.size}")
         NUM_PAGES = arrAdvertisement.size
 
         // Auto start of viewpager
@@ -343,15 +334,12 @@ class ProductOfCategory : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 currentPage = position
-
             }
 
             override fun onPageScrolled(pos: Int, arg1: Float, arg2: Int) {
-
             }
 
             override fun onPageScrollStateChanged(pos: Int) {
-
             }
         })
     }
@@ -359,6 +347,5 @@ class ProductOfCategory : AppCompatActivity() {
     fun onClickQuiteCategory(view: View) {
         finish()
     }
-
 
 }

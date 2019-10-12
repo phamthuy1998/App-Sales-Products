@@ -158,11 +158,7 @@ class OrderActivity : AppCompatActivity() {
                                         ds.child(PhysicsConstants.ORDER_DETAIL_ID_ORDER).value as String?
                                     val image =
                                         ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_IMAGE).value as String?
-                                    Log.d("sizemangac", id.toString())
-                                    Log.d("sizemangac", product_name.toString())
-                                    Log.d("sizemangac", product_count.toString())
-                                    Log.d("sizemangac", id_product.toString())
-                                    Log.d("sizemangac", product_price.toString())
+
                                     if (id != null && image != null && product_name != null && id_product != null
                                         && product_count != null && product_price != null && id_order != null
                                     ) {
@@ -180,16 +176,13 @@ class OrderActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-                            Log.d("sizemangac", orderDetailList.size.toString())
                             orderAdapter?.notifyDataSetChanged()
                         } else {
                             ll_order_empty.visibility = View.VISIBLE
-                            println("k co dl favorite viewed")
                         }
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
-                        Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                     }
                 }
                 query.addValueEventListener(valueEventListener)
@@ -202,7 +195,6 @@ class OrderActivity : AppCompatActivity() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
             val uid = user!!.uid
-            println("user id: $uid")
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!
@@ -302,12 +294,10 @@ class OrderActivity : AppCompatActivity() {
 
                     } else {
                         ll_order_empty.visibility = View.VISIBLE
-                        println("k co dl favorite viewed")
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                 }
             }
             query.addValueEventListener(valueEventListener)

@@ -30,6 +30,7 @@
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="10dp"
                 android:ellipsize="end"
+                android:onClick="showSearchFragment"
                 android:padding="8dp"
                 android:singleLine="true"
                 android:text="@string/bot_nav_category"

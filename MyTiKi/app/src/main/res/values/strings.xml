@@ -191,6 +191,7 @@
     <string name="please_touch_to_try_again">Please touch to try again</string>
     <string name="retry">Retry</string>
     <string name="search">Search</string>
+    <string name="not_looking_for_a_product_name">Not looking for a product name</string>
 
 
 </resources>

@@ -77,7 +77,6 @@
                 android:text="@string/name_sign_up"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_product_detail" />
@@ -124,8 +123,9 @@
                 android:text="@string/_1_290_000"
                 android:textColor="@color/colorGray"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_out_of_product"
-                app:layout_constraintStart_toEndOf="@id/tv_price_discount_product_detail" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_price_discount_product_detail"
+                app:layout_constraintStart_toEndOf="@id/tv_price_discount_product_detail"
+                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail" />
 
             <TextView
                 android:id="@+id/tv_discount_percent"
@@ -135,9 +135,9 @@
                 android:text="@string/_1_290_000"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_out_of_product"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_price_discount_product_detail"
                 app:layout_constraintStart_toEndOf="@id/tv_price_product_detail"
-                app:layout_constraintTop_toBottomOf="@id/iv_stars_avr" />
+                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail" />
 
             <TextView
                 android:id="@+id/tv_out_of_product"

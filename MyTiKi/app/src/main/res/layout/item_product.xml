@@ -52,7 +52,7 @@
             android:layout_marginStart="16dp"
             android:text="@string/sale_percent"
             android:textColor="@color/colorTextHint"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>

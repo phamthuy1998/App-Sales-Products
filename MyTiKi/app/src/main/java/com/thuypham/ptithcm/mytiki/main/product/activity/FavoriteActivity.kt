@@ -1,6 +1,5 @@
 package com.thuypham.ptithcm.mytiki.main.product.activity
 
-import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,15 +33,13 @@ class FavoriteActivity : AppCompatActivity() {
     private var productViewedAdapter: ProductDetailApdater? = null
     private var productViewedList = ArrayList<Product>()
 
-    private var query = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
 
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference
 
         // product viewed init
         productViewedAdapter =
@@ -68,7 +65,8 @@ class FavoriteActivity : AppCompatActivity() {
 
         var numViewMore = 0
         numViewMore = intent.getIntExtra("viewMore", 0)
-        val id_category = intent.getStringExtra("id_category")
+        Log.d("search12346", numViewMore.toString())
+
         // Choose num view more
         // product viewed or product like to get infor
         if (numViewMore == 0) {
@@ -88,18 +86,25 @@ class FavoriteActivity : AppCompatActivity() {
         }
         // get product sale and viewed by category id
         else if (numViewMore == 1 || numViewMore == 2) {
-            getListProduct(id_category, numViewMore)
+            val id_category = intent.getStringExtra("id_category")
+            if (id_category != null)
+                getListProduct(id_category, numViewMore)
         }
         // get product sale of all product
         else if (numViewMore == 3) {
             getListProductSale()
         }
+
         addEvent()
         getCartCount()
-
     }
 
     private fun addEvent() {
+        tv_List_product_toolbar_name.setOnClickListener() {
+            val intentSearch = Intent(this, MainActivity::class.java)
+            intentSearch.putExtra("search", true)
+            startActivity(intentSearch)
+        }
         ll_cart_number.setOnClickListener() {
             val user: FirebaseUser? = mAuth?.getCurrentUser();
             if (user != null) {
@@ -111,7 +116,7 @@ class FavoriteActivity : AppCompatActivity() {
             }
         }
 
-        btn_continue_shopping_favorite.setOnClickListener(){
+        btn_continue_shopping_favorite.setOnClickListener() {
             val intent = Intent(this, MainActivity::class.java)
             finishAffinity()
             startActivity(intent)
@@ -290,7 +295,6 @@ class FavoriteActivity : AppCompatActivity() {
             .child(PhysicsConstants.USERS)
             .child(uid)
             .child(childKey)
-            .limitToLast(20)
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -383,6 +387,4 @@ class FavoriteActivity : AppCompatActivity() {
         finish()
     }
 
-    fun searchProduct(view: View) {}
-    fun onClickCart(view: View) {}
 }

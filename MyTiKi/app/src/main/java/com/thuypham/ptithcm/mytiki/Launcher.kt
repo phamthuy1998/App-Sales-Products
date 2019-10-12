@@ -3,9 +3,11 @@ package com.thuypham.ptithcm.mytiki
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.main.fragment.user.viewmodel.UserViewModel
 import com.thuypham.ptithcm.mytiki.help.SharedPreference
@@ -29,8 +31,6 @@ class Launcher : AppCompatActivity() {
                 .get(UserViewModel::class.java)
 
         loginUser()
-
-
     }
 
     fun loginUser() {

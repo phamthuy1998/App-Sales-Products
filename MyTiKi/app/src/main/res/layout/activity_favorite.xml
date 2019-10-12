@@ -19,7 +19,6 @@
             android:id="@+id/btn_cancel_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
             android:linksClickable="true"
             android:onClick="onClickQuitFavorite"
             android:padding="16dp"
@@ -27,9 +26,9 @@
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <LinearLayout
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -37,10 +36,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:maxLines="1"
+                android:background="@drawable/edit_seach_bg"
+                android:padding="8dp"
                 android:text="@string/favorite_product"
-                android:textColor="@color/colorWhiteBG"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorTextHint"
+                android:textSize="16sp" />
 
             <include layout="@layout/ll_cart" />
 
@@ -63,7 +64,7 @@
         android:id="@+id/ll_favorite_empty"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#F8F8F8"
+        android:background="@color/colorWhiteBG"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"

@@ -1,136 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tool="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?actionBarSize"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_search"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/btn_cancel_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:linksClickable="true"
+            android:padding="16dp"
+            android:tint="@color/colorDarkGray"
+            app:srcCompat="@drawable/ic_left_arrow" />
 
-            <ImageView
-                android:id="@+id/btn_cancel_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:linksClickable="true"
-                android:padding="16dp"
-                android:tint="@color/colorDarkGray"
-                app:srcCompat="@drawable/ic_left_arrow" />
-
-            <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@null"
-                android:ellipsize="end"
-                android:hint="@string/search_hint"
-                android:singleLine="true"
-                android:textColor="@color/colorTextHint"
-                android:textColorHint="@color/colorDarkGray"
-                android:textSize="16sp"
-                app:clearButtonMode="whileEditing" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-        <LinearLayout
-            android:id="@+id/ll_hot_key"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/sv_product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhiteBG"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tb_search">
+            app:iconifiedByDefault="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryHint="@string/search_hint" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_hot_key" />
+    </androidx.appcompat.widget.Toolbar>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/hot_keywords"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhiteBG"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_search"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_product_favorite" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_hot_keyword"
+    <LinearLayout
+        android:id="@+id/ll_search_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhiteBG"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_search">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/no_search" />
+
+        <TextView
+            android:id="@+id/tv_search_null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/colorWhiteBG"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_hot_key"
-            tool:itemCount="3"
-            tool:listitem="@layout/item_hot_key_search" />
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/not_looking_for_a_product_name"
+            android:textSize="16sp" />
 
-        <LinearLayout
-            android:id="@+id/ll_search_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_hot_keyword">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:text="@string/search_history"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_del_search_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/delete"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="18sp" />
+    </LinearLayout>
 
 
-            </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_search_history"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                tool:itemCount="2"
-                tool:listitem="@layout/item_search_history" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/ll_hot_key"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="@color/colorWhiteBG"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/tb_search">-->
 
-</ScrollView>
+    <!--            <ImageView-->
+    <!--                android:layout_width="24dp"-->
+    <!--                android:layout_height="24dp"-->
+    <!--                android:layout_marginStart="16dp"-->
+    <!--                android:src="@drawable/ic_hot_key" />-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="16dp"-->
+    <!--                android:text="@string/hot_keywords"-->
+    <!--                android:textColor="@android:color/black"-->
+    <!--                android:textSize="18sp"-->
+    <!--                android:textStyle="bold" />-->
+    <!--        </LinearLayout>-->
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/rv_hot_keyword"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="16dp"-->
+    <!--            android:layout_marginBottom="16dp"-->
+    <!--            android:background="@color/colorWhiteBG"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/ll_hot_key"-->
+    <!--            tool:itemCount="3"-->
+    <!--            tool:listitem="@layout/item_hot_key_search" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/ll_search_history"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="16dp"-->
+    <!--            android:background="@android:color/white"-->
+    <!--            android:orientation="vertical"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/rv_hot_keyword">-->
+
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:orientation="horizontal">-->
+
+    <!--                <TextView-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginStart="16dp"-->
+    <!--                    android:layout_marginEnd="16dp"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:text="@string/search_history"-->
+    <!--                    android:textColor="@color/colorTextHint"-->
+    <!--                    android:textSize="18sp" />-->
+
+    <!--                <TextView-->
+    <!--                    android:id="@+id/tv_del_search_history"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_marginStart="16dp"-->
+    <!--                    android:layout_marginEnd="16dp"-->
+    <!--                    android:text="@string/delete"-->
+    <!--                    android:textColor="@color/colorBlue"-->
+    <!--                    android:textSize="18sp" />-->
+
+
+    <!--            </LinearLayout>-->
+
+    <!--            <androidx.recyclerview.widget.RecyclerView-->
+    <!--                android:id="@+id/rv_search_history"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_margin="16dp"-->
+    <!--                tool:itemCount="2"-->
+    <!--                tool:listitem="@layout/item_search_history" />-->
+    <!--        </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,24 +67,18 @@ class CategoryFragment : Fragment() {
             Log.d("abc", "khong co ket noi internet")
         }
 
+//        for(i in 0..20){
 //        mDatabaseReference = mDatabase!!.reference
 //        val currentUserDb = mDatabaseReference!!.child(PhysicsConstants.PRODUCT).push()
-//        currentUserDb.child(PhysicsConstants.PRODUCT_ID).setValue(id)
-//        currentUserDb.child(PhysicsConstants.NAME_PRODUCT).setValue("Tai Nghe Nhét Tai Mi Basic Xiaomi HSEJ03JY - Hàng Chính Hãng")
-//        currentUserDb.child(PhysicsConstants.PRICE_PRODUCT).setValue(102999)
-//        currentUserDb.child(PhysicsConstants.IMAGE_PRODUCT).setValue("https://salt.tikicdn.com/cache/200x200/ts/product/6a/8d/4f/f3a5f3ebd9b2e69406821f922cfcc537.jpg")
-//        currentUserDb.child(PhysicsConstants.INFOR_PRODUCT).setValue("Tần số: 20 - 20.000 Hz\n" +
-//                "\n" +
-//                "Trở kháng: 32 ohm\n" +
-//                "\n" +
-//                "Lõi dây bằng đồng tráng men\n" +
-//                "\n" +
-//                "Nút nhét làm bằng silicon mềm mại\n" +
-//                "\n" +
-//                "Độ phân giải cao cho chất lượng âm thanh chính xác")
+//        currentUserDb.child(PhysicsConstants.PRODUCT_ID).setValue(currentUserDb.key)
+//        currentUserDb.child(PhysicsConstants.NAME_PRODUCT).setValue("ao")
+//        currentUserDb.child(PhysicsConstants.PRICE_PRODUCT).setValue(99000)
+//        currentUserDb.child(PhysicsConstants.IMAGE_PRODUCT).setValue("abc")
+//        currentUserDb.child(PhysicsConstants.INFOR_PRODUCT).setValue("abc")
 //        currentUserDb.child(PhysicsConstants.PRODUCT_COUNT).setValue(10)
-//        currentUserDb.child(PhysicsConstants.ID_CATEGORY_PRODUCT).setValue("-Lmwzjdledim2IDvaAy-")
-
+//        currentUserDb.child(PhysicsConstants.ID_CATEGORY_PRODUCT).setValue("-LmwzhwCLb3CL6u9atPw")
+//        currentUserDb.child(PhysicsConstants.PRODUCT_SALE).setValue(0)
+//        currentUserDb.child(PhysicsConstants.PRODUCT_SOLD).setValue(10)}
         addEvent()
         getCartCount()
     }

@@ -62,6 +62,7 @@ class UserFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        clearInforLogin()
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference.child("Users")
         mAuth = FirebaseAuth.getInstance()
@@ -292,7 +293,6 @@ class UserFragment : Fragment() {
                     startActivity(intentFV)
                 }
             }
-
         }
 
         tv_received_order.setOnClickListener {

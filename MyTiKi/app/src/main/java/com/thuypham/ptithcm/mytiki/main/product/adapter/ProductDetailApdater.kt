@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.mytiki.main.product.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,7 @@ import java.text.DecimalFormat
 
 class ProductDetailApdater(
     private var items: ArrayList<Product>,
-    private val context: FavoriteActivity
+    private val context: Context
 ) : RecyclerView.Adapter<BaseItem>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseItem {
         val view = LayoutInflater
