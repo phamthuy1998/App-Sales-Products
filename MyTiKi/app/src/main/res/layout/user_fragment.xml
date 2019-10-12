@@ -247,20 +247,19 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/ts_name" />
 
-
-                    <TextView
-                        android:id="@+id/tv_products_purchased"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@android:color/white"
-                        android:drawableStart="@drawable/ic_shopping_cart"
-                        android:drawableEnd="@drawable/ic_gray_right_arrow"
-                        android:drawablePadding="10dp"
-                        android:padding="16dp"
-                        android:text="@string/products_purchased"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/ts_name" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_products_purchased"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="1dp"-->
+<!--                        android:background="@android:color/white"-->
+<!--                        android:drawableStart="@drawable/ic_shopping_cart"-->
+<!--                        android:drawableEnd="@drawable/ic_gray_right_arrow"-->
+<!--                        android:drawablePadding="10dp"-->
+<!--                        android:padding="16dp"-->
+<!--                        android:text="@string/products_purchased"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textSize="@dimen/ts_name" />-->
 
                     <TextView
                         android:id="@+id/tv_viewed_products"

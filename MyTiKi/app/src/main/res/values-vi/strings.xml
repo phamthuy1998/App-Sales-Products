@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My TiKi</string>
+    <string name="app_name">T Shop</string>
     <string name="bot_nav_category">Danh mục</string>
     <string name="bot_nav_home">Trang chủ</string>
     <string name="bot_nav_notification">Thông báo</string>
@@ -168,5 +168,9 @@
     <string name="no_internet_connection">Không có kết nối mạng</string>
     <string name="please_touch_to_try_again">Vui lòng chạm để thử lại</string>
     <string name="retry">Thử lại</string>
+    <string name="cart_empty">Giỏ hàng của bạn đang trống</string>
+    <string name="not_looking_for_a_product_name">Không tìm thấy tên sản phẩm</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="the_order_list_is_empty">Danh sách đơn hàng đang trống</string>
 
 </resources>

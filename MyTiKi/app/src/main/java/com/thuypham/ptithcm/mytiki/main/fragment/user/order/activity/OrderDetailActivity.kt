@@ -3,7 +3,6 @@ package com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -12,15 +11,12 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.help.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
-import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.model.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.ProductConfirmAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.adapter.ProductOrderAdapter
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.Order
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.model.OrderDetail
 import kotlinx.android.synthetic.main.activity_order_detail.*
 import kotlinx.android.synthetic.main.ll_cart.*
-import kotlinx.android.synthetic.main.order_activity.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -59,6 +55,7 @@ class OrderDetailActivity : AppCompatActivity() {
                 false
             )
             rv_product_order_detail.adapter = productAdapter
+
             getInforOrderDetail(id_order)
             getListOrderProduct(id_order)
             addEvent()
@@ -77,10 +74,6 @@ class OrderDetailActivity : AppCompatActivity() {
                 val intentCart = Intent(this, SignInUpActivity::class.java)
                 startActivity(intentCart)
             }
-        }
-
-        btn_cancel_order_detail.setOnClickListener() {
-            cancelOrder()
         }
     }
 
@@ -126,8 +119,18 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun cancelOrder() {
-
+    private fun cancelOrder(orderId: String?) {
+        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        if (user != null) {
+            if (orderId != null) {
+                val currentUserDb = mDatabase!!.reference
+                    .child(PhysicsConstants.ORDER)
+                    .child(user.uid)
+                    .child(orderId)
+                    .child(PhysicsConstants.ORDER_STATUS)
+                    .setValue(4)
+            }
+        }
     }
 
     private fun getInforOrderDetail(id_order: String) {
@@ -174,7 +177,6 @@ class OrderDetailActivity : AppCompatActivity() {
                 }
             }
             query.addValueEventListener(valueEventListener)
-
         }
     }
 
@@ -220,6 +222,16 @@ class OrderDetailActivity : AppCompatActivity() {
             tv_price_amount_order_detail.text = priceTxt
         }
 
+        // set button cancel show or hide
+        if (order.status == 1.toLong()) {
+            btn_cancel_order_detail.visibility = View.VISIBLE
+        } else {
+            btn_cancel_order_detail.visibility = View.GONE
+        }
+        // add event for button cancel order
+        btn_cancel_order_detail.setOnClickListener() {
+            cancelOrder(order.id)
+        }
     }
 
     private fun getListOrderProduct(orderId: String) {

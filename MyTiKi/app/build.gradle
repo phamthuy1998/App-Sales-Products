@@ -110,5 +110,7 @@ dependencies {
     }
 
     implementation 'com.github.todou:nestrefresh-androidx:0.0.7'
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

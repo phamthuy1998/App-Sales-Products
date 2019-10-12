@@ -225,7 +225,6 @@ class HomeFragment : Fragment() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -240,7 +239,6 @@ class HomeFragment : Fragment() {
         if (user != null) {
             //product viewed
             val uid = user.uid
-            println("user id: $uid")
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
@@ -280,7 +278,6 @@ class HomeFragment : Fragment() {
                         getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                         Toast.LENGTH_LONG
                     ).show()
-                    Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                 }
             }
             query.addValueEventListener(valueEventListener)
@@ -293,7 +290,6 @@ class HomeFragment : Fragment() {
         var product: Product
         productViewedList.clear()
         for (id in arrId) {
-            println("vo toi day luon nhi")
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
@@ -303,7 +299,6 @@ class HomeFragment : Fragment() {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        println("co vo day lay thong tin k")
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
                         val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
@@ -313,19 +308,17 @@ class HomeFragment : Fragment() {
                             ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
 
-                        println("name of product : $name")
                         product =
                             Product(id, name, price, image, infor, product_count, id_category, sale)
                         productViewedList.add(product)
-                        println("lay sp thanh cong")
-                        println("size mang xem1: " + productViewedList.size)
-                        ll_viewed_product.visibility = View.VISIBLE
+                        if (ll_viewed_product != null) {
+                            ll_viewed_product.visibility = View.VISIBLE
+                        }
                         productViewedAdapter?.notifyDataSetChanged()
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("lay 1 sp k thanh cong")
                 }
             }
             query.addValueEventListener(valueEventListener)
@@ -428,10 +421,8 @@ class HomeFragment : Fragment() {
                                 sale
                             )
                             productSaleList.add(product)
-                            println("ten san pham: ${name}")
                         }
                     }
-                    println("so phan tu cua sale product: ${productSaleList.size}")
                     // product sale change view
                     productSaleList.reverse()
                     productSaleAdapter?.notifyDataSetChanged()
@@ -444,7 +435,6 @@ class HomeFragment : Fragment() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -495,9 +485,7 @@ class HomeFragment : Fragment() {
             }
         })
         indicator.setOnClickListener() {
-            println("trang hien tai: " + arrAdvertisement[currentPage].id_category)
-            println("tên: " + arrAdvertisement[currentPage].name)
-            var intent = Intent(context, ProductOfCategory::class.java)
+            val intent = Intent(context, ProductOfCategory::class.java)
             intent.putExtra("id_category", arrAdvertisement[currentPage].id_category)
             intent.putExtra("name_category", arrAdvertisement[currentPage].name_category)
             context!!.startActivity(intent)
@@ -525,16 +513,10 @@ class HomeFragment : Fragment() {
                         val id_category = ds.child(PhysicsConstants.AVT_ID_CATEGORY).value as String
                         val name_category =
                             ds.child(PhysicsConstants.AVT_NAME_CATEGORY).value as String
-                        println("lay du lieu ten $name")
-                        println("lay du lieu  anh$image")
-                        println("lay du lieu id cate $id_category")
-                        println("lay du lieu id $id")
-
                         val advertisement =
                             Advertisement(name, id, image, id_category, name_category)
                         arrAdvertisement.add(advertisement)
                     }
-                    println("si mang ne: ${arrAdvertisement.size}")
                     inIt()
                     progress.visibility = View.GONE
                     ll_home.visibility = View.VISIBLE
@@ -547,7 +529,6 @@ class HomeFragment : Fragment() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
                 progress.visibility = View.GONE
                 ll_home.visibility = View.VISIBLE
             }
@@ -559,7 +540,7 @@ class HomeFragment : Fragment() {
     // get data for category
     private fun getDataCategory() {
         mDatabaseReference = mDatabase!!
-            .reference!!
+            .reference
             .child(PhysicsConstants.CATEGORY_table)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -570,11 +551,6 @@ class HomeFragment : Fragment() {
                         val name = ds.child(PhysicsConstants.CATEGORY_NAME).value as String
                         val image = ds.child(PhysicsConstants.CATEGORY_IMAGE).value as String
                         val count = ds.child(PhysicsConstants.CATEGORY_COUNT).value as Long
-                        println("lay du lieu ten $name")
-                        println("lay du lieu  anh$image")
-                        println("lay du lieu so $count")
-                        println("lay du lieu id $id")
-
                         val category = Category(id, name, image, count)
                         categoryList.add(category)
 
@@ -590,10 +566,8 @@ class HomeFragment : Fragment() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         mDatabaseReference.addValueEventListener(valueEventListener)
     }
-
 }

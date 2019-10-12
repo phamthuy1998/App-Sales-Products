@@ -1,7 +1,9 @@
 package com.thuypham.ptithcm.mytiki.main.fragment.user.view
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -26,12 +28,15 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
+import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.AddressActivity
 import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.OrderActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.no_wifi.*
+import pub.devrel.easypermissions.EasyPermissions
 
 
 class UserFragment : Fragment() {
@@ -85,7 +90,6 @@ class UserFragment : Fragment() {
             Toast.makeText(requireContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT)
                 .show()
             ll_no_wifi_user.visibility = View.VISIBLE
-            Log.d("abc", "khong co ket noi internet")
         }
         addEvent()
     }
@@ -193,8 +197,8 @@ class UserFragment : Fragment() {
             }
         }
 
-        btn_try_connect.setOnClickListener(){
-            view?.let { it1 -> onViewCreated(it1,null) }
+        btn_try_connect.setOnClickListener() {
+            view?.let { it1 -> onViewCreated(it1, null) }
         }
 
         var user: FirebaseUser? = mAuth?.getCurrentUser();
@@ -239,7 +243,46 @@ class UserFragment : Fragment() {
 
         // Get help, call phone number
         tv_hot_line.setOnClickListener() {
-            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0373865759"))
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CALL_PHONE
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+
+                // Permission is not granted
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
+                        Manifest.permission.CALL_PHONE
+                    )
+                ) {
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.CALL_PHONE), targetRequestCode
+                    )
+
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            } else {
+                // Permission has already been granted
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0373865759"))
+                startActivity(intent)
+            }
+        }
+
+        // show list address
+        tv_address.setOnClickListener() {
+            val intent = Intent(context, AddressActivity::class.java)
+            intent.putExtra("userAddress", getString(R.string.list_of_addresses))
             startActivity(intent)
         }
 
@@ -281,10 +324,7 @@ class UserFragment : Fragment() {
                 // If user haven't login yet, intent to sign in
                 val intent = Intent(context, SignInUpActivity::class.java)
                 startActivity(intent)
-
-                println("dang nhap xong")
                 user = mAuth?.getCurrentUser()
-
                 // intent to FavoriteActivity
                 if (user != null) {
                     val intentFV = Intent(context, FavoriteActivity::class.java)
@@ -343,7 +383,7 @@ class UserFragment : Fragment() {
     private fun setIconOrderNumber() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user!!.uid
+            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!

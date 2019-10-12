@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.main.fragment.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.main.product.activity.FavoriteActivity
 import com.thuypham.ptithcm.mytiki.main.product.activity.ProductDetailActivity
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
 import kotlinx.android.synthetic.main.item_product_favorite.view.*
@@ -41,8 +40,6 @@ class ProductDetailApdater(
             itemView.tv_price_product_favorite.text = price
             val sale = "-" + product.sale.toString() + "%"
             itemView.tv_sale_like.text = sale
-            println("gia sp favorite : $price")
-            println("name sp fvorite : ${product.name}")
 
             //sset image view product
             Glide.with(itemView)

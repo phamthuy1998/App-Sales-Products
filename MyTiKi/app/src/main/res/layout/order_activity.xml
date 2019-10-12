@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="@string/empty_list"
+            android:text="@string/the_order_list_is_empty"
             android:textSize="16sp" />
 
         <Button

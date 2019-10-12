@@ -50,7 +50,7 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
-        btn_search_pr_đetail.setOnClickListener(){
+        btn_search_pr_đetail.setOnClickListener() {
             val intentSearch = Intent(this, MainActivity::class.java)
             intentSearch.putExtra("search", true)
             startActivity(intentSearch)
@@ -118,7 +118,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun getCartCount() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user!!.uid
+            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!

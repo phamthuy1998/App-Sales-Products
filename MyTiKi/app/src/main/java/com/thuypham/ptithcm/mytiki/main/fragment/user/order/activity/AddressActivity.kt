@@ -66,6 +66,12 @@ class AddressActivity : AppCompatActivity() {
         )
         rv_address_order.adapter = addressAdapter
 
+        val nameTb = intent.getStringExtra("userAddress")
+        if (nameTb != null) {
+            btn_address_continue.visibility = View.GONE
+            tv_tb_address.setText(nameTb)
+        }
+
         getListAddress()
         addEvent()
     }
@@ -115,7 +121,6 @@ class AddressActivity : AppCompatActivity() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -127,9 +132,9 @@ class AddressActivity : AppCompatActivity() {
         }
 
         btn_address_continue.setOnClickListener() {
-            if(addressList.isEmpty()){
+            if (addressList.isEmpty()) {
                 Toast.makeText(this, R.string.err_address_empty, Toast.LENGTH_LONG).show()
-            }else{
+            } else {
                 showDialogConfirmOrder()
             }
         }

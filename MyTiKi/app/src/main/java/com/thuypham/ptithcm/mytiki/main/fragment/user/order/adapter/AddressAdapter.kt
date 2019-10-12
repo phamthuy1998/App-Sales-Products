@@ -149,7 +149,6 @@ class AddressAdapter(
 
                     // then add another address
                     mDatabase = FirebaseDatabase.getInstance()
-                    println("userid: " + user.uid)
                     val query = mDatabase!!
                         .reference
                         .child(PhysicsConstants.ADDRESS)

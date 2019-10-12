@@ -18,7 +18,6 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpAct
 import com.thuypham.ptithcm.mytiki.main.product.adapter.ProductDetailApdater
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
 import kotlinx.android.synthetic.main.activity_favorite.*
-import kotlinx.android.synthetic.main.fragment_continue_shopping.*
 import kotlinx.android.synthetic.main.ll_cart.*
 
 class FavoriteActivity : AppCompatActivity() {
@@ -128,7 +127,7 @@ class FavoriteActivity : AppCompatActivity() {
     private fun getCartCount() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user!!.uid
+            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!
@@ -220,7 +219,6 @@ class FavoriteActivity : AppCompatActivity() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -276,7 +274,6 @@ class FavoriteActivity : AppCompatActivity() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -288,7 +285,6 @@ class FavoriteActivity : AppCompatActivity() {
     private fun getListIdProductViewed(childKey: String) {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         val uid = user!!.uid
-        println("user id: $uid")
         mDatabase = FirebaseDatabase.getInstance()
         val query = mDatabase!!
             .reference
@@ -300,11 +296,9 @@ class FavoriteActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     arrIdProductViewed.clear()
-                    println("viewed favorite product co du lieu")
                     for (ds in dataSnapshot.children) {
                         val id: String? =
                             ds.child(PhysicsConstants.VIEWED_PRODUCT_ID).value as String?
-                        println(" id product: $id")
                         if (id != null) {
                             arrIdProductViewed.add(id)
                         }
@@ -314,7 +308,7 @@ class FavoriteActivity : AppCompatActivity() {
                     // get product viewed infor
                     if (!arrIdProductViewed.isEmpty()) {
                         ll_favorite_empty.visibility = View.GONE
-                        println("list khong  favorite rong")
+                        arrIdProductViewed.reverse()
                         getListProductByID(arrIdProductViewed)
                     } else {
                         ll_favorite_empty.visibility = View.VISIBLE
@@ -322,14 +316,11 @@ class FavoriteActivity : AppCompatActivity() {
 
                 } else {
                     ll_favorite_empty.visibility = View.VISIBLE
-                    println("k co dl favorite viewed")
-                    //  showDialog()
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 ll_favorite_empty.visibility = View.VISIBLE
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         query.addValueEventListener(valueEventListener)
@@ -341,7 +332,6 @@ class FavoriteActivity : AppCompatActivity() {
         var product: Product
         productViewedList.clear()
         for (id in arrId) {
-            println("vo toi day luon nhi")
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
@@ -351,7 +341,6 @@ class FavoriteActivity : AppCompatActivity() {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        println("co vo day lay thong tin k")
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
                         val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
@@ -361,30 +350,22 @@ class FavoriteActivity : AppCompatActivity() {
                             ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
 
-                        println("name of product : $name")
                         product =
                             Product(id, name, price, image, infor, product_count, id_category, sale)
 
                         productViewedList.add(product)
-
-                        println("lay sp thanh cong")
-                        println("size mang xem1: " + productViewedList.size)
-//                        showDialog()
                         productViewedAdapter?.notifyDataSetChanged()
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("lay 1 sp k thanh cong")
                 }
             }
             query.addValueEventListener(valueEventListener)
         }
     }
 
-
     fun onClickQuitFavorite(view: View) {
         finish()
     }
-
 }

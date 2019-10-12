@@ -64,7 +64,6 @@ class CategoryFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(),R.string.no_internet_connection,Toast.LENGTH_SHORT  ).show()
             ll_no_wifi_category.visibility = View.VISIBLE
-            Log.d("abc", "khong co ket noi internet")
         }
 
 //        for(i in 0..20){
@@ -167,11 +166,6 @@ class CategoryFragment : Fragment() {
                     val name = ds.child(PhysicsConstants.CATEGORY_NAME).value as String
                     val image = ds.child(PhysicsConstants.CATEGORY_IMAGE).value as String
                     val count = ds.child(PhysicsConstants.CATEGORY_COUNT).value as Long
-                    println("lay du lieu ten $name")
-                    println("lay du lieu  anh$image")
-                    println("lay du lieu so $count")
-                    println("lay du lieu id $id")
-
                     val category = Category(id, name, image, count)
                     categoryList.add(category)
 
@@ -188,7 +182,6 @@ class CategoryFragment : Fragment() {
                     getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException())
             }
         }
         mDatabaseReference.addValueEventListener(valueEventListener)
