@@ -16,7 +16,9 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpAct
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import android.graphics.Paint
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -25,6 +27,8 @@ import com.thuypham.ptithcm.mytiki.main.fragment.search.SearchFragment
 import com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity.CartActivity
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
 import kotlinx.android.synthetic.main.ll_cart.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -360,10 +364,24 @@ class ProductDetailActivity : AppCompatActivity() {
             .child(id)
 
         val valueEventListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(ds: DataSnapshot) {
+                val current = LocalDateTime.now()
+                val dateFormatter = DateTimeFormatter.ofPattern("HH")
+                val hours = current.format(dateFormatter).toLong()
                 if (ds.exists()) {
                     val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                    val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                    var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                    if (hours >= 7 && hours < 11)
+                        price = price * PhysicsConstants.coefficientMorning
+                    else if (hours >= 11 && hours < 13)
+                        price = (price * PhysicsConstants.coefficientLunch).toLong()
+                    else if (hours >= 13 && hours < 18)
+                        price = (price * PhysicsConstants.coefficientAft).toLong()
+                    else if (hours >= 18 && hours <= 23)
+                        price = (price * PhysicsConstants.coefficientNight).toLong()
+                    else if (hours >= 0 && hours < 7)
+                        price = (price * PhysicsConstants.coefficientMidNight).toLong()
                     val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
                     val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
                     val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long

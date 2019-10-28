@@ -1,11 +1,13 @@
 package com.thuypham.ptithcm.mytiki.main.product.activity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -19,6 +21,8 @@ import com.thuypham.ptithcm.mytiki.main.product.adapter.ProductDetailApdater
 import com.thuypham.ptithcm.mytiki.main.product.model.Product
 import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.ll_cart.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class FavoriteActivity : AppCompatActivity() {
 
@@ -175,13 +179,27 @@ class FavoriteActivity : AppCompatActivity() {
             .equalTo(idCategory)
 
         val valueEventListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     productViewedList.clear()
+                    val current = LocalDateTime.now()
+                    val dateFormatter = DateTimeFormatter.ofPattern("HH")
+                    val hours = current.format(dateFormatter).toLong()
                     for (ds in dataSnapshot.children) {
                         val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        if (hours >= 7 && hours < 11)
+                            price = price * PhysicsConstants.coefficientMorning
+                        else if (hours >= 11 && hours < 13)
+                            price = (price * PhysicsConstants.coefficientLunch).toLong()
+                        else if (hours >= 13 && hours < 18)
+                            price = (price * PhysicsConstants.coefficientAft).toLong()
+                        else if (hours >= 18 && hours <= 23)
+                            price = (price * PhysicsConstants.coefficientNight).toLong()
+                        else if (hours >= 0 && hours < 7)
+                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
                         val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
                         val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
@@ -232,13 +250,27 @@ class FavoriteActivity : AppCompatActivity() {
             .child(PhysicsConstants.PRODUCT)
 
         val valueEventListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     productViewedList.clear()
+                    val current = LocalDateTime.now()
+                    val dateFormatter = DateTimeFormatter.ofPattern("HH")
+                    val hours = current.format(dateFormatter).toLong()
                     for (ds in dataSnapshot.children) {
                         val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        if (hours >= 7 && hours < 11)
+                            price = price * PhysicsConstants.coefficientMorning
+                        else if (hours >= 11 && hours < 13)
+                            price = (price * PhysicsConstants.coefficientLunch).toLong()
+                        else if (hours >= 13 && hours < 18)
+                            price = (price * PhysicsConstants.coefficientAft).toLong()
+                        else if (hours >= 18 && hours <= 23)
+                            price = (price * PhysicsConstants.coefficientNight).toLong()
+                        else if (hours >= 0 && hours < 7)
+                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
                         val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
                         val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
@@ -293,6 +325,7 @@ class FavoriteActivity : AppCompatActivity() {
             .child(childKey)
 
         val valueEventListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     arrIdProductViewed.clear()
@@ -328,9 +361,13 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     // From list product id, then get all infor
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getListProductByID(arrId: ArrayList<String>) {
         var product: Product
         productViewedList.clear()
+        val current = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("HH")
+        val hours = current.format(dateFormatter).toLong()
         for (id in arrId) {
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
@@ -342,7 +379,17 @@ class FavoriteActivity : AppCompatActivity() {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        if (hours >= 7 && hours < 11)
+                            price = price * PhysicsConstants.coefficientMorning
+                        else if (hours >= 11 && hours < 13)
+                            price = (price * PhysicsConstants.coefficientLunch).toLong()
+                        else if (hours >= 13 && hours < 18)
+                            price = (price * PhysicsConstants.coefficientAft).toLong()
+                        else if (hours >= 18 && hours <= 23)
+                            price = (price * PhysicsConstants.coefficientNight).toLong()
+                        else if (hours >= 0 && hours < 7)
+                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
                         val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
                         val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long

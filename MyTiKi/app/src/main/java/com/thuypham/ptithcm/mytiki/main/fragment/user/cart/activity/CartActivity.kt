@@ -1,10 +1,12 @@
 package com.thuypham.ptithcm.mytiki.main.fragment.user.cart.activity
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -20,6 +22,8 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.order.activity.AddressActi
 import kotlinx.android.synthetic.main.activity_cart.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class CartActivity : AppCompatActivity() {
 
@@ -95,6 +99,7 @@ class CartActivity : AppCompatActivity() {
             .child(uid)
 
         val valueEventListener = object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     ll_list_cart_empty.visibility = View.GONE
@@ -103,7 +108,6 @@ class CartActivity : AppCompatActivity() {
                         if (ds.exists()) {
                             val id: String? = ds.child(PhysicsConstants.CART_ID).value as String?
                             val cart_number = ds.child(PhysicsConstants.CART_NUMBER).value as Long?
-                            println(" id product: $id")
                             if (id != null && cart_number != null) {
                                 arrIdProductCart.add(
                                     ProductCart(
@@ -136,12 +140,15 @@ class CartActivity : AppCompatActivity() {
     }
 
     // From list product id, then get all infor
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getListProductByID(arrProductCartId: ArrayList<ProductCart>) {
         var product: ProductCartDetail
         var priceCart = 0.00
         productCartList.clear()
+        val current = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("HH")
+        val hours = current.format(dateFormatter).toLong()
         for (productCart in arrProductCartId) {
-            println("vo toi day luon nhi")
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
@@ -151,9 +158,18 @@ class CartActivity : AppCompatActivity() {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        println("co vo day lay thong tin k")
                         val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        if (hours >= 7 && hours < 11)
+                            price = price * PhysicsConstants.coefficientMorning
+                        else if (hours >= 11 && hours < 13)
+                            price = (price * PhysicsConstants.coefficientLunch).toLong()
+                        else if (hours >= 13 && hours < 18)
+                            price = (price * PhysicsConstants.coefficientAft).toLong()
+                        else if (hours >= 18 && hours <= 23)
+                            price = (price * PhysicsConstants.coefficientNight).toLong()
+                        else if (hours >= 0 && hours < 7)
+                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
                         val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
                         val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
                         val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
@@ -161,7 +177,6 @@ class CartActivity : AppCompatActivity() {
                             ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
 
-                        println("name of product : $name")
                         product =
                             ProductCartDetail(
                                 productCart.id,
@@ -183,13 +198,11 @@ class CartActivity : AppCompatActivity() {
                         tv_price_cart.text = priceTxt
 
                         productCartList.add(product)
-                        println("size mang cart:" + productCartList.size)
                         productCartAdapter?.notifyDataSetChanged()
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    println("lay 1 sp k thanh cong")
                 }
             }
             query.addValueEventListener(valueEventListener)
