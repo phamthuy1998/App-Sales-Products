@@ -36,12 +36,12 @@ class EditProfileActivity : AppCompatActivity() {
 
     // get Infor user had entered
     fun getInforInput(): Int {
-        var name = edt_name_edit.text?.trim().toString()
-        var phone = edt_phone_edit.text?.trim().toString()
-        var birthday = edt_birthday_sign_up.text?.trim().toString()
-        var oldPassword = edt_old_pasword_edit.text?.trim().toString()
-        var newPassword = edt_new_pasword_edit.text?.trim().toString()
-        var reNewPassword = edt_retype_new_pasword_edit.text?.trim().toString()
+        val name = edt_name_edit.text?.trim().toString()
+        val phone = edt_phone_edit.text?.trim().toString()
+        val birthday = edt_birthday_sign_up.text?.trim().toString()
+        val oldPassword = edt_old_pasword_edit.text?.trim().toString()
+        val newPassword = edt_new_pasword_edit.text?.trim().toString()
+        val reNewPassword = edt_retype_new_pasword_edit.text?.trim().toString()
         changePassword = ck_change_pasword.isChecked
         var gender = getString(R.string.rab_male)
         if (rad_male_edit.isChecked == true) {
@@ -147,8 +147,6 @@ class EditProfileActivity : AppCompatActivity() {
     // and it's have different infor, check it
     fun isEditProfile(): Boolean {
         if (!user?.name.equals(userInput?.name) ||
-            !user?.phone.equals(userInput?.phone) ||
-            !user?.dayofbirth.equals(userInput?.dayofbirth) ||
             changePassword == true ||
             user?.gender?.compareTo(userInput?.gender!!, true) != 0
         ) {

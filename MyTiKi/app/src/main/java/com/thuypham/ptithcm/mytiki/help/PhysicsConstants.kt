@@ -88,6 +88,17 @@ object PhysicsConstants {
     const val ORDER_ID_USER = "id_user"
 
     //Order
+    const val COMMENT = "COMMENT"
+    const val COMMENT_ID = "id"
+    const val DATE_CMT = "date_cmt"
+    const val USER_ID_CMT = "user_cmt"
+    const val CONTENT_CMT = "content"
+    const val IMAGE_CMT = "image_cmt"
+    const val CMT_PRODUCT_ID = "product_id"
+    const val CMT_STAR = "star"
+
+
+    //Order detail
     const val ORDER_DETAIL = "ORDER_DETAIL"
     const val ORDER_DETAIL_ID = "id"
     const val ORDER_DETAIL_PRODUCT_IMAGE = "image_product"

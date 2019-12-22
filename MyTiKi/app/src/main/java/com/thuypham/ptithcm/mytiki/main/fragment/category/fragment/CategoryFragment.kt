@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -28,6 +30,8 @@ import com.thuypham.ptithcm.mytiki.main.fragment.user.login.activity.SignInUpAct
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.no_wifi.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class CategoryFragment : Fragment() {
@@ -48,6 +52,7 @@ class CategoryFragment : Fragment() {
         return inflater.inflate(R.layout.category_fragment, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         inIt()
@@ -68,23 +73,22 @@ class CategoryFragment : Fragment() {
         }
 
 //        mDatabaseReference = mDatabase!!.reference
-//        val currentUserDb = mDatabaseReference!!.child(PhysicsConstants.PRODUCT).push()
-//        currentUserDb.child(PhysicsConstants.PRODUCT_ID).setValue(id)
-//        currentUserDb.child(PhysicsConstants.NAME_PRODUCT).setValue("Tai Nghe Nhét Tai Mi Basic Xiaomi HSEJ03JY - Hàng Chính Hãng")
-//        currentUserDb.child(PhysicsConstants.PRICE_PRODUCT).setValue(102999)
-//        currentUserDb.child(PhysicsConstants.IMAGE_PRODUCT).setValue("https://salt.tikicdn.com/cache/200x200/ts/product/6a/8d/4f/f3a5f3ebd9b2e69406821f922cfcc537.jpg")
-//        currentUserDb.child(PhysicsConstants.INFOR_PRODUCT).setValue("Tần số: 20 - 20.000 Hz\n" +
-//                "\n" +
-//                "Trở kháng: 32 ohm\n" +
-//                "\n" +
-//                "Lõi dây bằng đồng tráng men\n" +
-//                "\n" +
-//                "Nút nhét làm bằng silicon mềm mại\n" +
-//                "\n" +
-//                "Độ phân giải cao cho chất lượng âm thanh chính xác")
-//        currentUserDb.child(PhysicsConstants.PRODUCT_COUNT).setValue(10)
-//        currentUserDb.child(PhysicsConstants.ID_CATEGORY_PRODUCT).setValue("-Lmwzjdledim2IDvaAy-")
-
+//        val currentUserDb = mDatabaseReference.child(PhysicsConstants.COMMENT).push()
+//        currentUserDb.child(PhysicsConstants.COMMENT_ID).setValue(currentUserDb.key)
+//        val current = LocalDateTime.now()
+//        val dateFormatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
+//        val dateFormatted = current.format(dateFormatter)
+//        currentUserDb.child(PhysicsConstants.DATE_CMT).setValue(dateFormatted)
+//        val user: FirebaseUser? = mAuth?.getCurrentUser();
+//        if (user != null) {
+//            val uid = user!!.uid
+//            currentUserDb.child(PhysicsConstants.USER_ID_CMT).setValue(uid)
+//        }
+//
+//        currentUserDb.child(PhysicsConstants.CONTENT_CMT).setValue("Sản phẩm rất đẹp, giao hàng đúng")
+//        currentUserDb.child(PhysicsConstants.IMAGE_CMT).setValue("123")
+//        currentUserDb.child(PhysicsConstants.CMT_PRODUCT_ID).setValue("-Ln03ff43JZkvpcaSm12")
+//        currentUserDb.child(PhysicsConstants.CMT_STAR).setValue(3)
         addEvent()
         getCartCount()
     }
@@ -132,6 +136,7 @@ class CategoryFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addEvent() {
         btn_try_connect.setOnClickListener(){
             view?.let { it1 -> onViewCreated(it1,null) }

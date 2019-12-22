@@ -187,6 +187,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getListProduct() {
+        var  dem =0
         val query = mDatabase!!
             .reference
             .child(PhysicsConstants.PRODUCT)
@@ -210,6 +211,9 @@ class HomeFragment : Fragment() {
                         val product =
                             Product(id, name, price, image, infor, product_count, id_category, sale)
                         productList.add(product)
+                        dem++
+                        if(dem==15)
+                            break
 
                     }
                     if (!productList.isEmpty()) {
