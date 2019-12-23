@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_product_cart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/colorWhiteBG">
+
+    <ImageView
+        android:id="@+id/iv_product_cart"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorWhiteBG"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_name_product_cart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/tv_name"
+        android:textColor="@color/colorTextHint"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_del_item_cart"
+        app:layout_constraintStart_toEndOf="@id/iv_product_cart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btn_del_item_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="15dp"
+        android:src="@drawable/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_price_product_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/_1_290_000"
+        android:textColor="@color/colorTextHint"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_product_cart"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_product_cart" />
+
+    <TextView
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorGrayBg"
+        android:paddingStart="16dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="5dp"
+        android:text="@string/btn_minus"
+        android:textColor="@color/colorGrayStar"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/tv_price_product_cart"
+        app:layout_constraintTop_toBottomOf="@id/tv_price_product_cart" />
+
+    <TextView
+        android:id="@+id/tv_number_pr_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grayLight"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:text="@string/_1"
+        android:textColor="@color/colorGrayStar"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/btn_minus"
+        app:layout_constraintTop_toTopOf="@id/btn_minus" />
+
+
+    <TextView
+        android:id="@+id/btn_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGrayBg"
+        android:paddingStart="16dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="5dp"
+        android:text="@string/btn_plus"
+        android:textColor="@color/colorGrayStar"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/tv_number_pr_cart"
+        app:layout_constraintTop_toTopOf="@id/tv_number_pr_cart" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrayBg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

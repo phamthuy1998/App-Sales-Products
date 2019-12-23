@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_add_adress"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorBlue">
+
+        <ImageView
+            android:id="@+id/btn_cancel_add_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:linksClickable="true"
+            android:onClick="onClickQuiteCart"
+            android:padding="16dp"
+            android:tint="@color/colorWhiteBG"
+            app:srcCompat="@drawable/ic_left_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_new_address1"
+            android:textColor="@color/colorWhiteBG"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/TextLabel">
+
+        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+            android:id="@+id/edt_name_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name_sign_up"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            android:theme="@style/EditTextTheme"
+            app:clearButtonMode="whileEditing" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/TextLabel">
+
+        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+            android:id="@+id/edt_phone_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:theme="@style/EditTextTheme"
+            app:clearButtonMode="whileEditing" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/TextLabel">
+
+        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+            android:id="@+id/edt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_address"
+            android:inputType="text"
+            android:singleLine="true"
+            android:theme="@style/EditTextTheme"
+            app:clearButtonMode="whileEditing" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/btn_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_btn_sign_in"
+        android:text="@string/add_address"
+        android:textColor="@android:color/white" />
+
+
+</LinearLayout>
