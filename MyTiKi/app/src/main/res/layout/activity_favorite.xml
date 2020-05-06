@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.product.activity.FavoriteActivity">
+    tools:context=".feature.customer.product.FavoriteActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_favorite"
@@ -36,8 +36,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:maxLines="1"
                 android:background="@drawable/edit_seach_bg"
+                android:maxLines="1"
                 android:padding="8dp"
                 android:text="@string/favorite_product"
                 android:textColor="@color/colorTextHint"

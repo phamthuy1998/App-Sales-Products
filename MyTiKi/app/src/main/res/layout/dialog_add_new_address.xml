@@ -42,7 +42,7 @@
         android:layout_marginEnd="16dp"
         android:theme="@style/TextLabel">
 
-        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+        <com.thuypham.ptithcm.mytiki.widget.EditTextField
             android:id="@+id/edt_name_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:layout_marginEnd="16dp"
         android:theme="@style/TextLabel">
 
-        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+        <com.thuypham.ptithcm.mytiki.widget.EditTextField
             android:id="@+id/edt_phone_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
         android:layout_marginEnd="16dp"
         android:theme="@style/TextLabel">
 
-        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+        <com.thuypham.ptithcm.mytiki.widget.EditTextField
             android:id="@+id/edt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

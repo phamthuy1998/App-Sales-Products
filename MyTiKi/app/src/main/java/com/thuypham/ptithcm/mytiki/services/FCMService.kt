@@ -1,26 +1,22 @@
 package com.thuypham.ptithcm.mytiki.services
 
-import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.media.Ringtone
 import android.media.RingtoneManager
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.thuypham.ptithcm.mytiki.MainActivity
-import android.content.Context.NOTIFICATION_SERVICE
-import android.app.NotificationManager
-import android.R
-import android.app.NotificationChannel
-import android.content.Context
-import android.os.Build
+import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 
 
 class FCMService : FirebaseMessagingService() {
 
-    override fun onMessageReceived(p0: RemoteMessage?) {
+    override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
 
         Log.d("Tag", "Recive message=${p0?.notification?.title}")

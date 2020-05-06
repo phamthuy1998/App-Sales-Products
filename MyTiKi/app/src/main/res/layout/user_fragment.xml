@@ -6,7 +6,7 @@
 
         <variable
             name="userViewModel"
-            type="com.thuypham.ptithcm.mytiki.main.fragment.user.viewmodel.UserViewModel" />
+            type="com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

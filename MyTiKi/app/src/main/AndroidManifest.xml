@@ -15,15 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".main.fragment.user.order.activity.OrderDetailActivity"></activity>
-        <activity android:name=".main.fragment.user.order.activity.AddressActivity" />
-        <activity android:name=".main.fragment.user.cart.activity.CartActivity" />
-        <activity android:name=".main.fragment.category.activity.ProductOfCategory" />
-        <activity android:name=".main.product.activity.FavoriteActivity" />
-        <activity android:name=".main.product.activity.ProductDetailActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderDetailActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.AddressActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.ProductOfCategoryActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity" />
+        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.ProductDetailActivity" />
         <activity
-            android:name=".Launcher"
-            android:screenOrientation="portrait"
+            android:name=".feature.splash.SplashAcitivity"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,18 +32,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
+            android:name=".feature.customer.main.MainActivity"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".main.fragment.user.order.activity.OrderActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderActivity"
+            android:screenOrientation="fullSensor" />
         <activity
-            android:name=".main.fragment.user.login.activity.SignInUpActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity"
+            android:screenOrientation="fullSensor" />
         <activity
-            android:name=".main.fragment.user.login.activity.EditProfileActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.thuypham.ptithcm.mytiki.feature.authentication.EditProfileActivity"
+            android:screenOrientation="fullSensor" />
 
         <service
             android:name=".services.FCMService"

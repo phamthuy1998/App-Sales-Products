@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,7 +11,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/TextLabel">
 
-        <com.thuypham.ptithcm.mytiki.viewsHelp.EditTextField
+        <com.thuypham.ptithcm.mytiki.widget.EditTextField
             android:id="@+id/edt_birthday_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:padding="10dp"
-        android:src="@drawable/ic_edit" />
+        app:srcCompat="@drawable/ic_edit" />
 
 </FrameLayout>

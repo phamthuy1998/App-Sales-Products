@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhiteBG"
-    tools:context=".main.fragment.category.activity.ProductOfCategory">
+    tools:context=".feature.customer.product.ProductOfCategoryActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_search_product_category"

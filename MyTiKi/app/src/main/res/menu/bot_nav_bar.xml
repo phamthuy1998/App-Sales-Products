@@ -17,11 +17,6 @@
         android:icon="@drawable/ic_select_search"
         android:title="@string/bot_nav_search" />
     <item
-        android:id="@+id/bot_nav_notification"
-        android:contentDescription="@string/bot_nav_notification"
-        android:icon="@drawable/ic_select_notification"
-        android:title="@string/bot_nav_notification" />
-    <item
         android:id="@+id/bot_nav_user"
         android:contentDescription="@string/bot_nav_user"
         android:icon="@drawable/ic_select_user"
