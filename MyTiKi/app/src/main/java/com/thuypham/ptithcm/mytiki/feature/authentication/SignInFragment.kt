@@ -1,15 +1,14 @@
 package com.thuypham.ptithcm.mytiki.feature.authentication
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-
 import com.thuypham.ptithcm.mytiki.databinding.FragmentSignInBinding
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SignInFragment : Fragment() {
@@ -17,11 +16,7 @@ class SignInFragment : Fragment() {
     private var mAuth: FirebaseAuth? = null
 
 
-    val userViewModel: UserViewModel by lazy {
-        ViewModelProviders
-                .of(activity!!)
-                .get(UserViewModel::class.java)
-    }
+    val userViewModel: UserViewModel by viewModel()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,

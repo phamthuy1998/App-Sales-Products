@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
 import com.thuypham.ptithcm.mytiki.feature.customer.product.ProductDetailActivity
-import com.thuypham.ptithcm.mytiki.data.Product
 import kotlinx.android.synthetic.main.item_product_favorite.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -46,9 +46,9 @@ class ProductDetailApdater(
                 .load(product.image)
                 .into(itemView.iv_pr_like)
 
-            // Show or hide text view out of product
-            if (product.product_count > 0.0) itemView.tv_like_out_product.visibility = View.GONE
-            else itemView.tv_like_out_product.visibility = View.VISIBLE
+//            // Show or hide text view out of product
+//            if (product.product_count > 0.0) itemView.tv_like_out_product.visibility = View.GONE
+//            else itemView.tv_like_out_product.visibility = View.VISIBLE
 
             // set on click item product
             itemView.ll_product_like.setOnClickListener {

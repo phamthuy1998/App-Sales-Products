@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.feature.customer.order.adapter
+package com.thuypham.ptithcm.mytiki.feature.address.adapter
 
 import android.app.Dialog
 import android.content.Context
@@ -13,8 +13,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.Address
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
+import com.thuypham.ptithcm.mytiki.data.Address
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.isPhoneValid
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
 import kotlinx.android.synthetic.main.item_address.view.*
@@ -143,7 +143,7 @@ class AddressAdapter(
                     mDatabase = FirebaseDatabase.getInstance()
                     val query = mDatabase!!
                         .reference
-                        .child(PhysicsConstants.ADDRESS)
+                        .child(Constant.ADDRESS)
                         .child(user.uid)
                         .child(addressObj.id!!)
 
@@ -176,7 +176,7 @@ class AddressAdapter(
             var mDatabase: FirebaseDatabase? = FirebaseDatabase.getInstance()
             var mDatabaseReference: DatabaseReference = mDatabase!!.reference
             if (address.id != null) {
-                val currentUserDb = mDatabaseReference.child(PhysicsConstants.ADDRESS)
+                val currentUserDb = mDatabaseReference.child(Constant.ADDRESS)
                     .child(user.uid)
                     .child(address.id!!)
 

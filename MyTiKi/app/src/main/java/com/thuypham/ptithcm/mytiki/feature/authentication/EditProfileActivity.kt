@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.*
-import com.thuypham.ptithcm.mytiki.data.User
-import kotlinx.android.synthetic.main.activity_edit_profile.*
-import kotlinx.android.synthetic.main.layout_input_birthday.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.User
+import com.thuypham.ptithcm.mytiki.util.*
+import kotlinx.android.synthetic.main.activity_edit_profile.*
+import kotlinx.android.synthetic.main.layout_input_birthday.*
 import kotlinx.android.synthetic.main.loading_layout.*
 
 
@@ -21,152 +21,162 @@ class EditProfileActivity : AppCompatActivity() {
     private var user: User? = null
     private var changePassword: Boolean = false
 
-    // to save infor that user had entered to edit profile
+    // to save info that user had entered to edit profile
     private var userInput: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.thuypham.ptithcm.mytiki.R.layout.activity_edit_profile)
+        setContentView(R.layout.activity_edit_profile)
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         mAuth = FirebaseAuth.getInstance()
         setTextDefault()
         addEvent()
     }
 
     // get Infor user had entered
-    fun getInforInput(): Int {
-        var name = edt_name_edit.text?.trim().toString()
-        var phone = edt_phone_edit.text?.trim().toString()
-        var birthday = edt_birthday_sign_up.text?.trim().toString()
-        var oldPassword = edt_old_pasword_edit.text?.trim().toString()
-        var newPassword = edt_new_pasword_edit.text?.trim().toString()
-        var reNewPassword = edt_retype_new_pasword_edit.text?.trim().toString()
+    private fun getInfoInput(): Int {
+        val name = edt_name_edit.text?.trim().toString()
+        val phone = edt_phone_edit.text?.trim().toString()
+        val birthday = edt_birthday_sign_up.text?.trim().toString()
+        val oldPassword = edt_old_pasword_edit.text?.trim().toString()
+        val newPassword = edt_new_pasword_edit.text?.trim().toString()
+        val reNewPassword = edt_retype_new_pasword_edit.text?.trim().toString()
         changePassword = ck_change_pasword.isChecked
         var gender = getString(R.string.rab_male)
-        if (rad_male_edit.isChecked == true) {
-            println("chon nam")
+        if (rad_male_edit.isChecked) {
             gender = getString(R.string.rab_male)
-        } else if (rad_female_edit.isChecked == true) {
+        } else if (rad_female_edit.isChecked) {
             gender = getString(R.string.female)
-            println("chon nu")
         }
 
         // check user input correct?
         if (name.isEmpty()) {
-            edt_name_edit.error = getString(com.thuypham.ptithcm.mytiki.R.string.error_input_name_not_entered)
+            edt_name_edit.error =
+                getString(R.string.error_input_name_not_entered)
             Toast.makeText(
-                applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_input_name_not_entered),
+                applicationContext,
+                getString(R.string.error_input_name_not_entered),
                 Toast.LENGTH_LONG
             ).show()
         } else if (phone.isEmpty()) {
             Toast.makeText(
-                applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_input_name_not_entered),
+                applicationContext,
+                getString(R.string.error_input_name_not_entered),
                 Toast.LENGTH_LONG
             ).show()
-            edt_phone_edit.error = getString(com.thuypham.ptithcm.mytiki.R.string.error_input_name_not_entered)
-        } else if (isPhoneValid(phone) == false) {
+            edt_phone_edit.error =
+                getString(R.string.error_input_name_not_entered)
+        } else if (!isPhoneValid(phone)) {
             Toast.makeText(
-                applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_input_phone_not_correct),
+                applicationContext,
+                getString(R.string.error_input_phone_not_correct),
                 Toast.LENGTH_LONG
             ).show()
-            edt_phone_edit.error = getString(com.thuypham.ptithcm.mytiki.R.string.error_input_phone_not_correct)
+            edt_phone_edit.error =
+                getString(R.string.error_input_phone_not_correct)
         }
         // If check change password
-        else if (changePassword == true) {
+        else if (changePassword) {
             // if old password is empty
             if (oldPassword.isEmpty()) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_old_passwords_is_empty),
+                    applicationContext,
+                    getString(R.string.error_old_passwords_is_empty),
                     Toast.LENGTH_LONG
                 ).show()
                 edt_old_pasword_edit.error =
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_old_passwords_is_empty)
+                    getString(R.string.error_old_passwords_is_empty)
             }
             // If new password is empty
             else if (newPassword.isEmpty()) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_new_pw_empty),
+                    applicationContext,
+                    getString(R.string.error_new_pw_empty),
                     Toast.LENGTH_LONG
                 ).show()
-                edt_new_pasword_edit.error = getString(com.thuypham.ptithcm.mytiki.R.string.error_new_pw_empty)
+                edt_new_pasword_edit.error =
+                    getString(R.string.error_new_pw_empty)
             }
             //if retype new password is empty
             else if (reNewPassword.isEmpty()) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_re_new_pw_empty),
-                    Toast.LENGTH_LONG
+                    applicationContext, getString(R.string.error_re_new_pw_empty), Toast.LENGTH_LONG
                 ).show()
                 edt_retype_new_pasword_edit.error =
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_re_new_pw_empty)
+                    getString(R.string.error_re_new_pw_empty)
             }
             //if old password is incorrect
-            else if (!oldPassword.equals(user?.password)) {
-                println("Mat khau cu edit: ${user?.password}")
+            else if (oldPassword != user?.password) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_old_passwords_incorrect),
+                    applicationContext,
+                    getString(R.string.error_old_passwords_incorrect),
                     Toast.LENGTH_LONG
                 ).show()
                 edt_old_pasword_edit.error =
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_old_passwords_incorrect)
+                    getString(R.string.error_old_passwords_incorrect)
             }
             // if new password is not valid, like not length, too weak...
-            else if (isPasswordValid(newPassword) == false) {
+            else if (!isPasswordValid(newPassword)) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_new_pw_not_length),
+                    applicationContext,
+                    getString(R.string.error_new_pw_not_length),
                     Toast.LENGTH_LONG
                 ).show()
-                edt_new_pasword_edit.error = getString(com.thuypham.ptithcm.mytiki.R.string.error_new_pw_not_length)
+                edt_new_pasword_edit.error =
+                    getString(R.string.error_new_pw_not_length)
             }
             // if new password and retype new password is not match
-            else if (!newPassword.equals(reNewPassword)) {
+            else if (newPassword != reNewPassword) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.error_passwords_do_not_match),
+                    applicationContext,
+                    getString(R.string.error_passwords_do_not_match),
                     Toast.LENGTH_LONG
                 ).show()
                 edt_retype_new_pasword_edit.error =
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_passwords_do_not_match)
+                    getString(R.string.error_passwords_do_not_match)
             } else {
                 userInput = User(
+                    mAuth?.currentUser?.uid,
                     name,
                     phone,
                     user?.email,
                     newPassword,
                     birthday,
                     gender,
-                    user?.dayCreateAcc
+                    user?.daycreate,
+                    1
                 )
                 // user has changed password
-                return 1;
+                return 1
             }
         }
         // if didn't change password
         else {
             userInput = User(
+                mAuth?.currentUser?.uid,
                 name,
                 phone,
                 user?.email,
                 user?.password,
                 birthday,
                 gender,
-                user?.dayCreateAcc
+                user?.daycreate
             )
             //user not change password
-            return 2;
+            return 2
         }
 
         //has some error of user input
-        return -1;
+        return -1
     }
 
-    // Compare infor of user and user just input, if it's same same then not save
-    // and it's have different infor, check it
-    fun isEditProfile(): Boolean {
-        if (!user?.name.equals(userInput?.name) ||
-            !user?.phone.equals(userInput?.phone) ||
-            !user?.dayofbirth.equals(userInput?.dayofbirth) ||
-            changePassword == true ||
-            user?.gender?.compareTo(userInput?.gender!!, true) != 0
+    // Compare info of user and user just input, if it's same same then not save
+    // and it's have different info, check it
+    private fun isEditProfile(): Boolean {
+        if (!(user?.name.equals(userInput?.name) && user?.phone.equals(userInput?.phone) && user?.birthday.equals(
+                userInput?.birthday
+            ) && !changePassword && user?.gender?.compareTo(userInput?.gender!!, true) == 0)
         ) {
             return true
         }
@@ -174,42 +184,38 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun setTextDefault() {
-        var name = ""
-        var gender = ""
-        var dayCreate = ""
-        var birthday = ""
-        var phone = ""
-        var password = ""
+        var name: String
+        var gender: String
+        var dayCreate: String
+        var birthday: String
+        var phone: String
+        var password: String
 
-        // get infor of user from firebase
+        // get info of user from firebase
         val mUser = mAuth!!.currentUser
         val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
         val email = mUser.email
-        println("email edit: $email")
         mUserReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                name = snapshot.child(PhysicsConstants.NAME).value as String
-                println("name edit: $name")
-                gender = snapshot.child(PhysicsConstants.GENDER).value as String
-                println("gender edit: $gender")
-                dayCreate = snapshot.child(PhysicsConstants.DAY_CREATE).value as String
-                birthday = snapshot.child(PhysicsConstants.BIRTHDAY).value as String
-                phone = snapshot.child(PhysicsConstants.PHONE).value as String
-                password = snapshot.child(PhysicsConstants.PASSWORD).value as String
+                name = snapshot.child(Constant.NAME).value as String
+                gender = snapshot.child(Constant.GENDER).value as String
+                dayCreate = snapshot.child(Constant.DAY_CREATE).value as String
+                birthday = snapshot.child(Constant.BIRTHDAY).value as String
+                phone = snapshot.child(Constant.PHONE).value as String
+                password = snapshot.child(Constant.PASSWORD).value as String
                 edt_name_edit.setText(name)
                 edt_phone_edit.setText(phone)
                 edt_birthday_sign_up.setText(birthday)
 
                 if (gender.compareTo("Male", true) == 0 || gender.compareTo("Nam", true) == 0) {
                     rad_male_edit.isChecked = true
-                    println("nam edit")
                 }
                 if (gender.compareTo("Female", true) == 0 || gender.compareTo("Nữ", true) == 0) {
                     rad_female_edit.isChecked = true
-                    println("Nu edit")
                 }
-                // save infor into user
+                // save info into user
                 user = User(
+                    mUser.uid,
                     name,
                     phone,
                     email,
@@ -243,21 +249,21 @@ class EditProfileActivity : AppCompatActivity() {
 
 
     fun onClickEditProfile(view: View) {
-        //check uer had editted profile yet?
+        //check uer had edited profile yet?
         // if not, show toast that user had not changed data
 
         //If user checked to change password
-        if (getInforInput() == 1) {
-            // if userprofile didn't change
-            if (isEditProfile() == false) {
+        if (getInfoInput() == 1) {
+            // if user's profile didn't change
+            if (!isEditProfile()) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_not_change),
+                    applicationContext,
+                    getString(R.string.user_not_change),
                     Toast.LENGTH_LONG
                 ).show()
-                println("khong co thay doi 1")
             }
 
-            // if yes, check infor that user had entered
+            // if yes, check info that user had entered
             // including change infor user and update password
             else {
                 // show progress
@@ -268,110 +274,94 @@ class EditProfileActivity : AppCompatActivity() {
 
                 updatePassword(userInput?.password!!)
                 updateUser(userInput)
-                println("user co thay doi 1")
             }
         }
 
         // if user didn't check(checkbox) to change password
-        if (getInforInput() == 2) {
-            if (isEditProfile() == false) {
+        if (getInfoInput() == 2) {
+            if (!isEditProfile()) {
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_not_change),
+                    applicationContext,
+                    getString(R.string.user_not_change),
                     Toast.LENGTH_LONG
                 ).show()
-                println("khong co thay doi 2")
             }
             // if yes, check infor that user had entered
-            // save infor change of user
-            else {
-                updateUser(userInput)
-                println("user co thay doi 2")
-            }
+            // save info change of user
+            else updateUser(userInput)
         }
 
     }
 
-    fun updatePassword(password: String) {
-        println("vo thay doi password dang nhap")
+    private fun updatePassword(password: String) {
         val user = FirebaseAuth.getInstance().currentUser
         user!!.updatePassword(password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                println("Update Success")
                 Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_change_success),
+                    applicationContext,
+                    getString(R.string.user_change_success),
                     Toast.LENGTH_LONG
                 ).show()
-                val sharedPreference: SharedPreference = SharedPreference(applicationContext)
-                sharedPreference.removeValue(PhysicsConstants.PASSWORD)
-                sharedPreference.save(PhysicsConstants.PASSWORD, password)
-
-            } else {
-                println("Error Update")
-                Toast.makeText(
-                    applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_change_error_pw),
-                    Toast.LENGTH_LONG
-                ).show()
+                val sharedPreference = SharedPreference(applicationContext)
+                sharedPreference.removeValue(Constant.PASSWORD)
+                sharedPreference.save(Constant.PASSWORD, password)
             }
-
-            // hide progress
             progress.visibility = View.GONE
         }
     }
 
 
-    fun updateUser(user: User?) {
+    private fun updateUser(user: User?) {
         progress.visibility = View.VISIBLE
         val userID = mAuth?.currentUser?.uid
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference(PhysicsConstants.USERS).child(userID!!)
-        var userMap = HashMap<String, String>()
-        userMap[PhysicsConstants.NAME] = user?.name!!
-        userMap[PhysicsConstants.GENDER] = user?.gender!!
-        userMap[PhysicsConstants.BIRTHDAY] = user?.dayofbirth!!
-        userMap[PhysicsConstants.PASSWORD] = user?.password!!
-        userMap[PhysicsConstants.PHONE] = user?.phone!!
-        userMap[PhysicsConstants.EMAIL] = user?.email!!
-        userMap[PhysicsConstants.DAY_CREATE] = user?.dayCreateAcc!!
-        mDatabaseReference!!.setValue(userMap).addOnCompleteListener({ task ->
+        mDatabaseReference =
+            FirebaseDatabase.getInstance().getReference(Constant.USER).child(userID!!)
+        val userMap = HashMap<String, String>()
+        userMap[Constant.NAME] = user?.name!!
+        userMap[Constant.GENDER] = user.gender!!
+        userMap[Constant.BIRTHDAY] = user.birthday!!
+        userMap[Constant.PASSWORD] = user.password!!
+        userMap[Constant.PHONE] = user.phone!!
+        userMap[Constant.EMAIL] = user.email!!
+        userMap[Constant.DAY_CREATE] = user.daycreate!!
+        mDatabaseReference!!.setValue(userMap).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 updatePasswordSuccess()
             } else {
                 updatePasswordFail()
             }
             progress.visibility = View.GONE
-            // hide layout editpassword
+            // hide layout edit password
             ll_edit_profile.visibility = View.GONE
             edt_old_pasword_edit.setText("")
             edt_new_pasword_edit.setText("")
             edt_retype_new_pasword_edit.setText("")
-            ck_change_pasword.isChecked= false
-        })
+            ck_change_pasword.isChecked = false
+        }
     }
 
 
-    //user infor had been updated succeess
-    fun updatePasswordSuccess() {
+    //user info had been updated success
+    private fun updatePasswordSuccess() {
         println("success Update user")
         Toast.makeText(
-            applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_change_success),
+            applicationContext, getString(R.string.user_change_success),
             Toast.LENGTH_LONG
         ).show()
     }
 
-    //user infor had been updated fail
-    fun updatePasswordFail() {
+    //user info had been updated fail
+    private fun updatePasswordFail() {
         println("Error Update user")
         Toast.makeText(
-            applicationContext, getString(com.thuypham.ptithcm.mytiki.R.string.user_update_user_error),
+            applicationContext,
+            getString(R.string.user_update_user_error),
             Toast.LENGTH_LONG
         ).show()
-    }
-
-    fun updateUserAndPassword() {
-
     }
 
     // Show calendar to select birthday
-    fun showCalendar() {
+    private fun showCalendar() {
         val newFragment = DatePickerFragment()
         // Show the date picker dialog
         newFragment.show(supportFragmentManager, "Choose a date of birth")

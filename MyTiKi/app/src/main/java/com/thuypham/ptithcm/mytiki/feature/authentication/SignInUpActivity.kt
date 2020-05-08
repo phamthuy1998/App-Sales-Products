@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -13,34 +12,27 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.User
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.SharedPreference
 import com.thuypham.ptithcm.mytiki.util.isEmailValid
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SignInUpActivity : AppCompatActivity() {
     private var mDatabaseReference: DatabaseReference? = null
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
-    val userViewModel: UserViewModel by lazy {
-        ViewModelProviders
-                .of(this)
-                .get(UserViewModel::class.java)
-    }
+    val userViewModel: UserViewModel by viewModel()
     var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in_up)
-        ViewModelProviders
-                .of(this)
-                .get(UserViewModel::class.java)
-
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         mAuth = FirebaseAuth.getInstance()
         showFragment(SignInUpFragment())
     }
@@ -131,19 +123,19 @@ class SignInUpActivity : AppCompatActivity() {
     // the infor will be save in SharedPreference
     private fun loginSuccess(email: String, password: String) {
         val sharedPreference: SharedPreference = SharedPreference(applicationContext)
-        sharedPreference.save(PhysicsConstants.IS_LOGIN, true)
-        sharedPreference.save(PhysicsConstants.EMAIL_OR_PHONE, email)
-        sharedPreference.save(PhysicsConstants.PASSWORD, password)
+        sharedPreference.save(Constant.IS_LOGIN, true)
+        sharedPreference.save(Constant.EMAIL_OR_PHONE, email)
+        sharedPreference.save(Constant.PASSWORD, password)
     }
 
     // if login fail, we will remove all of infor that you had entered
     // the infor will be remove in SharedPreference
     private fun loginFalse() {
         val sharedPreference = SharedPreference(applicationContext)
-        sharedPreference.removeValue(PhysicsConstants.EMAIL_OR_PHONE)
-        sharedPreference.removeValue(PhysicsConstants.IS_LOGIN)
-        sharedPreference.removeValue(PhysicsConstants.PASSWORD)
-        sharedPreference.save(PhysicsConstants.IS_LOGIN, false)
+        sharedPreference.removeValue(Constant.EMAIL_OR_PHONE)
+        sharedPreference.removeValue(Constant.IS_LOGIN)
+        sharedPreference.removeValue(Constant.PASSWORD)
+        sharedPreference.save(Constant.IS_LOGIN, false)
     }
 
     // if click back to sign, will change view from  forgotpasswowd to user fragment

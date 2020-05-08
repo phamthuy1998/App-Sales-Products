@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.Order
+import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderDetailActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.Order
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderDetailActivity
 import kotlinx.android.synthetic.main.item_order.view.*
 
 class OrderAdapter(

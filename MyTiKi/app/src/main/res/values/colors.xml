@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlue">#05B6F0</color>
+    <color name="colorBlueDark">#0F69B1</color>
     <color name="colorNavIconSelected">#118CEB</color>
     <color name="colorNavIcon">#80000000</color>
     <color name="textColorNav">#B30E0D0D</color>

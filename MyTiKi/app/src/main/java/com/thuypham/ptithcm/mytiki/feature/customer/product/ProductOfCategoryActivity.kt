@@ -21,7 +21,7 @@ import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import kotlinx.android.synthetic.main.activity_product_of_category.*
 import kotlinx.android.synthetic.main.ll_cart.*
@@ -107,7 +107,7 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
             var cartCount = 0
 
@@ -163,8 +163,8 @@ class ProductOfCategoryActivity : AppCompatActivity() {
     private fun getListProduct(idCategory: String) {
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.PRODUCT)
-            .orderByChild(PhysicsConstants.ID_CATEGORY_PRODUCT)
+            .child(Constant.PRODUCT)
+            .orderByChild(Constant.ID_CATEGORY_PRODUCT)
             .equalTo(idCategory)
 
         val valueEventListener = object : ValueEventListener {
@@ -175,16 +175,16 @@ class ProductOfCategoryActivity : AppCompatActivity() {
                     var i = 0
                     var j = 0
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
-                        val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
-                        val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                        val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                        val id = ds.child(Constant.PRODUCT_ID).value as String
+                        val name = ds.child(Constant.NAME_PRODUCT).value as String
+                        val price = ds.child(Constant.PRICE_PRODUCT).value as Long
+                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
+                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                         val id_category =
-                            ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
-                        val sold = ds.child(PhysicsConstants.PRODUCT_SOLD).value as Long
+                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
+                        val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
 
                         val product =
                             Product(
@@ -272,8 +272,8 @@ class ProductOfCategoryActivity : AppCompatActivity() {
     private fun getDataAVT(idCategory: String) {
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.ADVERTIEMENT)
-            .orderByChild(PhysicsConstants.AVT_ID_CATEGORY)
+            .child(Constant.SLIDE)
+            .orderByChild(Constant.AVT_ID_CATEGORY)
             .equalTo(idCategory)
 
         // Show progressbar
@@ -284,12 +284,12 @@ class ProductOfCategoryActivity : AppCompatActivity() {
                 if (dataSnapshot.exists()) {
                     arrAdvertisement.clear()
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.CATEGORY_ID).value as String
-                        val name = ds.child(PhysicsConstants.NAME_AVT).value as String
-                        val image = ds.child(PhysicsConstants.IMAGE_AVT).value as String
-                        val id_category = ds.child(PhysicsConstants.AVT_ID_CATEGORY).value as String
+                        val id = ds.child(Constant.CATEGORY_ID).value as String
+                        val name = ds.child(Constant.NAME_AVT).value as String
+                        val image = ds.child(Constant.IMAGE_AVT).value as String
+                        val id_category = ds.child(Constant.AVT_ID_CATEGORY).value as String
                         val name_category =
-                            ds.child(PhysicsConstants.AVT_NAME_CATEGORY).value as String
+                            ds.child(Constant.AVT_NAME_CATEGORY).value as String
 
                         val advertisement =
                             Advertisement(

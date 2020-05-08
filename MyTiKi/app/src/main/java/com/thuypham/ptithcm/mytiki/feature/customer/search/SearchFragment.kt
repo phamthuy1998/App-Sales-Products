@@ -12,7 +12,7 @@ import com.thuypham.ptithcm.mytiki.R
 import kotlinx.android.synthetic.main.search_fragment.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
 import com.thuypham.ptithcm.mytiki.data.Product
 import java.text.Normalizer
@@ -89,23 +89,23 @@ class SearchFragment : Fragment() {
         if (!keySearch.isEmpty()) {
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.PRODUCT)
+                .child(Constant.PRODUCT)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         listProductSearch.clear()
                         for (ds in dataSnapshot.children) {
-                            val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
-                            val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                            val price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
-                            val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                            val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
+                            val id = ds.child(Constant.PRODUCT_ID).value as String
+                            val name = ds.child(Constant.NAME_PRODUCT).value as String
+                            val price = ds.child(Constant.PRICE_PRODUCT).value as Long
+                            val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                            val infor = ds.child(Constant.INFO_PRODUCT).value as String
                             val product_count =
-                                ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                                ds.child(Constant.PRODUCT_COUNT).value as Long
                             val id_category =
-                                ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                            val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                                ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                            val sale = ds.child(Constant.PRODUCT_SALE).value as Long
 
                             //Chuyển qua tiếng việt không dáu để tìm kiếm
                             if (removeAccent(name).contains(search)

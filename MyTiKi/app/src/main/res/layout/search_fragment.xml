@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_cancel_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_search"
         tools:itemCount="3"
+
         tools:listitem="@layout/item_product_favorite" />
 
     <LinearLayout

@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.adapter.ProductCartAdapter
 import com.thuypham.ptithcm.mytiki.data.ProductCart
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.feature.address.AddressActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.order.activity.AddressActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.adapter.ProductCartAdapter
+import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
+import com.thuypham.ptithcm.mytiki.util.Constant
 import kotlinx.android.synthetic.main.activity_cart.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -42,7 +42,7 @@ class CartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cart)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
 
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         // Check user loged in firebase yet?
@@ -94,7 +94,7 @@ class CartActivity : AppCompatActivity() {
 
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.CART)
+            .child(Constant.CART)
             .child(uid)
 
         val valueEventListener = object : ValueEventListener {
@@ -105,8 +105,8 @@ class CartActivity : AppCompatActivity() {
                     arrIdProductCart.clear()
                     for (ds in dataSnapshot.children) {
                         if (ds.exists()) {
-                            val id: String? = ds.child(PhysicsConstants.CART_ID).value as String?
-                            val cart_number = ds.child(PhysicsConstants.CART_NUMBER).value as Long?
+                            val id: String? = ds.child(Constant.CART_ID).value as String?
+                            val cart_number = ds.child(Constant.CART_NUMBER).value as Long?
                             if (id != null && cart_number != null) {
                                 arrIdProductCart.add(
                                     ProductCart(
@@ -151,44 +151,44 @@ class CartActivity : AppCompatActivity() {
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.PRODUCT)
+                .child(Constant.PRODUCT)
                 .child(productCart.id!!)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        val name = ds.child(Constant.NAME_PRODUCT).value as String
+                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
                         if (hours in 7..10)
-                            price *= PhysicsConstants.coefficientMorning
+                            price *= Constant.coefficientMorning
                         else if (hours in 11..12)
-                            price = (price * PhysicsConstants.coefficientLunch).toLong()
+                            price = (price * Constant.coefficientLunch).toLong()
                         else if (hours in 13..17)
-                            price = (price * PhysicsConstants.coefficientAft).toLong()
+                            price = (price * Constant.coefficientAft).toLong()
                         else if (hours in 18..23)
-                            price = (price * PhysicsConstants.coefficientNight).toLong()
+                            price = (price * Constant.coefficientNight).toLong()
                         else if (hours in 0..6)
-                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
-                        val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                        ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                        val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                            price = (price * Constant.coefficientMidNight).toLong()
+                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                        ds.child(Constant.INFO_PRODUCT).value as String
+                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                         val id_category =
-                            ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
 
                         product =
                             ProductCartDetail(
                                 productCart.id,
                                 name,
                                 price,
-                                productCart.product_count,
+                                productCart.number,
                                 image,
                                 product_count,
                                 id_category,
                                 sale
                             )
 
-                        priceCart += price.minus(((sale * 0.01) * price)) * productCart.product_count
+                        priceCart += price.minus(((sale * 0.01) * price)) * productCart.number!!
 
                         // format price viewed
                         val df = DecimalFormat("#,###,###")

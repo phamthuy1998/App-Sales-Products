@@ -18,8 +18,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/botNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         app:itemIconSize="20dp"
+        android:background="@color/colorWhiteBG"
         app:itemIconTint="@color/colorNavIconSelected"
         app:itemTextColor="@color/textColorNav"
         app:layout_constraintBottom_toBottomOf="parent"

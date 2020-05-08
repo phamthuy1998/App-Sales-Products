@@ -42,6 +42,10 @@
     <string name="email">Email</string>
     <string name="birthday">Birthday</string>
     <string name="name_sign_up">Name</string>
+    <string name="dialogCancelOrder">Are you sure you want to cancel this order?</string>
+    <string name="dialogOk">OK</string>
+    <string name="dialogCancel">Cancel</string>
+    <string name="dialogLogout">Are you sure you want to log out this account?</string>
     <string name="add_like_product">Added to favorite product list</string>
     <string name="rab_male">Male</string>
     <string name="female">Female</string>

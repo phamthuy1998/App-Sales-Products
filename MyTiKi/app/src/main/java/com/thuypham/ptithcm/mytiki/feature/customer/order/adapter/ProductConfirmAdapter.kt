@@ -41,7 +41,7 @@ class ProductConfirmAdapter(
             df.roundingMode = RoundingMode.CEILING
 
             // set price for product
-            val pricesale = product.price?.minus(((product.sale * 0.01) * product.price!!))
+            val pricesale = product.price?.minus(((product.sale!! * 0.01) * product.price!!))
             val price = df.format(pricesale) + " đ"
             itemView.tv_price_product_conf_order.text = price
 

@@ -22,20 +22,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.feature.customer.product.ProductOfCategoryActivity
+import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
+import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import com.thuypham.ptithcm.mytiki.data.Advertisement
 import com.thuypham.ptithcm.mytiki.data.Category
+import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.CategoryAdapterHome
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductSaleAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductViewedAdapter
-import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity
-import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
+import com.thuypham.ptithcm.mytiki.feature.customer.product.ProductOfCategoryActivity
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.todou.nestrefresh.base.OnRefreshListener
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.ll_cart.*
@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
         tv_viewmore_viewed_product.setOnClickListener() {
             // intent to FavoriteActivity
             val intentFV = Intent(context, FavoriteActivity::class.java)
-            intentFV.putExtra("childKey", PhysicsConstants.VIEWED_PRODUCT)
+            intentFV.putExtra("childKey", Constant.VIEWED_PRODUCT)
             intentFV.putExtra("nameToolbar", getString(R.string.viewd_products))
             intentFV.putExtra("viewMore", 0)
             startActivity(intentFV)
@@ -152,7 +152,7 @@ class HomeFragment : Fragment() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
 
             var cartCount = 0
@@ -190,7 +190,7 @@ class HomeFragment : Fragment() {
     private fun getListProduct() {
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.PRODUCT)
+            .child(Constant.PRODUCT)
 
         val valueEventListener = object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -201,28 +201,16 @@ class HomeFragment : Fragment() {
                     val dateFormatter = DateTimeFormatter.ofPattern("HH")
                     val hours = current.format(dateFormatter).toLong()
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
-                        val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                        val id = ds.child(Constant.PRODUCT_ID).value as String
+                        val name = ds.child(Constant.NAME_PRODUCT).value as String
+                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
 
-                        /// check time to set price for product
-                        if (hours >= 7 && hours < 11)
-                            price = price * PhysicsConstants.coefficientMorning
-                        else if (hours >= 11 && hours < 13)
-                            price = (price * PhysicsConstants.coefficientLunch).toLong()
-                        else if (hours >= 13 && hours < 18)
-                            price = (price * PhysicsConstants.coefficientAft).toLong()
-                        else if (hours >= 18 && hours <= 23)
-                            price = (price * PhysicsConstants.coefficientNight).toLong()
-                        else if (hours >= 0 && hours < 7)
-                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
-
-                        val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                        val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
+                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                         val id_category =
-                            ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
 
                         val product =
                             Product(
@@ -270,9 +258,9 @@ class HomeFragment : Fragment() {
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.USERS)
+                .child(Constant.USER)
                 .child(uid)
-                .child(PhysicsConstants.VIEWED_PRODUCT)
+                .child(Constant.VIEWED_PRODUCT)
                 .limitToLast(10)
 
             val valueEventListener = object : ValueEventListener {
@@ -281,7 +269,7 @@ class HomeFragment : Fragment() {
                         arrIdProductViewed.clear()
                         for (ds in dataSnapshot.children) {
                             val id: String? =
-                                ds.child(PhysicsConstants.VIEWED_PRODUCT_ID).value as String?
+                                ds.child(Constant.VIEWED_PRODUCT_ID).value as String?
                             if (id != null) {
                                 arrIdProductViewed.add(id)
                             }
@@ -325,30 +313,20 @@ class HomeFragment : Fragment() {
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.PRODUCT)
+                .child(Constant.PRODUCT)
                 .child(id)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
-                        if (hours >= 7 && hours < 11)
-                            price = price * PhysicsConstants.coefficientMorning
-                        else if (hours >= 11 && hours < 13)
-                            price = (price * PhysicsConstants.coefficientLunch).toLong()
-                        else if (hours >= 13 && hours < 18)
-                            price = (price * PhysicsConstants.coefficientAft).toLong()
-                        else if (hours >= 18 && hours <= 23)
-                            price = (price * PhysicsConstants.coefficientNight).toLong()
-                        else if (hours >= 0 && hours < 7)
-                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
-                        val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                        val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                        val name = ds.child(Constant.NAME_PRODUCT).value as String
+                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
+                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
+                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                         val id_category =
-                            ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
 
                         product =
                             Product(
@@ -446,8 +424,8 @@ class HomeFragment : Fragment() {
     private fun getListProductSale() {
         //get 20 product tthat had saled
         val query = mDatabase!!
-            .reference.child(PhysicsConstants.PRODUCT)
-            .orderByChild(PhysicsConstants.PRODUCT_SALE)
+            .reference.child(Constant.PRODUCT)
+            .orderByChild(Constant.PRODUCT_SALE)
             .limitToLast(10)
         val valueEventListener = object : ValueEventListener {
             @TargetApi(Build.VERSION_CODES.O)
@@ -459,25 +437,15 @@ class HomeFragment : Fragment() {
                     val hours = current.format(dateFormatter).toLong()
                     Log.d("time12112", hours.toString())
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.PRODUCT_ID).value as String
-                        val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                        var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
-                        if (hours >= 7 && hours < 11)
-                            price = price * PhysicsConstants.coefficientMorning
-                        else if (hours >= 11 && hours < 13)
-                            price = (price * PhysicsConstants.coefficientLunch).toLong()
-                        else if (hours >= 13 && hours < 18)
-                            price = (price * PhysicsConstants.coefficientAft).toLong()
-                        else if (hours >= 18 && hours <= 23)
-                            price = (price * PhysicsConstants.coefficientNight).toLong()
-                        else if (hours >= 0 && hours < 7)
-                            price = (price * PhysicsConstants.coefficientMidNight).toLong()
-                        val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                        val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                        val id = ds.child(Constant.PRODUCT_ID).value as String
+                        val name = ds.child(Constant.NAME_PRODUCT).value as String
+                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
+                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
+                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                         val id_category =
-                            ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
 
                         // if sale of product !=0, then save product into productSaleList
                         if (sale != 0L) {
@@ -563,7 +531,7 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, ProductOfCategoryActivity::class.java)
             intent.putExtra("id_category", arrAdvertisement[currentPage].id_category)
             intent.putExtra("name_category", arrAdvertisement[currentPage].name_category)
-            context!!.startActivity(intent)
+            requireActivity().startActivity(intent)
         }
     }
 
@@ -574,7 +542,7 @@ class HomeFragment : Fragment() {
 
     // get all avt
     private fun getDataAVT() {
-        mDatabaseReference = mDatabase!!.reference.child(PhysicsConstants.ADVERTIEMENT)
+        mDatabaseReference = mDatabase!!.reference.child(Constant.SLIDE)
         progress.visibility = View.VISIBLE
         ll_home.visibility = View.GONE
         val valueEventListener = object : ValueEventListener {
@@ -582,12 +550,12 @@ class HomeFragment : Fragment() {
                 if (dataSnapshot.exists()) {
                     arrAdvertisement.clear()
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.CATEGORY_ID).value as String
-                        val name = ds.child(PhysicsConstants.NAME_AVT).value as String
-                        val image = ds.child(PhysicsConstants.IMAGE_AVT).value as String
-                        val id_category = ds.child(PhysicsConstants.AVT_ID_CATEGORY).value as String
+                        val id = ds.child(Constant.CATEGORY_ID).value as String
+                        val name = ds.child(Constant.NAME_AVT).value as String
+                        val image = ds.child(Constant.IMAGE_AVT).value as String
+                        val id_category = ds.child(Constant.AVT_ID_CATEGORY).value as String
                         val name_category =
-                            ds.child(PhysicsConstants.AVT_NAME_CATEGORY).value as String
+                            ds.child(Constant.AVT_NAME_CATEGORY).value as String
                         val advertisement =
                             Advertisement(
                                 name,
@@ -622,26 +590,20 @@ class HomeFragment : Fragment() {
     private fun getDataCategory() {
         mDatabaseReference = mDatabase!!
             .reference
-            .child(PhysicsConstants.CATEGORY_table)
+            .child(Constant.CATEGORY)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     categoryList.clear()
+                    var category:Category?
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.CATEGORY_ID).value as String
-                        val name = ds.child(PhysicsConstants.CATEGORY_NAME).value as String
-                        val image = ds.child(PhysicsConstants.CATEGORY_IMAGE).value as String
-                        val count = ds.child(PhysicsConstants.CATEGORY_COUNT).value as Long
-                        val category = Category(
-                            id,
-                            name,
-                            image,
-                            count
-                        )
-                        categoryList.add(category)
+                        category = ds.getValue(Category::class.java)
+                        if (category != null) {
+                            categoryList.add(category)
+                        }
 
                     }
-                    categoryAdapter?.notifyDataSetChanged()
+                    categoryAdapter.notifyDataSetChanged()
                 }
 
             }

@@ -1,17 +1,29 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:configChanges">keyboardHidden|orientation|screenSize</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="colorPrimary">@color/colorBlueDark</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
+        <item name="colorPrimaryDark">@color/colorWhiteBG</item>
+        <item name="colorAccent">@color/colorBlue</item>
+    </style>
 
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/ic_cursor</item>
     </style>
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/bg_launcher</item>
-        <item name="android:windowTranslucentStatus">false</item>
+
+    <style name="AppTheme.SplashScreen" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash_screen</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
+
 
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/colorGray</item>

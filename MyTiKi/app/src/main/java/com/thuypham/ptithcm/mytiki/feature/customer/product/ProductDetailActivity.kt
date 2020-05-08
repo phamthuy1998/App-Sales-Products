@@ -1,31 +1,31 @@
 package com.thuypham.ptithcm.mytiki.feature.customer.product
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.data.Product
-import kotlinx.android.synthetic.main.activity_product_detail.*
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
-import java.math.RoundingMode
-import java.text.DecimalFormat
-import android.graphics.Paint
-import android.os.Build
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
+import com.thuypham.ptithcm.mytiki.util.Constant
+import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
 import kotlinx.android.synthetic.main.ll_cart.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -46,7 +46,7 @@ class ProductDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product_detail)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         getData()
         addEvent()
         getCartCount()
@@ -126,7 +126,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
             var cartCount = 0
 
@@ -169,7 +169,7 @@ class ProductDetailActivity : AppCompatActivity() {
             mDatabase = FirebaseDatabase.getInstance()
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(user.uid)
                 .child(id.toString())
 
@@ -179,18 +179,18 @@ class ProductDetailActivity : AppCompatActivity() {
                         // if this cart is not exist in list cart
                         if (i == 1) {
                             // If this product exist in cart, then number ++
-                            var number = ds.child(PhysicsConstants.CART_NUMBER).value as Long
+                            var number = ds.child(Constant.CART_NUMBER).value as Long
                             number++
-                            query.child(PhysicsConstants.CART_NUMBER)
+                            query.child(Constant.CART_NUMBER)
                                 .setValue(number)
                         }
                         i++
 
                     } else if (checkAddcart == true) {
                         i++
-                        query.child(PhysicsConstants.CART_ID)
+                        query.child(Constant.CART_ID)
                             .setValue(id)
-                        query.child(PhysicsConstants.CART_NUMBER)
+                        query.child(Constant.CART_NUMBER)
                             .setValue(1)
                         checkAddcart = false
                     }
@@ -211,11 +211,11 @@ class ProductDetailActivity : AppCompatActivity() {
         if (user != null) {
             // Add product into viewed list product
             mDatabaseReference = mDatabase!!.reference
-            val currentUserDb = mDatabaseReference.child(PhysicsConstants.USERS)
+            val currentUserDb = mDatabaseReference.child(Constant.USER)
                 .child(user.uid)
-                .child(PhysicsConstants.VIEWED_PRODUCT)
+                .child(Constant.VIEWED_PRODUCT)
 
-            currentUserDb.child(id).child(PhysicsConstants.VIEWED_PRODUCT_ID)
+            currentUserDb.child(id).child(Constant.VIEWED_PRODUCT_ID)
                 .setValue(id)
 
         }
@@ -259,7 +259,7 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         // Product count >0,
-        if (product.product_count > 0) tv_out_of_product.visibility = View.GONE
+        if (product.product_count!! > 0) tv_out_of_product.visibility = View.GONE
         else tv_out_of_product.visibility = View.VISIBLE
 
         //Set content product
@@ -297,9 +297,9 @@ class ProductDetailActivity : AppCompatActivity() {
             // Check this product
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.USERS)
+                .child(Constant.USER)
                 .child(user.uid)
-                .child(PhysicsConstants.FAVORITE_PRODUCT)
+                .child(Constant.FAVORITE_PRODUCT)
                 .child(id!!)
 
             val valueEventListener = object : ValueEventListener {
@@ -327,17 +327,17 @@ class ProductDetailActivity : AppCompatActivity() {
             if (like) {
                 // Add product into favrite list product
                 mDatabaseReference = mDatabase!!.reference
-                val currentUserDb = mDatabaseReference.child(PhysicsConstants.USERS)
+                val currentUserDb = mDatabaseReference.child(Constant.USER)
                     .child(user.uid)
-                    .child(PhysicsConstants.FAVORITE_PRODUCT)
-                currentUserDb.child(id!!).child(PhysicsConstants.FAVORITE_ID)
+                    .child(Constant.FAVORITE_PRODUCT)
+                currentUserDb.child(id!!).child(Constant.FAVORITE_ID)
                     .setValue(id)
 
             } else {// Del product from list
                 mDatabaseReference = mDatabase!!.reference
-                val currentUserDb = mDatabaseReference.child(PhysicsConstants.USERS)
+                val currentUserDb = mDatabaseReference.child(Constant.USER)
                     .child(user.uid)
-                    .child(PhysicsConstants.FAVORITE_PRODUCT)
+                    .child(Constant.FAVORITE_PRODUCT)
                     .child(id!!)
                     .removeValue()
             }
@@ -359,7 +359,7 @@ class ProductDetailActivity : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance()
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.PRODUCT)
+            .child(Constant.PRODUCT)
             .child(id)
 
         val valueEventListener = object : ValueEventListener {
@@ -369,24 +369,24 @@ class ProductDetailActivity : AppCompatActivity() {
                 val dateFormatter = DateTimeFormatter.ofPattern("HH")
                 val hours = current.format(dateFormatter).toLong()
                 if (ds.exists()) {
-                    val name = ds.child(PhysicsConstants.NAME_PRODUCT).value as String
-                    var price = ds.child(PhysicsConstants.PRICE_PRODUCT).value as Long
+                    val name = ds.child(Constant.NAME_PRODUCT).value as String
+                    var price = ds.child(Constant.PRICE_PRODUCT).value as Long
                     if (hours >= 7 && hours < 11)
-                        price = price * PhysicsConstants.coefficientMorning
+                        price = price * Constant.coefficientMorning
                     else if (hours >= 11 && hours < 13)
-                        price = (price * PhysicsConstants.coefficientLunch).toLong()
+                        price = (price * Constant.coefficientLunch).toLong()
                     else if (hours >= 13 && hours < 18)
-                        price = (price * PhysicsConstants.coefficientAft).toLong()
+                        price = (price * Constant.coefficientAft).toLong()
                     else if (hours >= 18 && hours <= 23)
-                        price = (price * PhysicsConstants.coefficientNight).toLong()
+                        price = (price * Constant.coefficientNight).toLong()
                     else if (hours >= 0 && hours < 7)
-                        price = (price * PhysicsConstants.coefficientMidNight).toLong()
-                    val image = ds.child(PhysicsConstants.IMAGE_PRODUCT).value as String
-                    val infor = ds.child(PhysicsConstants.INFOR_PRODUCT).value as String
-                    val product_count = ds.child(PhysicsConstants.PRODUCT_COUNT).value as Long
+                        price = (price * Constant.coefficientMidNight).toLong()
+                    val image = ds.child(Constant.IMAGE_PRODUCT).value as String
+                    val infor = ds.child(Constant.INFO_PRODUCT).value as String
+                    val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
                     val id_category =
-                        ds.child(PhysicsConstants.ID_CATEGORY_PRODUCT).value as String
-                    val sale = ds.child(PhysicsConstants.PRODUCT_SALE).value as Long
+                        ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
+                    val sale = ds.child(Constant.PRODUCT_SALE).value as Long
                     product =
                         Product(
                             id,

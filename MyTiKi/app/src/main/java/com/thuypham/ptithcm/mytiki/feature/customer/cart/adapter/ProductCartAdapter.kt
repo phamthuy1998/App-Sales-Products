@@ -2,6 +2,7 @@ package com.thuypham.ptithcm.mytiki.feature.customer.cart.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +13,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
 import com.thuypham.ptithcm.mytiki.feature.customer.product.ProductDetailActivity
+import com.thuypham.ptithcm.mytiki.util.Constant
 import kotlinx.android.synthetic.main.item_product_cart.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
-import android.util.Log
 
 
 class ProductCartAdapter(
@@ -71,7 +69,7 @@ class ProductCartAdapter(
             df.roundingMode = RoundingMode.CEILING
 
             // set price for product
-            val pricesale = product.price?.minus(((product.sale * 0.01) * product.price!!))
+            val pricesale = product.price?.minus(((product.sale!! * 0.01) * product.price!!))
             val price = df.format(pricesale) + " đ"
             itemView.tv_price_product_cart.text = price
 
@@ -96,7 +94,7 @@ class ProductCartAdapter(
             }
             // button plus click
             itemView.btn_plus.setOnClickListener() {
-                if (product.number_product!! < 20 && product.product_count > product.number_product!!) {
+                if (product.number_product!! < 20 && product.product_count!! > product.number_product!!) {
                     num_of_pr = num_of_pr?.plus(1)
                     product.number_product = num_of_pr
                     // set value on firebase, num++
@@ -104,7 +102,7 @@ class ProductCartAdapter(
                     itemView.tv_number_pr_cart.text = num_of_pr.toString()
                 } else if (product.number_product!! > 20) {
                     Toast.makeText(context, R.string.plus_cart_error, Toast.LENGTH_LONG).show()
-                } else if (product.product_count < product.number_product!!) {
+                } else if (product.product_count!! < product.number_product!!) {
                     Toast.makeText(context, R.string.plus_cart_error_not_enough, Toast.LENGTH_LONG)
                         .show()
                 }
@@ -129,7 +127,7 @@ class ProductCartAdapter(
         var mDatabase: FirebaseDatabase? = FirebaseDatabase.getInstance()
         var mDatabaseReference: DatabaseReference = mDatabase!!.reference
         if (id != null) {
-            val currentUserDb = mDatabaseReference.child(PhysicsConstants.CART)
+            val currentUserDb = mDatabaseReference.child(Constant.CART)
                 .child(user.uid)
                 .child(id)
 
@@ -150,7 +148,7 @@ class ProductCartAdapter(
             // Check this product
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(user.uid)
                 .child(idProduct)
 
@@ -161,18 +159,18 @@ class ProductCartAdapter(
                     // if user haven 't add this product into favorite list, then add this
                     if (ds.exists()) {
                         if (i == 1) {
-                            var number = ds.child(PhysicsConstants.CART_NUMBER).value as Long
+                            var number = ds.child(Constant.CART_NUMBER).value as Long
                             if (add == true) {
                                 // If this product exist in cart, then number++
                                 println("number:" + number)
                                 number++
-                                query.child(PhysicsConstants.CART_NUMBER)
+                                query.child(Constant.CART_NUMBER)
                                     .setValue(number)
                             } else {
                                 // If this product exist in cart, then number--
                                 println("number:" + number)
                                 number--
-                                query.child(PhysicsConstants.CART_NUMBER)
+                                query.child(Constant.CART_NUMBER)
                                     .setValue(number)
                             }
                         }

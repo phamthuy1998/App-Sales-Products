@@ -30,7 +30,7 @@ class CategoryAdapter() : BaseAdapter() {
         var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var categoryView = inflator.inflate(R.layout.item_category, null)
 
-        categoryView.tv_name_category.text = category.nameCategory
+        categoryView.tv_name_category.text = category.name
         //sset image view category
         Glide.with(categoryView)
             .load(category.image)
@@ -39,8 +39,8 @@ class CategoryAdapter() : BaseAdapter() {
         // Intent to ProductOfCategoryActivity
         categoryView.ll_item_category.setOnClickListener {
             var intent = Intent(context, ProductOfCategoryActivity::class.java)
-            intent.putExtra("id_category", category.idCategory)
-            intent.putExtra("name_category", category.nameCategory)
+            intent.putExtra("id_category", category.id)
+            intent.putExtra("name_category", category.name)
             context!!.startActivity(intent)
         }
         return categoryView

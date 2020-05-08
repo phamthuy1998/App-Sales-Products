@@ -15,6 +15,8 @@ import android.view.MotionEvent;
 
 import com.thuypham.ptithcm.mytiki.R;
 
+import java.util.Objects;
+
 public class EditTextField extends androidx.appcompat.widget.AppCompatEditText {
     private Context mContext;
     private Bitmap mClearButton;
@@ -82,7 +84,7 @@ public class EditTextField extends androidx.appcompat.widget.AppCompatEditText {
                 drawBitmap(canvas, getRect(true));
                 break;
             case WHILEEDITING:
-                drawBitmap(canvas, getRect(hasFocus() && getText().length() > 0));
+                drawBitmap(canvas, getRect(hasFocus() && Objects.requireNonNull(getText()).length() > 0));
                 break;
             case UNLESSEDITING:
                 break;

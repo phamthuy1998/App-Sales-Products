@@ -59,7 +59,7 @@
                         android:orientation="horizontal"
                         android:weightSum="1">
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imageView"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
@@ -76,7 +76,7 @@
                             android:layout_weight="0.8"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tv_user_name"
@@ -104,33 +104,33 @@
                                 android:textSize="@dimen/ts_name" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/ll_infor_not_logged"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="10dp"
-                            android:layout_weight="0.8"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/ll_infor_not_logged"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginEnd="10dp"-->
+<!--                            android:layout_weight="0.8"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:visibility="gone">-->
 
-                            <TextView
-                                android:id="@+id/tv_welcome"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/welcome_to_tiki"
-                                android:textSize="@dimen/ts_name" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/tv_welcome"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="@string/welcome_to_tiki"-->
+<!--                                android:textSize="@dimen/ts_name" />-->
 
-                            <TextView
-                                android:id="@+id/tv_sign_in_up"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableEnd="@drawable/ic_blue_right_arrow"
-                                android:text="@string/sign_in_sign_up"
-                                android:textColor="@color/colorBlue"
-                                android:textSize="20sp" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/tv_sign_in_up"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:drawableEnd="@drawable/ic_blue_right_arrow"-->
+<!--                                android:text="@string/sign_in_sign_up"-->
+<!--                                android:textColor="@color/colorBlue"-->
+<!--                                android:textSize="20sp" />-->
 
-                        </LinearLayout>
+<!--                        </LinearLayout>-->
 
                     </LinearLayout>
 
@@ -290,19 +290,19 @@
                         android:textSize="@dimen/ts_name" />
 
 
-                    <TextView
-                        android:id="@+id/tv_my_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@android:color/white"
-                        android:drawableStart="@drawable/ic_comment"
-                        android:drawableEnd="@drawable/ic_gray_right_arrow"
-                        android:drawablePadding="10dp"
-                        android:padding="16dp"
-                        android:text="@string/mycomment"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/ts_name" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_my_comment"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="1dp"-->
+<!--                        android:background="@android:color/white"-->
+<!--                        android:drawableStart="@drawable/ic_comment"-->
+<!--                        android:drawableEnd="@drawable/ic_gray_right_arrow"-->
+<!--                        android:drawablePadding="10dp"-->
+<!--                        android:padding="16dp"-->
+<!--                        android:text="@string/mycomment"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textSize="@dimen/ts_name" />-->
 
                     <TextView
                         android:id="@+id/tv_hot_line"

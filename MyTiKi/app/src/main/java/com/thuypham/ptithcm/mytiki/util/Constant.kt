@@ -1,15 +1,13 @@
 package com.thuypham.ptithcm.mytiki.util
 
-object PhysicsConstants {
+object Constant {
     // Account
     const val MY_PREFERENCES = "myPreferences"
     const val EMAIL_OR_PHONE = "emailorphone"
     const val PASSWORD = "password"
     const val IS_LOGIN = "isLogin"
-    const val START_SIGN_IN_ACTIVITY = 1
-    const val START_EDIT_USER_ACTIVITY = 2
     const val EMAIL = "email"
-    const val USERS = "Users"
+    const val USER = "USER"
     const val BIRTHDAY = "birthday"
     const val DAY_CREATE = "daycreate"
     const val GENDER = "gender"
@@ -24,20 +22,20 @@ object PhysicsConstants {
     const val NAME_PRODUCT = "name"
     const val PRICE_PRODUCT = "price"
     const val IMAGE_PRODUCT = "image"
-    const val INFOR_PRODUCT = "infor"
+    const val INFO_PRODUCT = "infor"
     const val  PRODUCT_COUNT= "product_count"
     const val ID_PROVIDER = "id_provider"
     const val ID_CATEGORY_PRODUCT = "id_category"
 
     //Category
-    const val CATEGORY_table = "CATEGORY"
+    const val CATEGORY = "CATEGORY"
     const val CATEGORY_ID = "id"
     const val CATEGORY_NAME = "name"
     const val CATEGORY_IMAGE = "image"
     const val CATEGORY_COUNT = "category_count"
 
     // advertisement
-    const val ADVERTIEMENT = "advertisement"
+    const val SLIDE = "SLIDE"
     const val NAME_AVT = "name"
     const val AVT_ID_CATEGORY = "id_category"
     const val AVT_NAME_CATEGORY = "name_category"
@@ -103,3 +101,11 @@ object PhysicsConstants {
     const val ORDER_DETAIL_ID_ORDER = "id_order"
 
 }
+// Error auth
+const val ERR_EMAIL_VERIFY = "Email has not been verify!"
+const val ERR_EMAIL_NOT_Exist = "Email does't exist!"
+const val ERR_INCORRECT_PW = "Incorrect password!"
+const val ERR_WEAK_PASSWORD =
+    "The password is too weak, the password consists of at least 6 characters!"
+const val ERR_EMAIL_INVALID = "Email invalidate!"
+const val ERR_EMAIL_EXIST = "Email already exists!"

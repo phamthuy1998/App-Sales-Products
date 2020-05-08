@@ -1,20 +1,21 @@
-package com.thuypham.ptithcm.mytiki.feature.customer.order.activity
+package com.thuypham.ptithcm.mytiki.feature.customer.order
 
+import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.data.Order
+import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.ProductOrderAdapter
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.Order
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.util.Constant
 import kotlinx.android.synthetic.main.activity_order_detail.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import java.math.RoundingMode
@@ -28,7 +29,7 @@ class OrderDetailActivity : AppCompatActivity() {
 
 
     //Viewed product
-    private lateinit var order: Order
+    private var order: Order? = null
 
     var productList = ArrayList<OrderDetail>()
     private var productAdapter: ProductOrderAdapter? = null
@@ -56,7 +57,7 @@ class OrderDetailActivity : AppCompatActivity() {
             )
             rv_product_order_detail.adapter = productAdapter
 
-            getInforOrderDetail(id_order)
+            getInfoOrderDetail(id_order)
             getListOrderProduct(id_order)
             addEvent()
             getCartCount()
@@ -85,7 +86,7 @@ class OrderDetailActivity : AppCompatActivity() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
             var cartCount = 0
 
@@ -120,20 +121,19 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun cancelOrder(orderId: String?) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser;
         if (user != null) {
             if (orderId != null) {
                 val currentUserDb = mDatabase!!.reference
-                    .child(PhysicsConstants.ORDER)
-                    .child(user.uid)
+                    .child(Constant.ORDER)
                     .child(orderId)
-                    .child(PhysicsConstants.ORDER_STATUS)
+                    .child(Constant.ORDER_STATUS)
                     .setValue(4)
             }
         }
     }
 
-    private fun getInforOrderDetail(id_order: String) {
+    private fun getInfoOrderDetail(id_order: String) {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
             val uid = user.uid
@@ -141,35 +141,14 @@ class OrderDetailActivity : AppCompatActivity() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.ORDER)
-                .child(uid)
+                .child(Constant.ORDER)
                 .child(id_order)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        val id = ds.child(PhysicsConstants.ORDER_ID).value as String?
-                        val date = ds.child(PhysicsConstants.ORDER_DATE).value as String?
-                        val price = ds.child(PhysicsConstants.ORDER_PRICE).value as Long?
-                        val status = ds.child(PhysicsConstants.ORDER_STATUS).value as Long?
-
-                        val phone = ds.child(PhysicsConstants.ADDRESS_PHONE).value as String
-                        val name = ds.child(PhysicsConstants.ADDRESS_name).value as String
-                        val address = ds.child(PhysicsConstants.ADDRESS_REAL).value as String
-                        if (id != null) {
-                            order =
-                                Order(
-                                    id,
-                                    name,
-                                    phone,
-                                    address,
-                                    date,
-                                    price,
-                                    status
-                                )
-                            setInfororder(order)
-                        }
-                    } else {
+                        order = ds.getValue(Order::class.java)
+                        order?.let { setInfoOrder(it) }
                     }
                 }
 
@@ -180,7 +159,7 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setInfororder(order: Order) {
+    private fun setInfoOrder(order: Order) {
         tv_item_order_detail_ac_id.text = order.id
         tv_item_order_detail_date.text = order.date
         var status = ""
@@ -208,15 +187,15 @@ class OrderDetailActivity : AppCompatActivity() {
         df.roundingMode = RoundingMode.CEILING
         var price = 0.00.toLong()
         price = order.price!!
-        if (order.price!! >= (PhysicsConstants.PriceLeast + PhysicsConstants.Shipping)) {
+        if (order.price!! >= (Constant.PriceLeast + Constant.Shipping)) {
             val priceTxt = df.format(price) + " đ"
             tv_price_shipping_order_detail.text = "0 đ"
             tv_price_temp_order_detail.text = priceTxt
             tv_price_amount_order_detail.text = priceTxt
         } else {
-            var priceTxt = df.format(order.price!! - PhysicsConstants.Shipping) + " đ"
+            var priceTxt = df.format(order.price!! - Constant.Shipping) + " đ"
             tv_price_temp_order_detail.text = priceTxt
-            priceTxt = df.format(PhysicsConstants.Shipping) + " đ"
+            priceTxt = df.format(Constant.Shipping) + " đ"
             tv_price_shipping_order_detail.text = priceTxt
             priceTxt = df.format(price) + " đ"
             tv_price_amount_order_detail.text = priceTxt
@@ -230,61 +209,45 @@ class OrderDetailActivity : AppCompatActivity() {
         }
         // add event for button cancel order
         btn_cancel_order_detail.setOnClickListener() {
-            cancelOrder(order.id)
+            val builder = AlertDialog.Builder(this)
+            with(builder)
+            {
+                setMessage(getString(R.string.dialogCancelOrder))
+                setPositiveButton(getString(R.string.dialogOk)) { dialog, id ->
+                    dialog.dismiss()
+                    cancelOrder(order.id)
+                }
+                setNegativeButton(getString(R.string.dialogCancel)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                show()
+            }
         }
     }
 
     private fun getListOrderProduct(orderId: String) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser;
         if (user != null) {
-            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.ORDER_DETAIL)
-                .child(uid)
+                .child(Constant.ORDER_DETAIL)
                 .child(orderId)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         productList.clear()
+                        var orderDetail: OrderDetail?
                         for (ds in dataSnapshot.children) {
                             if (ds.exists()) {
-                                val id = ds.child(PhysicsConstants.ORDER_DETAIL_ID).value as String?
-                                val product_name =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_NAME).value as String?
-                                val id_product =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_ID_PRODUCT).value as String?
-                                val image_product =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_IMAGE).value as String?
-                                val product_count =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_COUNT).value as Long?
-                                val product_price =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_PRODUCT_PRICE).value as Long?
-                                val id_order =
-                                    ds.child(PhysicsConstants.ORDER_DETAIL_ID_ORDER).value as String?
-                                if (id != null && product_name != null && id_product != null && image_product != null
-                                    && product_count != null && product_price != null && id_order != null
-                                ) {
-                                    productList.add(
-                                        OrderDetail(
-                                            id,
-                                            product_name,
-                                            id_product,
-                                            image_product,
-                                            product_count,
-                                            product_price,
-                                            id_order
-                                        )
-                                    )
-                                }
+                                orderDetail = ds.getValue(OrderDetail::class.java)
+                                orderDetail?.let { productList.add(it) }
                             }
                         }
                         productAdapter?.notifyDataSetChanged()
 
-                    } else {
                     }
                 }
 

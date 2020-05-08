@@ -1,18 +1,11 @@
 package com.thuypham.ptithcm.mytiki.data
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Advertisement(
-
-        @SerializedName("name")
-        var name: String?,
-        @SerializedName("id")
-        var id: String?,
-        @SerializedName("image")
-        var image: String?,
-        @SerializedName("id_category")
-        var id_category: String,
-        @SerializedName("name_category")
-        var name_category: String
+data class Advertisement(
+    var name: String?=null,
+    var id: String?=null,
+    var image: String?=null,
+    var id_category: String?=null,
+    var name_category: String?=null
 ) : Serializable

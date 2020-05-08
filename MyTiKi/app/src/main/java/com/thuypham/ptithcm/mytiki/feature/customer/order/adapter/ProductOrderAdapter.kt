@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.OrderDetail
+import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import kotlinx.android.synthetic.main.item_product_confirm.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat

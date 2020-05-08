@@ -1,15 +1,23 @@
 package com.thuypham.ptithcm.mytiki.data
 
-import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import android.os.Parcelable
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
+import kotlinx.android.parcel.Parcelize
 
-class Category(
-        @SerializedName("id")
-        var idCategory: String?,
-        @SerializedName("name")
-        var nameCategory: String?,
-        @SerializedName("image")
-        var image: String?,
-        @SerializedName("category_count")
-        var categoryCount: Long?
-): Serializable
+@IgnoreExtraProperties
+@Parcelize
+data class Category(
+    var id: String? = null,
+    var name: String? = null,
+    var image: String? = null
+) : Parcelable {
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "id" to id,
+            "name" to name,
+            "image" to image
+        )
+    }
+}

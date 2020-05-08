@@ -1,6 +1,7 @@
 package com.thuypham.ptithcm.mytiki.feature.customer.user
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,25 +16,24 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.databinding.UserFragmentBinding
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.util.SharedPreference
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.feature.address.AddressActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.EditProfileActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.order.activity.AddressActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderActivity
-import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity
+import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.util.SharedPreference
+import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.no_wifi.*
 import kotlinx.android.synthetic.main.user_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class UserFragment : Fragment() {
@@ -41,11 +41,7 @@ class UserFragment : Fragment() {
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
 
-    val userViewModel: UserViewModel by lazy {
-        ViewModelProviders
-            .of(this)
-            .get(UserViewModel::class.java)
-    }
+    val userViewModel: UserViewModel by viewModel()
 
     private var haveRecieved = 0
     private var shipping = 0
@@ -66,7 +62,7 @@ class UserFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         clearInforLogin()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         mAuth = FirebaseAuth.getInstance()
         addEvent()
     }
@@ -94,50 +90,32 @@ class UserFragment : Fragment() {
 
     //Check user has logged firebase yet
     // if yes, allow show and click edit user
-    fun checkLoginFirebase() {
-        val sharedPreference = SharedPreference(requireContext())
-        val isLogin = sharedPreference.getValueBoolien(PhysicsConstants.IS_LOGIN, false)
-
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+    private fun checkLoginFirebase() {
+        val user: FirebaseUser? = mAuth?.currentUser;
         if (user != null) {
-            setInforAcc()
-            // thay doi noi dung của text user
-            ll_infor_not_logged.visibility = View.GONE
-            ll_infor_logged.visibility = View.VISIBLE
-
-            // hiên button đăng xuất
-            btn_sign_out.visibility = View.VISIBLE
-        } else {
-            ll_infor_not_logged.visibility = View.VISIBLE
-            ll_infor_logged.visibility = View.GONE
-            // chưa đăng nhập thì ẩn button đăng xuất
-            btn_sign_out.visibility = View.GONE
+            setInfoAcc()
         }
     }
 
-    private fun setInforAcc() {
+    private fun setInfoAcc() {
         val mUser = mAuth!!.currentUser
         val mUserReference = mDatabaseReference!!.child(mUser!!.uid)
         val email = mUser.email.toString()
         tv_email?.text = email
-        val checkVerified = mUser.isEmailVerified
 
-        if (mUserReference != null) {
-            mUserReference.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val name = snapshot.child(PhysicsConstants.NAME).value as String
-                    if (!name.isEmpty()) tv_user_name?.text = name
-                    if (isAdded()) {
-                        val daycreate =
-                            getString(R.string.day_create) + ": " + snapshot.child(PhysicsConstants.DAY_CREATE).value as String
-                        if (!daycreate.isEmpty())
-                            tv_time_member?.text = daycreate
-                    }
+        mUserReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val name = snapshot.child(Constant.NAME).value ?: ""
+                tv_user_name?.text = name.toString()
+                if (isAdded) {
+                    var dayCreate = getString(R.string.day_create) + ": ";
+                    dayCreate += snapshot.child(Constant.DAY_CREATE).value ?: ""
+                    tv_time_member?.text = dayCreate
                 }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
-        }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     // get cart count
@@ -149,7 +127,7 @@ class UserFragment : Fragment() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
             var cartCount = 0
 
@@ -199,22 +177,7 @@ class UserFragment : Fragment() {
             view?.let { it1 -> onViewCreated(it1, null) }
         }
 
-        var user: FirebaseUser? = mAuth?.getCurrentUser();
-        // Check user loged in firebase yet?
-        if (user != null) {
-            // If you user had loged, the layout of sign in will be disappear
-            ll_infor_not_logged.visibility = View.GONE
-            btn_sign_out.visibility = View.VISIBLE
-        } else {
-            tv_num_of_list_order_shipping_user.visibility = View.GONE
-            tv_num_order_recieved_user.visibility = View.GONE
-            ll_infor_not_logged.visibility = View.VISIBLE
-            btn_sign_out.visibility = View.GONE
-        }
-
-        ll_infor_not_logged.setOnClickListener {
-            onOpentSigInUpFragment()
-        }
+        var user: FirebaseUser? = mAuth?.currentUser;
 
         // order manage
         tv_manage_order.setOnClickListener {
@@ -232,11 +195,23 @@ class UserFragment : Fragment() {
 
         //sign out
         btn_sign_out.setOnClickListener {
-            clearInforLogin()
-            mAuth?.signOut()
-            val intent = Intent(context, MainActivity::class.java)
-            ActivityCompat.finishAffinity(requireActivity())
-            startActivity(intent)
+            val builder = AlertDialog.Builder(requireContext())
+            with(builder)
+            {
+                setMessage(getString(R.string.dialogCancelOrder))
+                setPositiveButton(getString(R.string.dialogOk)) { dialog, id ->
+                    dialog.dismiss()
+                    clearInforLogin()
+                    mAuth?.signOut()
+                    val intent = Intent(context, SignInUpActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                setNegativeButton(getString(R.string.dialogCancel)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                show()
+            }
         }
 
         // Get help, call phone number
@@ -289,7 +264,7 @@ class UserFragment : Fragment() {
             if (user != null) {
                 // intent to FavoriteActivity
                 val intentFV = Intent(context, FavoriteActivity::class.java)
-                intentFV.putExtra("childKey", PhysicsConstants.VIEWED_PRODUCT)
+                intentFV.putExtra("childKey", Constant.VIEWED_PRODUCT)
                 intentFV.putExtra("nameToolbar", getString(R.string.viewd_products))
                 startActivity(intentFV)
             } else {
@@ -302,7 +277,7 @@ class UserFragment : Fragment() {
                 // intent to FavoriteActivity
                 if (user != null) {
                     val intentFV = Intent(context, FavoriteActivity::class.java)
-                    intentFV.putExtra("childKey", PhysicsConstants.VIEWED_PRODUCT)
+                    intentFV.putExtra("childKey", Constant.VIEWED_PRODUCT)
                     intentFV.putExtra("nameToolbar", getString(R.string.viewd_products))
                     startActivity(intentFV)
                 }
@@ -315,7 +290,7 @@ class UserFragment : Fragment() {
             if (user != null) {
                 // intent to FavoriteActivity
                 val intentFV = Intent(context, FavoriteActivity::class.java)
-                intentFV.putExtra("childKey", PhysicsConstants.FAVORITE_PRODUCT)
+                intentFV.putExtra("childKey", Constant.FAVORITE_PRODUCT)
                 intentFV.putExtra("nameToolbar", getString(R.string.favorite_product))
                 startActivity(intentFV)
             } else {
@@ -326,7 +301,7 @@ class UserFragment : Fragment() {
                 // intent to FavoriteActivity
                 if (user != null) {
                     val intentFV = Intent(context, FavoriteActivity::class.java)
-                    intentFV.putExtra("childKey", PhysicsConstants.FAVORITE_PRODUCT)
+                    intentFV.putExtra("childKey", Constant.FAVORITE_PRODUCT)
                     intentFV.putExtra("nameToolbar", getString(R.string.favorite_product))
                     startActivity(intentFV)
                 }
@@ -379,15 +354,14 @@ class UserFragment : Fragment() {
     }
 
     private fun setIconOrderNumber() {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser;
         if (user != null) {
             val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.ORDER)
-                .child(uid)
+                .child(Constant.ORDER).orderByChild(Constant.ORDER_ID_USER).equalTo(uid)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -396,10 +370,10 @@ class UserFragment : Fragment() {
                         shipping = 0
                         for (ds in dataSnapshot.children) {
                             if (ds.exists()) {
-                                val id = ds.child(PhysicsConstants.ORDER_ID).value as String?
-                                val date = ds.child(PhysicsConstants.ORDER_DATE).value as String?
-                                val price = ds.child(PhysicsConstants.ORDER_PRICE).value as Long?
-                                val status = ds.child(PhysicsConstants.ORDER_STATUS).value as Long?
+                                val id = ds.child(Constant.ORDER_ID).value as String?
+                                val date = ds.child(Constant.ORDER_DATE).value as String?
+                                val price = ds.child(Constant.ORDER_PRICE).value as Long?
+                                val status = ds.child(Constant.ORDER_STATUS).value as Long?
                                 if (id != null && date != null && price != null && status != null) {
                                     if (status == 1.toLong()) {
                                         haveRecieved++
@@ -443,9 +417,9 @@ class UserFragment : Fragment() {
     // the infor will be remove in SharedPreference
     private fun clearInforLogin() {
         val sharedPreference: SharedPreference = SharedPreference(requireContext())
-        sharedPreference.removeValue(PhysicsConstants.EMAIL_OR_PHONE)
-        sharedPreference.removeValue(PhysicsConstants.IS_LOGIN)
-        sharedPreference.save(PhysicsConstants.IS_LOGIN, false)
+        sharedPreference.removeValue(Constant.EMAIL_OR_PHONE)
+        sharedPreference.removeValue(Constant.IS_LOGIN)
+        sharedPreference.save(Constant.IS_LOGIN, false)
     }
 
     private fun onOpenEditProfileFragment() {

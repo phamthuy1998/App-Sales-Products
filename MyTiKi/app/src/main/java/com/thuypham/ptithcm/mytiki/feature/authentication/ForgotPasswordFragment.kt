@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.databinding.FragmentForgotPasswordBinding
@@ -17,16 +16,13 @@ import com.thuypham.ptithcm.mytiki.util.isEmailValid
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_forgot_password.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ForgotPasswordFragment : Fragment() {
 
     private var mAuth: FirebaseAuth? = null
-    val userViewModel: UserViewModel by lazy {
-        ViewModelProviders
-                .of(activity!!)
-                .get(UserViewModel::class.java)
-    }
+    val userViewModel: UserViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()

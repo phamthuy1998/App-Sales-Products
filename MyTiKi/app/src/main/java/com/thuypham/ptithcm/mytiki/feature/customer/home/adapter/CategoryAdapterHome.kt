@@ -38,8 +38,8 @@ class CategoryAdapterHome(
         override fun bind(position: Int) {
             if (!items.isEmpty()) {
                 val category: Category = items[position]
-                itemView.tv_name_category.text = category.nameCategory
-                println("ten cate adap ${category.nameCategory}")
+                itemView.tv_name_category.text = category.name
+                println("ten cate adap ${category.name}")
                 //sset image view category
                 Glide.with(itemView)
                     .load(category.image)
@@ -48,8 +48,8 @@ class CategoryAdapterHome(
                 // Intent to ProductOfCategoryActivity
                 itemView.ll_item_category.setOnClickListener {
                     var intent = Intent(context.context, ProductOfCategoryActivity::class.java)
-                    intent.putExtra("id_category", category.idCategory)
-                    intent.putExtra("name_category", category.nameCategory)
+                    intent.putExtra("id_category", category.id)
+                    intent.putExtra("name_category", category.name)
                     context!!.startActivity(intent)
                 }
             }

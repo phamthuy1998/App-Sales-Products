@@ -54,7 +54,7 @@
                     android:tint="@color/colorWhiteBG"
                     app:srcCompat="@drawable/ic_select_like" />
 
-                <include layout="@layout/ll_cart"/>
+                <include layout="@layout/ll_cart" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -81,27 +81,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_product_detail" />
 
-            <ImageView
-                android:id="@+id/iv_stars_avr"
-                android:layout_width="100dp"
-                android:layout_height="24dp"
-                android:layout_margin="16dp"
-                android:src="@drawable/two_stars"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_name_product_detail" />
-
-            <TextView
-                android:id="@+id/tv_cmt_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/comment_count"
-                android:textColor="@color/colorBlue"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_stars_avr"
-                app:layout_constraintStart_toEndOf="@id/iv_stars_avr"
-                app:layout_constraintTop_toTopOf="@id/iv_stars_avr" />
-
             <TextView
                 android:id="@+id/tv_price_discount_product_detail"
                 android:layout_width="wrap_content"
@@ -112,7 +91,7 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_stars_avr" />
+                app:layout_constraintTop_toBottomOf="@id/tv_name_product_detail" />
 
             <TextView
                 android:id="@+id/tv_price_product_detail"
@@ -194,46 +173,42 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
 
-                />
-
-            <!-- Star-->
-            <include
-                android:id="@+id/ll_star_of_product"
-                layout="@layout/star_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_content_product_detail" />
+            <!--            &lt;!&ndash; Star&ndash;&gt;-->
+            <!--            <include-->
+            <!--                android:id="@+id/ll_star_of_product"-->
+            <!--                layout="@layout/star_layout"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/tv_content_product_detail" />-->
 
 
-            <Button
-                android:id="@+id/btn_write_cmt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:padding="16dp"
-                android:text="@string/make_a_comment"
-                android:textColor="@color/colorBlue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_star_of_product" />
+            <!--            <Button-->
+            <!--                android:id="@+id/btn_write_cmt"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="16dp"-->
+            <!--                android:padding="16dp"-->
+            <!--                android:text="@string/make_a_comment"-->
+            <!--                android:textColor="@color/colorBlue"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/ll_star_of_product" />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_comments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_write_cmt"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_comment_product" />
+            <!--            <androidx.recyclerview.widget.RecyclerView-->
+            <!--                android:id="@+id/rv_comments"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="16dp"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/btn_write_cmt"-->
+            <!--                tools:itemCount="2"-->
+            <!--                tools:listitem="@layout/item_comment_product" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

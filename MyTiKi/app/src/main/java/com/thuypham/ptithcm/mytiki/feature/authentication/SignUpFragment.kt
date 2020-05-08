@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -24,6 +23,7 @@ import kotlinx.android.synthetic.main.dialog_verified_email.*
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.layout_input_birthday.*
 import kotlinx.android.synthetic.main.loading_layout.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,11 +33,7 @@ class SignUpFragment : Fragment() {
     private var mDatabaseReference: DatabaseReference? = null
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
-    val userViewModel: UserViewModel by lazy {
-        ViewModelProviders
-                .of(activity!!)
-                .get(UserViewModel::class.java)
-    }
+   private val userViewModel: UserViewModel by viewModel()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +50,7 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+        mDatabaseReference = mDatabase!!.reference!!.child(Constant.USER)
 
         addEvents()
     }
@@ -137,6 +133,7 @@ class SignUpFragment : Fragment() {
         } else {
 
             val user = User(
+                null,
                 name,
                 phone,
                 email,
@@ -179,9 +176,9 @@ class SignUpFragment : Fragment() {
                                         currentUserDb.child("phone").setValue(user.phone)
                                         currentUserDb.child("email").setValue(user.email)
                                         currentUserDb.child("password").setValue(user.password)
-                                        currentUserDb.child("birthday").setValue(user.dayofbirth)
+                                        currentUserDb.child("birthday").setValue(user.birthday)
                                         currentUserDb.child("gender").setValue(user.gender)
-                                        currentUserDb.child("daycreate").setValue(user.dayCreateAcc)
+                                        currentUserDb.child("daycreate").setValue(user.daycreate)
                                         // close this fragment, and change to user fragment
                                         Toast.makeText(requireContext(), getString(com.thuypham.ptithcm.mytiki.R.string.create_acc_success),
                                                 Toast.LENGTH_LONG).show()
@@ -294,17 +291,17 @@ class SignUpFragment : Fragment() {
 
     private fun loginSuccess(email: String, password: String) {
         val sharedPreference: SharedPreference = SharedPreference(requireContext())
-        sharedPreference.save(PhysicsConstants.IS_LOGIN, true)
-        sharedPreference.save(PhysicsConstants.EMAIL_OR_PHONE, email)
-        sharedPreference.save(PhysicsConstants.PASSWORD, password)
+        sharedPreference.save(Constant.IS_LOGIN, true)
+        sharedPreference.save(Constant.EMAIL_OR_PHONE, email)
+        sharedPreference.save(Constant.PASSWORD, password)
     }
 
     private fun loginFalse() {
         val sharedPreference: SharedPreference = SharedPreference(requireContext())
-        sharedPreference.removeValue(PhysicsConstants.EMAIL_OR_PHONE)
-        sharedPreference.removeValue(PhysicsConstants.IS_LOGIN)
-        sharedPreference.removeValue(PhysicsConstants.PASSWORD)
-        sharedPreference.save(PhysicsConstants.IS_LOGIN, false)
+        sharedPreference.removeValue(Constant.EMAIL_OR_PHONE)
+        sharedPreference.removeValue(Constant.IS_LOGIN)
+        sharedPreference.removeValue(Constant.PASSWORD)
+        sharedPreference.save(Constant.IS_LOGIN, false)
     }
 
 //    private fun verifyEmail() {

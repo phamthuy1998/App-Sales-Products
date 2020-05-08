@@ -19,7 +19,7 @@ class SignInUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         println("view tao lai")
         val adapter =
-            MyFragmentPagerAdapter(activity!!.supportFragmentManager)
+            MyFragmentPagerAdapter(requireActivity().supportFragmentManager)
         adapter.addFragment(SignInFragment(), getString(R.string.sign_in))
         adapter.addFragment(SignUpFragment(), getString(R.string.sign_up))
         viewPager_sign_in_up.adapter = adapter

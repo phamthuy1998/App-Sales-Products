@@ -15,15 +15,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
-import com.thuypham.ptithcm.mytiki.feature.customer.category.adapter.CategoryAdapter
 import com.thuypham.ptithcm.mytiki.data.Category
-import kotlinx.android.synthetic.main.category_fragment.*
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.category.adapter.CategoryAdapter
+import com.thuypham.ptithcm.mytiki.util.Constant
+import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.android.synthetic.main.no_wifi.*
@@ -67,16 +64,16 @@ class CategoryFragment : Fragment() {
 
 //        for(i in 0..20){
 //        mDatabaseReference = mDatabase!!.reference
-//        val currentUserDb = mDatabaseReference!!.child(PhysicsConstants.PRODUCT).push()
-//        currentUserDb.child(PhysicsConstants.PRODUCT_ID).setValue(currentUserDb.key)
-//        currentUserDb.child(PhysicsConstants.NAME_PRODUCT).setValue("ao")
-//        currentUserDb.child(PhysicsConstants.PRICE_PRODUCT).setValue(99000)
-//        currentUserDb.child(PhysicsConstants.IMAGE_PRODUCT).setValue("abc")
-//        currentUserDb.child(PhysicsConstants.INFOR_PRODUCT).setValue("abc")
-//        currentUserDb.child(PhysicsConstants.PRODUCT_COUNT).setValue(10)
-//        currentUserDb.child(PhysicsConstants.ID_CATEGORY_PRODUCT).setValue("-LmwzhwCLb3CL6u9atPw")
-//        currentUserDb.child(PhysicsConstants.PRODUCT_SALE).setValue(0)
-//        currentUserDb.child(PhysicsConstants.PRODUCT_SOLD).setValue(10)}
+//        val currentUserDb = mDatabaseReference!!.child(Constant.PRODUCT).push()
+//        currentUserDb.child(Constant.PRODUCT_ID).setValue(currentUserDb.key)
+//        currentUserDb.child(Constant.NAME_PRODUCT).setValue("ao")
+//        currentUserDb.child(Constant.PRICE_PRODUCT).setValue(99000)
+//        currentUserDb.child(Constant.IMAGE_PRODUCT).setValue("abc")
+//        currentUserDb.child(Constant.INFOR_PRODUCT).setValue("abc")
+//        currentUserDb.child(Constant.PRODUCT_COUNT).setValue(10)
+//        currentUserDb.child(Constant.ID_CATEGORY_PRODUCT).setValue("-LmwzhwCLb3CL6u9atPw")
+//        currentUserDb.child(Constant.PRODUCT_SALE).setValue(0)
+//        currentUserDb.child(Constant.PRODUCT_SOLD).setValue(10)}
         addEvent()
         getCartCount()
     }
@@ -90,7 +87,7 @@ class CategoryFragment : Fragment() {
 
             val query = mDatabase!!
                 .reference
-                .child(PhysicsConstants.CART)
+                .child(Constant.CART)
                 .child(uid)
             var cartCount = 0
 
@@ -148,7 +145,7 @@ class CategoryFragment : Fragment() {
                 // Display the selected/clicked item text and position on TextView
                 Toast.makeText(
                     requireContext(),
-                    "GridView item clicked : ${categoryList[position].nameCategory} \\nAt index position : $position\"",
+                    "GridView item clicked : ${categoryList[position].name} \\nAt index position : $position\"",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -160,18 +157,12 @@ class CategoryFragment : Fragment() {
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 categoryList.clear()
+                var category:Category?
                 for (ds in dataSnapshot.children) {
-                    val id = ds.child(PhysicsConstants.CATEGORY_ID).value as String
-                    val name = ds.child(PhysicsConstants.CATEGORY_NAME).value as String
-                    val image = ds.child(PhysicsConstants.CATEGORY_IMAGE).value as String
-                    val count = ds.child(PhysicsConstants.CATEGORY_COUNT).value as Long
-                    val category = Category(
-                        id,
-                        name,
-                        image,
-                        count
-                    )
-                    categoryList.add(category)
+                    category = ds.getValue(Category::class.java)
+                    if (category != null) {
+                        categoryList.add(category)
+                    }
 
                 }
                 adapter?.notifyDataSetChanged()
@@ -195,7 +186,7 @@ class CategoryFragment : Fragment() {
     private fun inIt() {
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child(PhysicsConstants.CATEGORY_table)
+        mDatabaseReference = mDatabase!!.reference!!.child(Constant.CATEGORY)
         // create adapter
         adapter = CategoryAdapter(requireContext(), categoryList)
         gv_category.adapter = adapter

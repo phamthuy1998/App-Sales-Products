@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.feature.customer.order.activity
+package com.thuypham.ptithcm.mytiki.feature.address
 
 import android.annotation.TargetApi
 import android.app.Dialog
@@ -14,14 +14,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.Address
+import com.thuypham.ptithcm.mytiki.data.Order
+import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.feature.address.adapter.AddressAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.AddressAdapter
+import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.ProductConfirmAdapter
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.Address
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.Order
-import com.thuypham.ptithcm.mytiki.feature.customer.order.model.OrderDetail
-import com.thuypham.ptithcm.mytiki.util.PhysicsConstants
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.isPhoneValid
 import kotlinx.android.synthetic.main.activity_address.*
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
@@ -52,7 +53,7 @@ class AddressActivity : AppCompatActivity() {
         setContentView(R.layout.activity_address)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference.child("Users")
+        mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
 
         addressAdapter =
             AddressAdapter(
@@ -80,7 +81,7 @@ class AddressActivity : AppCompatActivity() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         val query = mDatabase!!
             .reference
-            .child(PhysicsConstants.ADDRESS)
+            .child(Constant.ADDRESS)
             .child(user!!.uid)
 
         val valueEventListener = object : ValueEventListener {
@@ -88,11 +89,11 @@ class AddressActivity : AppCompatActivity() {
                 if (dataSnapshot.exists()) {
                     addressList.clear()
                     for (ds in dataSnapshot.children) {
-                        val id = ds.child(PhysicsConstants.ADDRESS_ID).value as String
-                        val phone = ds.child(PhysicsConstants.ADDRESS_PHONE).value as String
-                        val name = ds.child(PhysicsConstants.ADDRESS_name).value as String
-                        val address = ds.child(PhysicsConstants.ADDRESS_REAL).value as String
-                        val default = ds.child(PhysicsConstants.ADDRESS_DEFAULT).value as Boolean
+                        val id = ds.child(Constant.ADDRESS_ID).value as String
+                        val phone = ds.child(Constant.ADDRESS_PHONE).value as String
+                        val name = ds.child(Constant.ADDRESS_name).value as String
+                        val address = ds.child(Constant.ADDRESS_REAL).value as String
+                        val default = ds.child(Constant.ADDRESS_DEFAULT).value as Boolean
                         val addressObj =
                             Address(
                                 id,
@@ -175,7 +176,7 @@ class AddressActivity : AppCompatActivity() {
 
         var priceTemp = 0.0
         for (p in productList) {
-            priceTemp += p.price!!.minus(((p.sale * 0.01) * p.price!!)) * p.number_product!!
+            priceTemp += p.price!!.minus(((p.sale?.times(0.01))?.times(p.price!!)!!)) * p.number_product!!
         }
         // format price
         val df = DecimalFormat("#,###,###")
@@ -188,8 +189,8 @@ class AddressActivity : AppCompatActivity() {
         if (priceTemp > 100000) {
             dialog.tv_price_shipping.text = "0 đ"
         } else {
-            priceAmount += PhysicsConstants.Shipping
-            priceTxt = df.format(PhysicsConstants.Shipping) + " đ"
+            priceAmount += Constant.Shipping
+            priceTxt = df.format(Constant.Shipping) + " đ"
             dialog.tv_price_shipping.text = priceTxt
         }
 
@@ -201,14 +202,13 @@ class AddressActivity : AppCompatActivity() {
 
         // add in oerder
         dialog.btn_payment_conf.setOnClickListener {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            val user = mAuth?.currentUser;
             // Check user loged in firebase yet?
             if (user != null) {
                 mDatabase = FirebaseDatabase.getInstance()
                 var query = mDatabase!!
                     .reference
-                    .child(PhysicsConstants.ORDER)
-                    .child(user.uid)
+                    .child(Constant.ORDER)
                     .push()
 
                 val key = query.key
@@ -221,6 +221,7 @@ class AddressActivity : AppCompatActivity() {
                 val order = Order(
                     key,
                     currentAddress.name,
+                    user.uid,
                     currentAddress.phone,
                     currentAddress.address,
                     dateFormatted,
@@ -233,8 +234,7 @@ class AddressActivity : AppCompatActivity() {
                 for (p in productList) {
                     query = mDatabase!!
                         .reference
-                        .child(PhysicsConstants.ORDER_DETAIL)
-                        .child(user.uid)
+                        .child(Constant.ORDER_DETAIL)
                         .child(key.toString())
                         .push()
 
@@ -267,7 +267,7 @@ class AddressActivity : AppCompatActivity() {
     private fun delAllCartOfUser() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         mDatabaseReference = mDatabase!!.reference
-        val currentUserDb = mDatabaseReference.child(PhysicsConstants.CART)
+        val currentUserDb = mDatabaseReference.child(Constant.CART)
             .child(user!!.uid)
             .removeValue()
     }
@@ -357,7 +357,7 @@ class AddressActivity : AppCompatActivity() {
                     println("userid: " + user.uid)
                     val query = mDatabase!!
                         .reference
-                        .child(PhysicsConstants.ADDRESS)
+                        .child(Constant.ADDRESS)
                         .child(user.uid)
                         .push()
 

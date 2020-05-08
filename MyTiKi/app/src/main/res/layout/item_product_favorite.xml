@@ -7,7 +7,7 @@
     android:layout_marginBottom="16dp"
     android:background="@color/colorWhiteBG">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_pr_like"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -18,7 +18,6 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/tv_name_product_favorite"
@@ -61,14 +60,6 @@
         app:layout_constraintStart_toEndOf="@id/tv_price_product_favorite"
         app:layout_constraintTop_toTopOf="@id/tv_price_product_favorite" />
 
-    <ImageView
-        android:id="@+id/iv_star_of_product"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/five_stars"
-        app:layout_constraintStart_toStartOf="@id/tv_price_product_favorite"
-        app:layout_constraintTop_toBottomOf="@id/tv_price_product_favorite" />
-
     <TextView
         android:id="@+id/tv_cmt_count_like"
         android:layout_width="wrap_content"
@@ -77,21 +68,10 @@
         android:layout_marginStart="5dp"
         android:text="@string/cmt_count"
         android:textColor="@color/colorGrayStar"
-        app:layout_constraintBottom_toBottomOf="@id/iv_star_of_product"
-        app:layout_constraintStart_toEndOf="@id/iv_star_of_product"
-        app:layout_constraintTop_toTopOf="@id/iv_star_of_product" />
+        app:layout_constraintBottom_toBottomOf="@id/tv_price_product_favorite"
+        app:layout_constraintStart_toEndOf="@id/tv_price_product_favorite"
+        app:layout_constraintTop_toTopOf="@id/tv_price_product_favorite" />
 
-    <TextView
-        android:id="@+id/tv_like_out_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="5dp"
-        android:text="@string/out_of_product"
-        android:textColor="@color/colorRedError"
-        app:layout_constraintEnd_toEndOf="@id/iv_star_of_product"
-        app:layout_constraintStart_toStartOf="@id/iv_star_of_product"
-        app:layout_constraintTop_toBottomOf="@id/iv_star_of_product" />
 
     <TextView
         android:layout_width="match_parent"

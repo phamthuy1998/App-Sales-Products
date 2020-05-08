@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_bird"
         android:label="@string/app_name"
@@ -15,16 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderDetailActivity" />
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.AddressActivity" />
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity" />
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.ProductOfCategoryActivity" />
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity" />
-        <activity android:name="com.thuypham.ptithcm.mytiki.feature.customer.product.ProductDetailActivity" />
+        <activity android:name=".feature.employee.main.MainEmployeeActivity"></activity>
+        <activity android:name=".feature.authentication.AuthActivity" />
+        <activity android:name=".feature.customer.order.OrderDetailActivity" />
+        <activity android:name=".feature.address.AddressActivity" />
+        <activity android:name=".feature.customer.cart.CartActivity" />
+        <activity android:name=".feature.customer.product.ProductOfCategoryActivity" />
+        <activity android:name=".feature.customer.product.FavoriteActivity" />
+        <activity android:name=".feature.customer.product.ProductDetailActivity" />
         <activity
-            android:name=".feature.splash.SplashAcitivity"
+            android:name=".feature.splash.SplashActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,13 +40,13 @@
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.thuypham.ptithcm.mytiki.feature.customer.order.activity.OrderActivity"
+            android:name=".feature.customer.order.OrderActivity"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name="com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity"
+            android:name=".feature.authentication.SignInUpActivity"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name="com.thuypham.ptithcm.mytiki.feature.authentication.EditProfileActivity"
+            android:name=".feature.authentication.EditProfileActivity"
             android:screenOrientation="fullSensor" />
 
         <service
