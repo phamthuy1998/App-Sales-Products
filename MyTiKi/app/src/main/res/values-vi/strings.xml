@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">T Shop</string>
+    <string name="app_name">Online Shop</string>
     <string name="bot_nav_category">Danh mục</string>
     <string name="bot_nav_home">Trang chủ</string>
     <string name="bot_nav_notification">Thông báo</string>
@@ -172,5 +172,10 @@
     <string name="not_looking_for_a_product_name">Không tìm thấy tên sản phẩm</string>
     <string name="search">Tìm kiếm</string>
     <string name="the_order_list_is_empty">Danh sách đơn hàng đang trống</string>
+    <string name="dialogCancelOrder">Bạn có chắc chắn muốn hủy đơn hàng này</string>
+    <string name="dialogOk">OK</string>
+    <string name="dialogCancel">Hủy</string>
+    <string name="dialogLogout">Bạn có chắc chắn muốn đăng xuất không</string>
+    <string name="shopping">Shopping</string>
 
 </resources>

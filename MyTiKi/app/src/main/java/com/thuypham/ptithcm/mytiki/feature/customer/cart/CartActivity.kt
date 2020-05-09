@@ -14,7 +14,7 @@ import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.ProductCart
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
 import com.thuypham.ptithcm.mytiki.feature.address.AddressActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.adapter.ProductCartAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.util.Constant
@@ -66,7 +66,7 @@ class CartActivity : AppCompatActivity() {
             addEvent()
 
         } else {
-            var intent = Intent(this, SignInUpActivity::class.java)
+            val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
         }
     }
@@ -74,12 +74,12 @@ class CartActivity : AppCompatActivity() {
     private fun addEvent() {
         // If list product cart is empty, click button continue to shopping, intent to main activity
         btn_continue_shopping_cart.setOnClickListener() {
-            var intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
         btn_order_cart.setOnClickListener() {
-            var intent = Intent(this, AddressActivity::class.java)
+            val intent = Intent(this, AddressActivity::class.java)
             intent.putParcelableArrayListExtra("listProductCart", productCartList)
             startActivity(intent)
         }

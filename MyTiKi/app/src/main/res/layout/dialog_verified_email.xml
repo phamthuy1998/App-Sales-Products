@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_margin="32dp"
-        android:background="@drawable/edit_btn_sign_in"
+        android:background="@drawable/bg_rounded_corner_red"
         android:text="@string/btn_ok_verifi"
         android:textColor="@color/colorWhiteBG" />
 </LinearLayout>

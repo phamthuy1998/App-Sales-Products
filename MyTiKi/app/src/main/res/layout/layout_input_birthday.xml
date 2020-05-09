@@ -23,11 +23,11 @@
             android:theme="@style/EditTextTheme" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_edt_birthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
+        android:layout_gravity="end"
         android:padding="10dp"
         app:srcCompat="@drawable/ic_edit" />
 

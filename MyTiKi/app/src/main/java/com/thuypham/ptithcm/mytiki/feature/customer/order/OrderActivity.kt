@@ -11,7 +11,7 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Order
 import com.thuypham.ptithcm.mytiki.data.OrderDetail
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.OrderAdapter
@@ -62,12 +62,12 @@ class OrderActivity : AppCompatActivity() {
 
     private fun addEvent() {
         ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            val user: FirebaseUser? = mAuth?.currentUser;
             if (user != null) {
                 val intentCart = Intent(this, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(this, SignInUpActivity::class.java)
+                val intentCart = Intent(this, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }
@@ -204,7 +204,7 @@ class OrderActivity : AppCompatActivity() {
             }
             query.addValueEventListener(valueEventListener)
         } else {
-            val intent = Intent(this, SignInUpActivity::class.java)
+            val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
         }
     }

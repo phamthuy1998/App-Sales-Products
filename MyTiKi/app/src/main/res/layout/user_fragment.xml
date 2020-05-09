@@ -323,7 +323,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
-                        android:background="@drawable/edt_btn_sign_out"
+                        android:background="@drawable/bg_stroke_rounded_corner"
                         android:text="@string/sign_out"
                         android:textColor="@color/colorBlue" />
 

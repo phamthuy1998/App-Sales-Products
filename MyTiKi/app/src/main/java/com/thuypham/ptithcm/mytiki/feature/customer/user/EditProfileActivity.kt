@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.feature.authentication
+package com.thuypham.ptithcm.mytiki.feature.customer.user
 
 import android.os.Bundle
 import android.view.View

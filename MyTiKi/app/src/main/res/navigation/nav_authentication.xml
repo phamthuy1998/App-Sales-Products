@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/gotoLogin">
+
+    <fragment
+        android:id="@+id/gotoLogin"
+        android:name="com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpFragment"
+        tools:layout="@layout/fragment_sign_in_and_sing_up">
+
+        <action
+            android:id="@+id/action_fragment_sign_in_to_fragment_signup"
+            app:destination="@id/fragmentSignUp"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_fragment_sign_in_to_signUpLocalCorpFirstTimeFragment"
+            app:destination="@id/fragmentSignIn"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentSignUp"
+        android:name="com.thuypham.ptithcm.mytiki.feature.authentication.SignUpFragment"
+        tools:layout="@layout/fragment_sign_up" />
+
+    <fragment
+        android:id="@+id/fragmentForgotPassword"
+        android:name="com.thuypham.ptithcm.mytiki.feature.authentication.ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password" />
+
+    <fragment
+        android:id="@+id/fragmentSignIn"
+        android:name="com.thuypham.ptithcm.mytiki.feature.authentication.SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/actSignInToForgotPW"
+            app:destination="@id/fragmentForgotPassword"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+
+</navigation>

@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="fragment"
+            type="com.thuypham.ptithcm.mytiki.feature.authentication.SignUpFragment" />
 
         <variable
             name="userViewModel"
             type="com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +45,7 @@
                         android:hint="@string/name_sign_up"
                         android:inputType="textPersonName"
                         android:singleLine="true"
-                        android:text="@{userViewModel.name}"
+                        android:text="@={userViewModel.name}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
 
@@ -59,7 +66,7 @@
                         android:hint="@string/phone"
                         android:inputType="phone"
                         android:singleLine="true"
-                        android:text="@{userViewModel.phone}"
+                        android:text="@={userViewModel.phone}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -79,7 +86,7 @@
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:singleLine="true"
-                        android:text="@{userViewModel.email}"
+                        android:text="@={userViewModel.email}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -101,17 +108,48 @@
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:text="@{userViewModel.pasword}"
+                        android:text="@={userViewModel.password}"
                         android:theme="@style/EditTextTheme" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <include
-                    layout="@layout/layout_input_birthday"
-                    android:layout_width="fill_parent"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ll_text_birthday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/TextLabel">
+
+                        <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                            android:id="@+id/edt_birthday_sign_up"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/birthday"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:text="@={userViewModel.birthday}"
+                            android:theme="@style/EditTextTheme" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btn_edt_birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                </FrameLayout>
 
                 <RadioGroup
                     android:id="@+id/rad_btn_gender"
@@ -141,29 +179,30 @@
 
                 <Button
                     android:id="@+id/btn_sign_up"
+                    style="@style/Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/edit_btn_sign_in"
+                    android:enabled="@{!(TextUtils.isEmpty(userViewModel.name))&amp; !(TextUtils.isEmpty(userViewModel.phone))&amp; !(TextUtils.isEmpty(userViewModel.email))&amp; !(TextUtils.isEmpty(userViewModel.password))&amp; !(TextUtils.isEmpty(userViewModel.birthday))}"
+                    android:onClick="@{() -> fragment.onClickSignUp()}"
                     android:text="@string/btn_sign_up"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </ScrollView>
 
 
-        <include
-            layout="@layout/loading_layout"
+        <ProgressBar
+            android:id="@+id/progressSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="200dp"
-            android:visibility="gone"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

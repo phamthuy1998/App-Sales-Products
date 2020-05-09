@@ -1,26 +1,37 @@
 package com.thuypham.ptithcm.mytiki.feature.splash
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.Status
+import com.thuypham.ptithcm.mytiki.data.User
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
-import com.thuypham.ptithcm.mytiki.util.Constant
-import com.thuypham.ptithcm.mytiki.util.SharedPreference
+import com.thuypham.ptithcm.mytiki.feature.employee.main.MainEmployeeActivity
+import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
 
-    private var mAuth: FirebaseAuth? = null
+    private val authViewModel: UserViewModel by viewModel()
+    private var isLogin = false
+    private var user: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         enablePersistence()
         ivLogo?.apply {
             doOnLayout {
@@ -30,67 +41,53 @@ class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
                 animation?.setAnimationListener(this@SplashActivity)
             }
         }
-    }
 
-    private fun enablePersistence() {
-        // [START rtdb_enable_persistence]
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        // [END rtdb_enable_persistence]
-    }
-
-    private fun loginUser() {
-        val sharedPreference: SharedPreference =
-            SharedPreference(applicationContext)
-        mAuth = FirebaseAuth.getInstance()
-        val isLogin = sharedPreference.getValueBoolien(Constant.IS_LOGIN, false)
-        if (isLogin) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            val email = sharedPreference.getValueString(Constant.EMAIL_OR_PHONE).toString()
-            val password = sharedPreference.getValueString(Constant.PASSWORD).toString()
-
-            if (!email.equals("") && !password.equals("")) {
-                mAuth?.signInWithEmailAndPassword(
-                    email, password
-                )
-                    ?.addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                        }
-                    }
-            }
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseAuth.getInstance()
+                .currentUser?.email?.let { authViewModel.getUserInfoByEmail(it) }
+            bindViewModel()
+            isLogin = true
         }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun openNextScreen(isLogin: Boolean, user: User?) {
+        /* Not login yet */
+        if (!isLogin)
+            startActivity<AuthActivity>()
+        else {
+            /* Customer */
+            if (user?.role == 1) startActivity<MainActivity>()
+            /* Employee, include admin */
+            else startActivity<MainEmployeeActivity>()
+        }
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
     }
+
+    private fun bindViewModel() {
+        authViewModel.userInfo.observe(this, Observer { user ->
+            this.user = user
+        })
+        authViewModel.networkStateUserInfo.observe(this, Observer {
+            when (it.status) {
+                Status.SUCCESS -> openNextScreen(true, user)
+                Status.FAILED -> openNextScreen(false, null)
+                Status.RUNNING -> {
+                }
+            }
+        })
+    }
+
+    /* Enable firebase offline mode */
+    private fun enablePersistence() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+    }
+
 
     override fun onAnimationRepeat(animation: Animation?) {}
 
     override fun onAnimationEnd(animation: Animation?) {
-        openNextScreen()
-    }
-
-    private fun openNextScreen() {
-//        if (FirebaseAuth.getInstance().currentUser == null)
-//            startActivity<AuthActivity>()
-//        else{
-//
-//        }
-
-
-        startActivity<MainActivity>()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()
+        if (!isLogin) openNextScreen(false, user)
     }
 
     override fun onAnimationStart(animation: Animation?) {}

@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Category
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.category.adapter.CategoryAdapter
 import com.thuypham.ptithcm.mytiki.util.Constant
@@ -132,7 +132,7 @@ class CategoryFragment : Fragment() {
                 val intentCart = Intent(context, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(context, SignInUpActivity::class.java)
+                val intentCart = Intent(context, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }

@@ -13,6 +13,39 @@
         <item name="colorAccent">@color/colorBlue</item>
     </style>
 
+    <style name="TxtButton" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:stateListAnimator" tools:targetApi="lollipop">@null</item>
+        <item name="android:padding">15dp</item>
+    </style>
+
+
+    <style name="Button" parent="TxtButton">
+        <item name="android:background">@drawable/bg_rounded_corner</item>
+        <item name="android:textColor">@color/colorWhiteBG</item>
+    </style>
+
+    <style name="Button.CircleCorner" parent="TxtButton">
+        <item name="android:background">@drawable/bg_stroke_circle_corner</item>
+        <item name="android:textColor">@color/colorBlueDark</item>
+    </style>
+
+    <style name="TextAppearance.Widget.Event.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Button.ImageToolBar">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:background">@drawable/ripple_btn_corner</item>
+    </style>
 
     <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textCursorDrawable">@drawable/ic_cursor</item>
@@ -27,8 +60,8 @@
 
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/colorGray</item>
-        <item name="colorControlActivated">@color/colorBlue</item>
-        <item name="colorControlHighlight">@color/colorBlue</item>
+        <item name="colorControlActivated">@color/colorBlueDark</item>
+        <item name="colorControlHighlight">@color/colorBlueDark</item>
     </style>
 
     <style name="TextLabel" parent="TextAppearance.AppCompat">
@@ -37,8 +70,8 @@
         <item name="android:textSize">16sp</item>
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">@color/colorGray</item>
-        <item name="colorControlNormal">@color/colorBlue</item>
-        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="colorControlNormal">@color/colorBlueDark</item>
+        <item name="colorControlActivated">@color/colorBlueDark</item>
     </style>
 
     <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
@@ -48,13 +81,13 @@
         <!--Color normal-->
         <item name="colorPrimary">@color/colorGray</item>
         <!--Color when click-->
-        <item name="colorControlActivated">@color/colorBlue</item>
+        <item name="colorControlActivated">@color/colorBlueDark</item>
     </style>
 
 
     <!--Checkbox color style-->
     <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
-        <item name="colorAccent">@color/colorBlue</item>
+        <item name="colorAccent">@color/colorBlueDark</item>
         <item name="android:textColorSecondary">@color/colorGray</item>
     </style>
 

@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.util.Constant
@@ -65,7 +65,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 val intentCart = Intent(this, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(this, SignInUpActivity::class.java)
+                val intentCart = Intent(this, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }
@@ -111,7 +111,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
             } else {// if user not login
-                val intent = Intent(this, SignInUpActivity::class.java)
+                val intent = Intent(this, AuthActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -277,7 +277,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 btn_like.isSelected = like
             } else {
                 // If user haven't login yet, intent to sign in
-                val intent = Intent(baseContext, SignInUpActivity::class.java)
+                val intent = Intent(baseContext, AuthActivity::class.java)
                 startActivity(intent)
                 user = mAuth?.getCurrentUser()
                 if (user != null) {

@@ -10,13 +10,13 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_bird"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".feature.employee.main.MainEmployeeActivity"></activity>
+        <activity android:name=".feature.employee.main.MainEmployeeActivity" />
         <activity android:name=".feature.authentication.AuthActivity" />
         <activity android:name=".feature.customer.order.OrderDetailActivity" />
         <activity android:name=".feature.address.AddressActivity" />
@@ -43,10 +43,7 @@
             android:name=".feature.customer.order.OrderActivity"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".feature.authentication.SignInUpActivity"
-            android:screenOrientation="fullSensor" />
-        <activity
-            android:name=".feature.authentication.EditProfileActivity"
+            android:name=".feature.customer.user.EditProfileActivity"
             android:screenOrientation="fullSensor" />
 
         <service

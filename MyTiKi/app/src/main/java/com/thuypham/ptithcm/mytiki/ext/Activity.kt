@@ -1,6 +1,7 @@
 package com.thuypham.ptithcm.mytiki.ext
 
 import android.app.Activity
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
@@ -11,6 +12,11 @@ fun Activity.hideSoftKeyboard() {
     inputMethodManager?.hideSoftInputFromWindow(
         currentFocus?.windowToken, 0
     )
+}
+
+
+fun Activity.hideStatusBar() {
+    window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 }
 
 //fun Activity.showBadge(

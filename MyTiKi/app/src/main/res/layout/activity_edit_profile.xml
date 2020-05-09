@@ -264,7 +264,7 @@
                         android:layout_margin="16dp"
                         android:linksClickable="true"
                         android:onClick="onClickEditProfile"
-                        android:background="@drawable/edit_btn_sign_in"
+                        android:background="@drawable/bg_rounded_corner_red"
                         android:text="@string/save_changes"
                         android:textColor="@android:color/white" />
                 </LinearLayout>

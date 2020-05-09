@@ -1,13 +1,17 @@
 package com.thuypham.ptithcm.mytiki.feature.authentication
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.BaseActivity
+import com.thuypham.ptithcm.mytiki.databinding.ActivityAuthBinding
 
-class AuthActivity : AppCompatActivity() {
+class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
-    }
+    override val layoutId: Int = R.layout.activity_auth
+
+    override var toolbarViewParentId: Int = R.id.clAuthContainer
+
+    override fun onSupportNavigateUp(): Boolean =
+        Navigation.findNavController(this, R.id.frAuthenticationNavigator).navigateUp()
+
 }

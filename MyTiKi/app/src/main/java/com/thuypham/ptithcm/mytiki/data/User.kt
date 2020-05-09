@@ -11,5 +11,7 @@ data class User(
     var birthday: String? = null,
     var gender: String? = null,
     var daycreate: String? = null,
-    var role: Int? = 1
+    var role: Int? = 1,
+    var isActive: Boolean? = null,
+    var isDel: Boolean? = null
 ):Serializable

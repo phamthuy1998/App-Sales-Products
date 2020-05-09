@@ -9,8 +9,14 @@ fun after(delay: Long, process: () -> Unit) {
     }, delay)
 }
 fun isEmailValid(email: String): Boolean {
-    val expression = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}\$"
-    val pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+    val expression= "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
+    val pattern = Pattern.compile(expression)
     val matcher = pattern.matcher(email)
     return matcher.matches()
 }

@@ -2,23 +2,23 @@ package com.thuypham.ptithcm.mytiki.feature.customer.product
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.util.Constant
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
+import com.thuypham.ptithcm.mytiki.util.Constant
 import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import java.time.LocalDateTime
@@ -74,13 +74,12 @@ class FavoriteActivity : AppCompatActivity() {
         // product viewed or product like to get infor
         if (numViewMore == 0) {
             if (childKey != null) {
-                println("key: " + childKey)
-                var user: FirebaseUser? = mAuth?.getCurrentUser();
+                val user: FirebaseUser? = mAuth?.currentUser;
                 // Check user loged in firebase yet?
                 if (user != null) {
                     getListIdProductViewed(childKey)
                 } else {
-                    var intent = Intent(this, SignInUpActivity::class.java)
+                    val intent = Intent(this, AuthActivity::class.java)
                     startActivity(intent)
                 }
             } else {
@@ -109,12 +108,12 @@ class FavoriteActivity : AppCompatActivity() {
             startActivity(intentSearch)
         }
         ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            val user: FirebaseUser? = mAuth?.currentUser;
             if (user != null) {
                 val intentCart = Intent(this, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(this, SignInUpActivity::class.java)
+                val intentCart = Intent(this, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }

@@ -22,8 +22,7 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.databinding.UserFragmentBinding
 import com.thuypham.ptithcm.mytiki.feature.address.AddressActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.EditProfileActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity
@@ -33,6 +32,7 @@ import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.no_wifi.*
 import kotlinx.android.synthetic.main.user_fragment.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -52,6 +52,7 @@ class UserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mAuth?.currentUser?.email?.let { userViewModel.getUserInfoByEmail(it) }
         val binding = UserFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this@UserFragment
         binding.userViewModel = userViewModel
@@ -65,7 +66,14 @@ class UserFragment : Fragment() {
         mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         mAuth = FirebaseAuth.getInstance()
         addEvent()
+//        bindViewModel()
     }
+
+//    private fun bindViewModel() {
+//        userViewModel.userInfo.observe(viewLifecycleOwner, Observer { user->
+//            if(user!=null)
+//        })
+//    }
 
     override fun onResume() {
         super.onResume()
@@ -168,7 +176,7 @@ class UserFragment : Fragment() {
                 val intentCart = Intent(context, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(context, SignInUpActivity::class.java)
+                val intentCart = Intent(context, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }
@@ -198,13 +206,12 @@ class UserFragment : Fragment() {
             val builder = AlertDialog.Builder(requireContext())
             with(builder)
             {
-                setMessage(getString(R.string.dialogCancelOrder))
+                setMessage(getString(R.string.dialogLogout))
                 setPositiveButton(getString(R.string.dialogOk)) { dialog, id ->
                     dialog.dismiss()
                     clearInforLogin()
                     mAuth?.signOut()
-                    val intent = Intent(context, SignInUpActivity::class.java)
-                    startActivity(intent)
+                    startActivity<AuthActivity>()
                     requireActivity().finish()
                 }
                 setNegativeButton(getString(R.string.dialogCancel)) { dialog, id ->
@@ -226,10 +233,7 @@ class UserFragment : Fragment() {
 
                 // Permission is not granted
                 // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        requireActivity(),
-                        Manifest.permission.CALL_PHONE
-                    )
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CALL_PHONE)
                 ) {
                     // Show an explanation to the user *asynchronously* -- don't block
                     // this thread waiting for the user's response! After the user
@@ -269,7 +273,7 @@ class UserFragment : Fragment() {
                 startActivity(intentFV)
             } else {
                 // If user haven't login yet, intent to sign in
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
 
                 user = mAuth?.currentUser
@@ -295,7 +299,7 @@ class UserFragment : Fragment() {
                 startActivity(intentFV)
             } else {
                 // If user haven't login yet, intent to sign in
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
                 user = mAuth?.getCurrentUser()
                 // intent to FavoriteActivity
@@ -314,7 +318,7 @@ class UserFragment : Fragment() {
                 intent.putExtra("type_order", 1)
                 startActivity(intent)
             } else {
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -325,7 +329,7 @@ class UserFragment : Fragment() {
                 intent.putExtra("type_order", 2)
                 startActivity(intent)
             } else {
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -336,7 +340,7 @@ class UserFragment : Fragment() {
                 intent.putExtra("type_order", 3)
                 startActivity(intent)
             } else {
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -347,7 +351,7 @@ class UserFragment : Fragment() {
                 intent.putExtra("type_order", 4)
                 startActivity(intent)
             } else {
-                val intent = Intent(context, SignInUpActivity::class.java)
+                val intent = Intent(context, AuthActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -429,7 +433,7 @@ class UserFragment : Fragment() {
     }
 
     fun onOpentSigInUpFragment() {
-        val intent = Intent(getActivity(), SignInUpActivity::class.java)
+        val intent = Intent(getActivity(), AuthActivity::class.java)
         getActivity()?.startActivity(intent)
     }
 

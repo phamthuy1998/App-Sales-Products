@@ -27,7 +27,7 @@ import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import com.thuypham.ptithcm.mytiki.data.Advertisement
 import com.thuypham.ptithcm.mytiki.data.Category
 import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.CategoryAdapterHome
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductAdapter
@@ -109,12 +109,12 @@ class HomeFragment : Fragment() {
 
     private fun addEvent() {
         ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            val user: FirebaseUser? = mAuth?.currentUser;
             if (user != null) {
                 val intentCart = Intent(context, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(context, SignInUpActivity::class.java)
+                val intentCart = Intent(context, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }

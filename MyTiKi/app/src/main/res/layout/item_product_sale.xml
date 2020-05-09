@@ -25,7 +25,7 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:background="@drawable/edit_btn_sign_in"
+            android:background="@drawable/bg_rounded_corner_red"
             android:padding="1dp"
             android:text="@string/sale_percent"
             android:gravity="center"

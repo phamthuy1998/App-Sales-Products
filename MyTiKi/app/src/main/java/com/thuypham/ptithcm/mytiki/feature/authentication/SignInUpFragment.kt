@@ -1,30 +1,31 @@
 package com.thuypham.ptithcm.mytiki.feature.authentication
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.thuypham.ptithcm.mytiki.base.MyFragmentPagerAdapter
-import kotlinx.android.synthetic.main.fragment_sign_in_and_sing_up.*
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.BaseActivity
+import com.thuypham.ptithcm.mytiki.base.BaseFragment
+import com.thuypham.ptithcm.mytiki.databinding.FragmentSignInAndSingUpBinding
+import com.thuypham.ptithcm.mytiki.ext.findNavController
 
 
-class SignInUpFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        println("cos khoi taolai view")
-        return inflater.inflate(R.layout.fragment_sign_in_and_sing_up, container, false)
+class SignInUpFragment : BaseFragment<FragmentSignInAndSingUpBinding>() {
+
+    override val layoutId: Int = R.layout.fragment_sign_in_and_sing_up
+
+    override fun initView() {
+        super.initView()
+        (activity as BaseActivity<*>).removeToolbar()
+        viewBinding.fragment = this
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        println("view tao lai")
-        val adapter =
-            MyFragmentPagerAdapter(requireActivity().supportFragmentManager)
-        adapter.addFragment(SignInFragment(), getString(R.string.sign_in))
-        adapter.addFragment(SignUpFragment(), getString(R.string.sign_up))
-        viewPager_sign_in_up.adapter = adapter
-        viewPager_sign_in_up.setOffscreenPageLimit(1)
-        tab_sign_in_up.setupWithViewPager(viewPager_sign_in_up)
+    override fun bindViewModel() {
+        super.bindViewModel()
+    }
 
+    fun onClickShowSignInFragment() {
+        findNavController().navigate(R.id.fragmentSignIn)
+    }
+
+    fun onClickShowSignUpFragment() {
+        findNavController().navigate(R.id.fragmentSignUp)
     }
 }

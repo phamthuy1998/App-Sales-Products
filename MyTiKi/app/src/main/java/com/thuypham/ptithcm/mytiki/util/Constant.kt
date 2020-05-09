@@ -8,6 +8,8 @@ object Constant {
     const val IS_LOGIN = "isLogin"
     const val EMAIL = "email"
     const val USER = "USER"
+    const val USER_IS_ACTIVE = "isActive"
+    const val USER_IS_DEL = "isDel"
     const val BIRTHDAY = "birthday"
     const val DAY_CREATE = "daycreate"
     const val GENDER = "gender"

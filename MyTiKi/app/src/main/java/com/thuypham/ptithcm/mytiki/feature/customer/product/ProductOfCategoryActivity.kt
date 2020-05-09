@@ -13,16 +13,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
+import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import com.thuypham.ptithcm.mytiki.data.Advertisement
+import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductSaleAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductViewedAdapter
-import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
-import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
-import com.thuypham.ptithcm.mytiki.feature.authentication.SignInUpActivity
 import com.thuypham.ptithcm.mytiki.util.Constant
-import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import kotlinx.android.synthetic.main.activity_product_of_category.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -74,7 +74,7 @@ class ProductOfCategoryActivity : AppCompatActivity() {
                 val intentCart = Intent(this, CartActivity::class.java)
                 startActivity(intentCart)
             } else {
-                val intentCart = Intent(this, SignInUpActivity::class.java)
+                val intentCart = Intent(this, AuthActivity::class.java)
                 startActivity(intentCart)
             }
         }

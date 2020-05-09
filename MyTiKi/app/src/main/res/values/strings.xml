@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">T Shop</string>
+    <string name="app_name">Online Shop</string>
     <string name="bot_nav_home">Home</string>
     <string name="bot_nav_category">Category</string>
     <string name="bot_nav_search">Search</string>
@@ -46,6 +46,7 @@
     <string name="dialogOk">OK</string>
     <string name="dialogCancel">Cancel</string>
     <string name="dialogLogout">Are you sure you want to log out this account?</string>
+    <string name="dialogSendMail">Password reset successfully, please check your email</string>
     <string name="add_like_product">Added to favorite product list</string>
     <string name="rab_male">Male</string>
     <string name="female">Female</string>
@@ -198,6 +199,7 @@
     <string name="not_looking_for_a_product_name">Not looking for a product name</string>
     <string name="cart_empty">Your shopping cart is empty</string>
     <string name="the_order_list_is_empty">The order list is empty</string>
+    <string name="shopping">Shopping</string>
 
 
 </resources>

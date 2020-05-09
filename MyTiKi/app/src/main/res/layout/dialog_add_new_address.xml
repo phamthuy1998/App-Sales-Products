@@ -102,7 +102,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/edit_btn_sign_in"
+        android:background="@drawable/bg_rounded_corner_red"
         android:text="@string/add_address"
         android:textColor="@android:color/white" />
 

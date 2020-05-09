@@ -91,7 +91,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/edit_btn_sign_in"
+            android:background="@drawable/bg_rounded_corner_red"
             android:text="@string/continue_shopping"
             android:textColor="@android:color/white" />
     </LinearLayout>

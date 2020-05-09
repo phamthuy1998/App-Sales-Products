@@ -14,6 +14,8 @@ import com.thuypham.ptithcm.mytiki.repository.AuthRepository
 import com.thuypham.ptithcm.mytiki.util.*
 import com.thuypham.ptithcm.mytiki.util.Constant.EMAIL
 import com.thuypham.ptithcm.mytiki.util.Constant.USER
+import com.thuypham.ptithcm.mytiki.util.Constant.USER_IS_ACTIVE
+import com.thuypham.ptithcm.mytiki.util.Constant.USER_IS_DEL
 
 
 class AuthRepositoryImpl : AuthRepository {
@@ -41,7 +43,7 @@ class AuthRepositoryImpl : AuthRepository {
                     if (currentUser()?.isEmailVerified == true) {
                         // Set email active
                         databaseRef()?.child(USER)?.child(currentUser()?.uid.toString())
-                            ?.child("active")?.setValue(true)
+                            ?.child(USER_IS_ACTIVE)?.setValue(true)
 
                         val query = databaseRef()?.child(USER)
                             ?.orderByChild(currentUser()?.uid.toString())
@@ -50,8 +52,10 @@ class AuthRepositoryImpl : AuthRepository {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     val user = dataSnapshot.getValue(User::class.java)
-                                    responseLogin.value = user
-                                    networkState.postValue(NetworkState.LOADED)
+                                    if (user?.isDel == false) {
+                                        responseLogin.value = user
+                                        networkState.postValue(NetworkState.LOADED)
+                                    } else networkState.postValue(NetworkState.error("Your account has been locked!"))
                                 } else networkState.postValue(NetworkState.error("Can't load info of your account!"))
                             }
 
@@ -132,6 +136,9 @@ class AuthRepositoryImpl : AuthRepository {
         )?.addOnCompleteListener {
             if (it.isSuccessful) {
                 verifyEmail()
+                user.id = currentUser()?.uid
+                user.isActive = false
+                user.isDel = false
                 databaseRef()?.child(USER)?.child(currentUser()?.uid.toString())?.setValue(user)
                 responseRegister.value = true
                 networkState.postValue(NetworkState.LOADED)
@@ -168,7 +175,7 @@ class AuthRepositoryImpl : AuthRepository {
                     responseUser.value = user
                     networkState.postValue(NetworkState.LOADED)
                 } else {
-                    networkState.postValue(NetworkState.error("Can't load info this song!"))
+                    networkState.postValue(NetworkState.error("Can't load info this acc!"))
                 }
             }
 
@@ -215,23 +222,33 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     override fun deleteAcc(user: User): MutableLiveData<NetworkState> {
+        /* val networkState = MutableLiveData<NetworkState>()
+
+         // Get auth credentials from the user for re-authentication. The example below shows
+         // email and password credentials but there are multiple possible providers,
+         // such as GoogleAuthProvider or FacebookAuthProvider.
+         val credential = EmailAuthProvider
+             .getCredential(user.email.toString(), user.password.toString())
+
+         // Prompt the user to re-provide their sign-in credentials
+         currentUser()?.reauthenticate(credential)?.addOnCompleteListener {
+             currentUser()?.delete()?.addOnCompleteListener {
+                 databaseRef()?.child(USER)?.child(user.id.toString())?.removeValue()
+                 networkState.postValue(NetworkState.LOADED)
+             }?.addOnFailureListener{err->
+                 networkState.postValue(NetworkState.error(err.message.toString()))
+             }
+         }*/
+
         val networkState = MutableLiveData<NetworkState>()
-
-        // Get auth credentials from the user for re-authentication. The example below shows
-        // email and password credentials but there are multiple possible providers,
-        // such as GoogleAuthProvider or FacebookAuthProvider.
-        val credential = EmailAuthProvider
-            .getCredential(user.email.toString(), user.password.toString())
-
-        // Prompt the user to re-provide their sign-in credentials
-        currentUser()?.reauthenticate(credential)?.addOnCompleteListener {
-            currentUser()?.delete()?.addOnCompleteListener {
-                databaseRef()?.child(USER)?.child(user.id.toString())?.removeValue()
-                networkState.postValue(NetworkState.LOADED)
-            }?.addOnFailureListener{err->
-                networkState.postValue(NetworkState.error(err.message.toString()))
+        networkState.postValue(NetworkState.LOADING)
+        databaseRef()?.child(USER)?.child(user.id.toString())?.child(USER_IS_DEL)?.setValue(true)
+            ?.addOnCompleteListener {
+                networkState.value = NetworkState.LOADED
             }
-        }
+            ?.addOnFailureListener { err ->
+                networkState.postValue(NetworkState.error(err.message))
+            }
 
         return networkState
     }
