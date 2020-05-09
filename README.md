@@ -2,7 +2,7 @@
 
 Dependency injection: Koin
 
-MVVM
+MVVM, Navigation, Paged lib
 
 
 
