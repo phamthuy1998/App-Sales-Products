@@ -46,13 +46,13 @@ class AuthRepositoryImpl : AuthRepository {
                             ?.child(USER_IS_ACTIVE)?.setValue(true)
 
                         val query = databaseRef()?.child(USER)
-                            ?.orderByChild(currentUser()?.uid.toString())
+                            ?.child(currentUser()?.uid.toString())
 
                         val valueEventListener = object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     val user = dataSnapshot.getValue(User::class.java)
-                                    if (user?.isDel == false) {
+                                    if (user?.del == false) {
                                         responseLogin.value = user
                                         networkState.postValue(NetworkState.LOADED)
                                     } else networkState.postValue(NetworkState.error("Your account has been locked!"))
@@ -137,8 +137,8 @@ class AuthRepositoryImpl : AuthRepository {
             if (it.isSuccessful) {
                 verifyEmail()
                 user.id = currentUser()?.uid
-                user.isActive = false
-                user.isDel = false
+                user.active = false
+                user.del = false
                 databaseRef()?.child(USER)?.child(currentUser()?.uid.toString())?.setValue(user)
                 responseRegister.value = true
                 networkState.postValue(NetworkState.LOADED)
@@ -171,9 +171,11 @@ class AuthRepositoryImpl : AuthRepository {
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    responseUser.value = user
-                    networkState.postValue(NetworkState.LOADED)
+                    for (ds in dataSnapshot.children) {
+                        val user = ds.getValue(User::class.java)
+                        responseUser.value = user
+                        networkState.postValue(NetworkState.LOADED)
+                    }
                 } else {
                     networkState.postValue(NetworkState.error("Can't load info this acc!"))
                 }

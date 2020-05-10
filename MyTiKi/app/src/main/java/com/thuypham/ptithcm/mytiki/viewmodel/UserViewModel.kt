@@ -70,6 +70,6 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
     }
 
     fun resetPassword(email: String) {
-        responseRegister.value = repository.sendMailResetPassword(email)
+        responseForgotPW.value = repository.sendMailResetPassword(email)
     }
 }

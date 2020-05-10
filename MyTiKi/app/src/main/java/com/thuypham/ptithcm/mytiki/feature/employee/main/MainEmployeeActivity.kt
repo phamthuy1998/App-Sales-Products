@@ -1,13 +1,14 @@
 package com.thuypham.ptithcm.mytiki.feature.employee.main
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.BaseActivity
+import com.thuypham.ptithcm.mytiki.databinding.ActivityMainEmployeeBinding
 
-class MainEmployeeActivity : AppCompatActivity() {
+class MainEmployeeActivity : BaseActivity<ActivityMainEmployeeBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_employee)
-    }
+    override val layoutId: Int=R.layout.activity_main_employee
+
+    override var toolbarViewParentId: Int= R.id.clMain
+
+
 }

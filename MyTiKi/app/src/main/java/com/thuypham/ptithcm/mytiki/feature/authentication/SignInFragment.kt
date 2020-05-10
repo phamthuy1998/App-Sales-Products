@@ -45,8 +45,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
                     curActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
                     toolbar?.findViewById<ImageButton>(R.id.icBack)?.apply {
                         setOnClickListener {
-//                            findNavController().navigate(R.id.gotoLogin)
-                            requireActivity().onBackPressed()
+                            findNavController().navigate(R.id.gotoLogin)
                         }
                     }
                 }
@@ -78,7 +77,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
         super.bindViewModel()
         userViewModel.userInfoLogin.observe(viewLifecycleOwner, Observer { user ->
             if (user != null) {
-                if (user.role == 1) startActivity<MainActivity>()
+                if (user.role == 1L) startActivity<MainActivity>()
                 else startActivity<MainEmployeeActivity>()
             }
         })

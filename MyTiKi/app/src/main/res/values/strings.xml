@@ -47,6 +47,7 @@
     <string name="dialogCancel">Cancel</string>
     <string name="dialogLogout">Are you sure you want to log out this account?</string>
     <string name="dialogSendMail">Password reset successfully, please check your email</string>
+    <string name="dialogRegister">Account successfully created, please check your email to activate your account</string>
     <string name="add_like_product">Added to favorite product list</string>
     <string name="rab_male">Male</string>
     <string name="female">Female</string>
@@ -200,6 +201,13 @@
     <string name="cart_empty">Your shopping cart is empty</string>
     <string name="the_order_list_is_empty">The order list is empty</string>
     <string name="shopping">Shopping</string>
+    <string name="edit">Edit profile</string>
+    <string name="slide">Slides</string>
+    <string name="products">Products</string>
+    <string name="categories">Categories</string>
+    <string name="orders">Orders</string>
+    <string name="revenue">Revenue</string>
+    <string name="accounts">Accounts</string>
 
 
 </resources>

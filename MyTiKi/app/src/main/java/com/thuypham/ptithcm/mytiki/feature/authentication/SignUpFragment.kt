@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.mytiki.feature.authentication
 
+import android.app.AlertDialog
 import android.os.Build
 import android.widget.ImageButton
 import android.widget.TextView
@@ -33,6 +34,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
     override val layoutId: Int = R.layout.fragment_sign_up
     private val userViewModel: UserViewModel by viewModel()
 
+    private var isClickSignUp = false
     override fun initView() {
         super.initView()
         viewBinding.fragment = this
@@ -106,6 +108,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 daycreate = dayCreate
             }
             userViewModel.register(user)
+            isClickSignUp = true
         }
     }
 
@@ -125,7 +128,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 }
                 Status.SUCCESS -> {
                     viewBinding.progressSignUp.gone()
-                    findNavController().navigate(R.id.fragmentSignIn)
+                    if(isClickSignUp){
+                        showDialogRegisterSuccess()
+                        isClickSignUp = false
+                    }
                 }
                 Status.FAILED -> {
                     viewBinding.progressSignUp.gone()
@@ -133,6 +139,21 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 }
             }
         })
+    }
+
+
+    private fun showDialogRegisterSuccess() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setCancelable(false)
+        with(builder)
+        {
+            setMessage(getString(R.string.dialogRegister))
+            setPositiveButton(getString(R.string.dialogOk)) { dialog, _ ->
+                findNavController().navigate(R.id.fragmentSignIn)
+                dialog.dismiss()
+            }
+            show()
+        }
     }
 
     // Show calendar to select birthday

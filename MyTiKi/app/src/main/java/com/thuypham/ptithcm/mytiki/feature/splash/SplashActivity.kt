@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.data.Status
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
@@ -20,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
+class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
 
     private val authViewModel: UserViewModel by viewModel()
     private var isLogin = false
@@ -30,9 +28,9 @@ class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
         setContentView(R.layout.activity_splash)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-        enablePersistence()
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+//        enablePersistence()
         ivLogo?.apply {
             doOnLayout {
                 val animation =
@@ -50,13 +48,13 @@ class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
         }
     }
 
-    private fun openNextScreen(isLogin: Boolean, user: User?) {
+    private fun openNextScreen(user: User? = null) {
         /* Not login yet */
-        if (!isLogin)
+        if (!isLogin || user == null)
             startActivity<AuthActivity>()
         else {
             /* Customer */
-            if (user?.role == 1) startActivity<MainActivity>()
+            if (user.role == 1L) startActivity<MainActivity>()
             /* Employee, include admin */
             else startActivity<MainEmployeeActivity>()
         }
@@ -67,27 +65,19 @@ class SplashActivity : AppCompatActivity(), Animation.AnimationListener {
     private fun bindViewModel() {
         authViewModel.userInfo.observe(this, Observer { user ->
             this.user = user
-        })
-        authViewModel.networkStateUserInfo.observe(this, Observer {
-            when (it.status) {
-                Status.SUCCESS -> openNextScreen(true, user)
-                Status.FAILED -> openNextScreen(false, null)
-                Status.RUNNING -> {
-                }
-            }
+            openNextScreen(user)
         })
     }
 
-    /* Enable firebase offline mode */
-    private fun enablePersistence() {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-    }
-
+//    /* Enable firebase offline mode */
+//    private fun enablePersistence() {
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+//    }
 
     override fun onAnimationRepeat(animation: Animation?) {}
 
     override fun onAnimationEnd(animation: Animation?) {
-        if (!isLogin) openNextScreen(false, user)
+        if (!isLogin) openNextScreen(null)
     }
 
     override fun onAnimationStart(animation: Animation?) {}

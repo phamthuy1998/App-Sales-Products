@@ -9,6 +9,7 @@
     <color name="colorNavIcon">#80000000</color>
     <color name="textColorNav">#B30E0D0D</color>
     <color name="colorGray">#aaa</color>
+    <color name="colorDivider">#80BABABA</color>
     <color name="colorTextHint">#161616</color>
     <color name="colorText">#0C0C0C</color>
     <color name="colorGrayBg">#4DAAAAAA</color>

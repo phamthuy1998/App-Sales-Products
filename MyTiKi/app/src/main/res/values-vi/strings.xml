@@ -177,5 +177,7 @@
     <string name="dialogCancel">Hủy</string>
     <string name="dialogLogout">Bạn có chắc chắn muốn đăng xuất không</string>
     <string name="shopping">Shopping</string>
+    <string name="dialogRegister">Taọ tài khoản thành công, vui lòng check mail để kích hoạt tài khoản</string>
+    <string name="dialogSendMail">Đặt lại mật khẩu thành công, vui lòng kiểm tra mail của bạn</string>
 
 </resources>

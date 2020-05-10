@@ -9,4 +9,8 @@
     <dimen name="cornerCircle">50dp</dimen>
     <dimen name="margin8">8dp</dimen>
     <dimen name="padding12">12dp</dimen>
+    <dimen name="margin10">10dp</dimen>
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="margin16">16dp</dimen>
+    <dimen name="padding10">10dp</dimen>
 </resources>
