@@ -7,6 +7,7 @@ import com.thuypham.ptithcm.mytiki.data.ResultData
 
 interface ProductRepository {
     fun getAllProductOfCategory(categoryId: String): ResultData<ArrayList<Product>>
+    fun getAllProducts(): ResultData<ArrayList<Product>>
     fun addProduct(product: Product): MutableLiveData<NetworkState>
     fun getProductByID(productID: String):  ResultData<Product>
     fun updateProduct(product: Product): MutableLiveData<NetworkState>

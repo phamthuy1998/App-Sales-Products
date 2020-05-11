@@ -17,11 +17,12 @@
     </data>
 
     <com.google.android.material.navigation.NavigationView
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorWhite"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:layoutDirection="ltr">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -56,43 +57,51 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
                 android:onClick="@{(v) -> parentView.onClick(v)}"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_menu_bar" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivAvt"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/margin16"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivLogo"
+                app:layout_constraintTop_toBottomOf="@id/btnCloseDraw"
                 app:srcCompat="@drawable/ic_user_profile" />
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginStart="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin5"
+                android:layout_marginEnd="@dimen/margin10"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@{user.name}"
                 android:textColor="@color/colorText"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ivAvt"
                 app:layout_constraintTop_toTopOf="@id/ivAvt"
                 tools:text="Thuy Pham" />
 
             <TextView
                 android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin5"
+                android:layout_marginEnd="@dimen/margin10"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:text="@{user.email}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvName"
                 app:layout_constraintTop_toBottomOf="@+id/tvName"
                 tools:text="phamthithuy@gmail.com" />
@@ -103,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/ripple_btn_corner"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.EDIT_PROFILE)}"
                 android:padding="@dimen/margin5"
                 android:text="@string/edit"
@@ -122,20 +132,47 @@
                 app:layout_constraintTop_toBottomOf="@id/btnEditProfile" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnHome"
+                style="@style/Button.Drawer"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
+                android:drawableStart="@drawable/ic_home_black_24dp"
+                android:drawableEnd="@drawable/ic_arr_right"
+                android:drawablePadding="@dimen/padding10"
+                android:onClick="@{(v) -> parentView.onClick(ActivityType.HOME)}"
+                android:text="@string/navHome"
+                app:layout_constraintTop_toBottomOf="@id/view" />
+
+            <View
+                android:id="@+id/viewHome"
+                style="@style/Divider.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/margin10"
+                android:layout_marginEnd="@dimen/default_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnHome" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnSlide"
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.SLIDE)}"
                 android:text="@string/slide"
-                app:layout_constraintTop_toBottomOf="@id/view" />
+                app:layout_constraintTop_toBottomOf="@id/viewHome" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnProduct"
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.PRODUCT)}"
                 android:text="@string/products"
@@ -146,6 +183,7 @@
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.CATEGORY)}"
                 android:text="@string/categories"
@@ -156,6 +194,7 @@
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.ORDER)}"
                 android:text="@string/orders"
@@ -166,20 +205,33 @@
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/margin8"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.REVENUE)}"
                 android:text="@string/revenue"
                 app:layout_constraintTop_toBottomOf="@id/btnOrder" />
 
+            <View
+                style="@style/Divider.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/margin10"
+                android:layout_marginEnd="@dimen/default_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnRevenue" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnAccounts"
                 style="@style/Button.Drawer"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin10"
+                android:background="@drawable/ripple_btn_corner"
                 android:drawableEnd="@drawable/ic_arr_right"
                 android:onClick="@{(v) -> parentView.onClick(ActivityType.ACCOUNT)}"
                 android:text="@string/accounts"
                 app:layout_constraintTop_toBottomOf="@id/btnRevenue" />
+
 
             <TextView
                 android:id="@+id/btnLogOut"
@@ -188,8 +240,8 @@
                 android:layout_margin="20dp"
                 android:background="@drawable/bg_stroke_rounded_corner"
                 android:gravity="center"
-                android:padding="@dimen/padding10"
                 android:onClick="@{(v) -> parentView.onClick(v)}"
+                android:padding="@dimen/padding10"
                 android:text="@string/sign_out"
                 android:textColor="@color/colorBlueDark"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -2,7 +2,6 @@ package com.thuypham.ptithcm.mytiki.feature.customer.order.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,6 @@ class OrderAdapter(
                     name += o.product_name+", "
                 }
             }
-            Log.d("sizemangad", orderDetails.size.toString())
             itemView.tv_name_item_order.text = name
 
             // set order id
@@ -47,25 +45,27 @@ class OrderAdapter(
             itemView.tv_item_order_detail_date.text = order.date
             // set status for order
             var status = ""
-            // have recieved
-            if (order.status == 1.toLong()) {
-                status = context.getString(R.string.status_1)
-                itemView.iv_order_ic_status.setImageResource(R.drawable.ic_circle_arrow);
-            }
-            // shipping
-            else if (order.status == 2.toLong()) {
-                status = context.getString(R.string.status_2)
-                itemView.iv_order_ic_status.setImageResource(R.drawable.ic_shipping);
-            }
-            // order success
-            else if (order.status == 3.toLong()) {
-                status = context.getString(R.string.status_3)
-                itemView.iv_order_ic_status.setImageResource(R.drawable.ic_success);
-            }
-            // order cancel
-            else if (order.status == 4.toLong()) {
-                status = context.getString(R.string.status_4)
-                itemView.iv_order_ic_status.setImageResource(R.drawable.ic_error);
+            // have received
+            when (order.status) {
+                1L -> {
+                    status = context.getString(R.string.status_1)
+                    itemView.iv_order_ic_status.setImageResource(R.drawable.ic_circle_arrow);
+                }
+                // shipping
+                2L -> {
+                    status = context.getString(R.string.status_2)
+                    itemView.iv_order_ic_status.setImageResource(R.drawable.ic_shipping);
+                }
+                // order success
+                3L -> {
+                    status = context.getString(R.string.status_3)
+                    itemView.iv_order_ic_status.setImageResource(R.drawable.ic_success);
+                }
+                // order cancel
+                4L -> {
+                    status = context.getString(R.string.status_4)
+                    itemView.iv_order_ic_status.setImageResource(R.drawable.ic_error);
+                }
             }
             itemView.tv_item_order_status.text = status
 

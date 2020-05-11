@@ -13,7 +13,7 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.ProductCart
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
-import com.thuypham.ptithcm.mytiki.feature.address.AddressActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.address.AddressActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.adapter.ProductCartAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity

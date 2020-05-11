@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.feature.address.adapter
+package com.thuypham.ptithcm.mytiki.feature.customer.address.adapter
 
 import android.app.Dialog
 import android.content.Context

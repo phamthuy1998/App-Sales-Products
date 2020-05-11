@@ -10,6 +10,7 @@ object Constant {
     const val USER = "USER"
     const val USER_IS_ACTIVE = "active"
     const val USER_IS_DEL = "del"
+    const val USER_ROLE = "role"
     const val BIRTHDAY = "birthday"
     const val DAY_CREATE = "daycreate"
     const val GENDER = "gender"
@@ -19,6 +20,7 @@ object Constant {
     // product
     const val PRODUCT_ID = "id"
     const val PRODUCT = "PRODUCT"
+    const val PRODUCT_DEL = "del"
     const val PRODUCT_SOLD = "sold"
     const val PRODUCT_SALE = "sale"
     const val NAME_PRODUCT = "name"
@@ -36,13 +38,13 @@ object Constant {
     const val CATEGORY_IMAGE = "image"
     const val CATEGORY_COUNT = "category_count"
 
-    // advertisement
+    // Slide
     const val SLIDE = "SLIDE"
-    const val NAME_AVT = "name"
-    const val AVT_ID_CATEGORY = "id_category"
-    const val AVT_NAME_CATEGORY = "name_category"
-    const val ID_AVT = "id"
-    const val IMAGE_AVT = "image"
+    const val SLIDE_NAME = "name"
+    const val SLIDE_ID_CATEGORY = "id_category"
+    const val SLIDE_NAME_CATEGORY = "name_category"
+    const val SLIDE_ID = "id"
+    const val SLIDE_IMAGE = "image"
 
     //viewed products
     const val VIEWED_PRODUCT = "viewed_product"

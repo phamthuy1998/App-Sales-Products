@@ -11,6 +11,7 @@ import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
 import com.thuypham.ptithcm.mytiki.util.Constant.ID_CATEGORY_PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT
+import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_DEL
 
 class ProductRepositoryImpl : ProductRepository {
     private val firebaseDatabase: FirebaseDatabase? by lazy {
@@ -27,6 +28,38 @@ class ProductRepositoryImpl : ProductRepository {
         var product: Product?
         val query = databaseRef()?.child(PRODUCT)?.orderByChild(ID_CATEGORY_PRODUCT)
             ?.equalTo(categoryId)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        product = ds.getValue(Product::class.java)
+                        product?.let { listProduct.add(it) }
+                    }
+                    responseListProduct.value = listProduct
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getAllProducts(): ResultData<ArrayList<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProduct = MutableLiveData<ArrayList<Product>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Product>()
+        var product: Product?
+        val query = databaseRef()?.child(PRODUCT)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -112,12 +145,13 @@ class ProductRepositoryImpl : ProductRepository {
     override fun delProduct(productID: String): MutableLiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
-        val query = databaseRef()?.child(PRODUCT)?.child(productID)
-        query?.removeValue()?.addOnSuccessListener {
-            networkState.postValue(NetworkState.LOADED)
-        }?.addOnFailureListener { err ->
-            networkState.postValue(NetworkState.error(err.message.toString()))
-        }
+        databaseRef()?.child(PRODUCT)?.child(productID)?.child(PRODUCT_DEL)?.setValue(true)
+            ?.addOnCompleteListener {
+                networkState.value = NetworkState.LOADED
+            }
+            ?.addOnFailureListener { err ->
+                networkState.postValue(NetworkState.error(err.message))
+            }
         return networkState
     }
 

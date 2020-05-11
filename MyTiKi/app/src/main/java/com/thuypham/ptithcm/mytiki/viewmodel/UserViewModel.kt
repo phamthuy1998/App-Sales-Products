@@ -21,7 +21,9 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
         phone.value?.isNotEmpty()!! && name.value?.isNotEmpty()!! && email.value?.isNotEmpty()!! && password.value?.isNotEmpty()!! && birthday.value?.isNotEmpty()!!
 
     private val responseLogin = MutableLiveData<ResultData<User>>()
+    private val responseLogOut = MutableLiveData<ResultData<Boolean>>()
     private val responseUserInfo = MutableLiveData<ResultData<User>>()
+    private val responseCurrentUser = MutableLiveData<ResultData<User>>()
     private val responseRegister = MutableLiveData<ResultData<Boolean>>()
     private val responseForgotPW = MutableLiveData<ResultData<Boolean>>()
 
@@ -38,6 +40,16 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
         responseLogin.value = repository.login(email, password)
     }
 
+    /* user logout */
+
+    val networkStateUserLogOut= Transformations.switchMap(responseLogOut) {
+        it.networkState
+    }
+
+    fun logOut() {
+        responseLogOut.value = repository.logOut()
+    }
+
     /*  User's info */
     val userInfo = Transformations.switchMap(responseUserInfo) {
         it.data
@@ -49,6 +61,15 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
 
     fun getUserInfoByEmail(email: String) {
         responseUserInfo.value = repository.getAccInfo(email)
+    }
+
+    /* current User's info */
+    val currentUser = Transformations.switchMap(responseCurrentUser) {
+        it.data
+    }
+
+    fun getCurrentUser() {
+        responseCurrentUser.value = repository.getCurrentUser()
     }
 
     /*    Register  */

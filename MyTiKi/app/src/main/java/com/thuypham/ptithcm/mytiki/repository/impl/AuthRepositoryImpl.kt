@@ -15,7 +15,6 @@ import com.thuypham.ptithcm.mytiki.util.*
 import com.thuypham.ptithcm.mytiki.util.Constant.EMAIL
 import com.thuypham.ptithcm.mytiki.util.Constant.USER
 import com.thuypham.ptithcm.mytiki.util.Constant.USER_IS_ACTIVE
-import com.thuypham.ptithcm.mytiki.util.Constant.USER_IS_DEL
 
 
 class AuthRepositoryImpl : AuthRepository {
@@ -78,6 +77,18 @@ class AuthRepositoryImpl : AuthRepository {
             }
         return ResultData(
             data = responseLogin,
+            networkState = networkState
+        )
+    }
+
+    override fun logOut(): ResultData<Boolean> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseUpdateInfo = MutableLiveData<Boolean>()
+        networkState.postValue(NetworkState.LOADING)
+        firebaseAuth?.signOut()
+        networkState.postValue(NetworkState.LOADED)
+        return ResultData(
+            data = responseUpdateInfo,
             networkState = networkState
         )
     }
@@ -191,68 +202,34 @@ class AuthRepositoryImpl : AuthRepository {
         )
     }
 
-    override fun getAllEmployee(): ResultData<ArrayList<User>> {
+    override fun getCurrentUser(): ResultData<User> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseListAcc = MutableLiveData<ArrayList<User>>()
+        val responseUser = MutableLiveData<User>()
         networkState.postValue(NetworkState.LOADING)
-        val listUser = ArrayList<User>()
-        var user: User?
         val query = databaseRef()?.child(USER)
+            ?.orderByChild(EMAIL)
+            ?.equalTo(currentUser()?.email)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (ds in dataSnapshot.children) {
-                        user = ds.getValue(User::class.java)
-                        user?.let { listUser.add(it) }
+                        val user = ds.getValue(User::class.java)
+                        responseUser.value = user
+                        networkState.postValue(NetworkState.LOADED)
                     }
-                    responseListAcc.value = listUser
-                    networkState.postValue(NetworkState.LOADED)
                 } else {
-                    networkState.postValue(NetworkState.error("List employee are empty!"))
+                    networkState.postValue(NetworkState.error("Can't load info this acc!"))
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) =
                 networkState.postValue(NetworkState.error(databaseError.toException().toString()))
-
         }
         query?.addValueEventListener(valueEventListener)
         return ResultData(
-            data = responseListAcc,
+            data = responseUser,
             networkState = networkState
         )
-    }
-
-    override fun deleteAcc(user: User): MutableLiveData<NetworkState> {
-        /* val networkState = MutableLiveData<NetworkState>()
-
-         // Get auth credentials from the user for re-authentication. The example below shows
-         // email and password credentials but there are multiple possible providers,
-         // such as GoogleAuthProvider or FacebookAuthProvider.
-         val credential = EmailAuthProvider
-             .getCredential(user.email.toString(), user.password.toString())
-
-         // Prompt the user to re-provide their sign-in credentials
-         currentUser()?.reauthenticate(credential)?.addOnCompleteListener {
-             currentUser()?.delete()?.addOnCompleteListener {
-                 databaseRef()?.child(USER)?.child(user.id.toString())?.removeValue()
-                 networkState.postValue(NetworkState.LOADED)
-             }?.addOnFailureListener{err->
-                 networkState.postValue(NetworkState.error(err.message.toString()))
-             }
-         }*/
-
-        val networkState = MutableLiveData<NetworkState>()
-        networkState.postValue(NetworkState.LOADING)
-        databaseRef()?.child(USER)?.child(user.id.toString())?.child(USER_IS_DEL)?.setValue(true)
-            ?.addOnCompleteListener {
-                networkState.value = NetworkState.LOADED
-            }
-            ?.addOnFailureListener { err ->
-                networkState.postValue(NetworkState.error(err.message))
-            }
-
-        return networkState
     }
 
     private fun verifyEmail() {

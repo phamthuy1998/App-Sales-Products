@@ -179,5 +179,14 @@
     <string name="shopping">Shopping</string>
     <string name="dialogRegister">Taọ tài khoản thành công, vui lòng check mail để kích hoạt tài khoản</string>
     <string name="dialogSendMail">Đặt lại mật khẩu thành công, vui lòng kiểm tra mail của bạn</string>
+    <string name="edit">Chỉnh sửa thông tin</string>
+    <string name="slide">Quảng cáo</string>
+    <string name="products">Sản phẩm</string>
+    <string name="categories">Danh mục</string>
+    <string name="orders">Đơn hàng</string>
+    <string name="revenue">Doanh thu</string>
+    <string name="accounts">Tài khoản</string>
+    <string name="navHome">Trang chủ</string>
+    <string name="cancel">Hủy</string>
 
 </resources>

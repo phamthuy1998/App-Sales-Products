@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
-import com.thuypham.ptithcm.mytiki.data.Advertisement
+import com.thuypham.ptithcm.mytiki.data.Slide
 import java.util.ArrayList
 
 
-class SlidingImageAdapter(private val context: Context, private val arrAdv: ArrayList<Advertisement>) : PagerAdapter() {
+class SlidingImageAdapter(private val context: Context, private val arrAdv: ArrayList<Slide>) : PagerAdapter() {
     private val inflater: LayoutInflater
 
 

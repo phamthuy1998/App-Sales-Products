@@ -21,6 +21,38 @@ class OrderRepositoryImpl : OrderRepository {
     }
 
     private fun databaseRef() = firebaseDatabase?.reference
+    override fun getAllOrder(): ResultData<ArrayList<Order>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListOrder = MutableLiveData<ArrayList<Order>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Order>()
+        var order: Order?
+        val query = databaseRef()?.child(ORDER)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        order = ds.getValue(Order::class.java)
+                        order?.let { listProduct.add(it) }
+                    }
+                    responseListOrder.value = listProduct
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List order are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListOrder,
+            networkState = networkState
+        )
+    }
+
     override fun getAllOrderByType(type: Int): ResultData<ArrayList<Order>> {
         val networkState = MutableLiveData<NetworkState>()
         val responseListOrder = MutableLiveData<ArrayList<Order>>()
@@ -67,7 +99,7 @@ class OrderRepositoryImpl : OrderRepository {
         return networkState
     }
 
-    override fun getOrderByDate(type: Int, date: String): ResultData<ArrayList<Order>> {
+    override fun getOrderByDate(type: Int?, date: String): ResultData<ArrayList<Order>> {
         val networkState = MutableLiveData<NetworkState>()
         val responseListOrder = MutableLiveData<ArrayList<Order>>()
         networkState.postValue(NetworkState.LOADING)
@@ -79,7 +111,7 @@ class OrderRepositoryImpl : OrderRepository {
                 if (dataSnapshot.exists()) {
                     for (ds in dataSnapshot.children) {
                         order = ds.getValue(Order::class.java)
-                        if (order?.status == type.toLong())
+                        if (order?.status == type?.toLong())
                             order?.let { listProduct.add(it) }
                     }
                     responseListOrder.value = listProduct

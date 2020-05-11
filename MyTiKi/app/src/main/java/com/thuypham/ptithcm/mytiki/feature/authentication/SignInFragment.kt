@@ -16,7 +16,7 @@ import com.thuypham.ptithcm.mytiki.ext.gone
 import com.thuypham.ptithcm.mytiki.ext.setupToolbar
 import com.thuypham.ptithcm.mytiki.ext.visible
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
-import com.thuypham.ptithcm.mytiki.feature.employee.main.MainEmployeeActivity
+import com.thuypham.ptithcm.mytiki.feature.employee.main.HomeEmployeeActivity
 import com.thuypham.ptithcm.mytiki.util.isEmailValid
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import org.jetbrains.anko.support.v4.startActivity
@@ -78,7 +78,8 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>() {
         userViewModel.userInfoLogin.observe(viewLifecycleOwner, Observer { user ->
             if (user != null) {
                 if (user.role == 1L) startActivity<MainActivity>()
-                else startActivity<MainEmployeeActivity>()
+                else startActivity<HomeEmployeeActivity>()
+                requireActivity().finish()
             }
         })
         userViewModel.networkStateUserLogin.observe(viewLifecycleOwner, Observer {

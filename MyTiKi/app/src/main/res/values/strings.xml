@@ -6,6 +6,8 @@
     <string name="bot_nav_notification">Notification</string>
     <string name="bot_nav_user">User</string>
     <string name="tv_name">Name</string>
+    <string name="dayCreateAcc">Day create account: %1$s</string>
+    <string name="totalPrice">Total price: %1$d</string>
     <string name="tv_email_user">youremail@gmail.com</string>
     <string name="tb_user">Personal</string>
     <string name="tv_title_user_fragment">Personal</string>
@@ -61,7 +63,6 @@
     <string name="create_acc_success">Successful account creation, please verify your email!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="list_orders">List orders</string>
     <string name="my_vouchers">My vouchers</string>
     <string name="old_password">Old password</string>
@@ -120,7 +121,7 @@
     <string name="verified_email_2">Please confirm it to activate this account. If you do not complete this step, your
         account will not be created
     </string>
-    <string name="btn_ok_verifi">Ok</string>
+    <string name="btn_ok_verifi">OK</string>
     <string name="tx_cancel_btn_verfi">Cancel</string>
 
 
@@ -208,6 +209,11 @@
     <string name="orders">Orders</string>
     <string name="revenue">Revenue</string>
     <string name="accounts">Accounts</string>
+    <string name="navHome">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

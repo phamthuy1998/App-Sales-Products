@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.thuypham.ptithcm.mytiki.R
-import kotlinx.android.synthetic.main.search_fragment.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.thuypham.ptithcm.mytiki.util.Constant
-import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
+import com.thuypham.ptithcm.mytiki.util.Constant
+import kotlinx.android.synthetic.main.search_fragment.*
 import java.text.Normalizer
 import java.util.regex.Pattern
 
@@ -59,7 +62,7 @@ class SearchFragment : Fragment() {
 
         sv_product.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(search: String): Boolean {
-                if (!search.trim().isEmpty())
+                if (search.trim().isNotEmpty())
                     getListProductSearch(search)
                 else
                     listProductSearch.clear()
@@ -67,7 +70,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(search: String): Boolean {
-                if (!search.trim().isEmpty())
+                if (search.trim().isNotEmpty())
                     getListProductSearch(search)
                 else
                     listProductSearch.clear()
@@ -86,7 +89,7 @@ class SearchFragment : Fragment() {
 
     private fun getListProductSearch(keySearch: String) {
         val search = removeAccent(keySearch)
-        if (!keySearch.isEmpty()) {
+        if (keySearch.isNotEmpty()) {
             val query = mDatabase!!
                 .reference
                 .child(Constant.PRODUCT)
@@ -129,7 +132,7 @@ class SearchFragment : Fragment() {
                                 )
                             }
                         }
-                        if (!listProductSearch.isEmpty()) {
+                        if (listProductSearch.isNotEmpty()) {
                             ll_search_empty.visibility = View.GONE
                             productSearchAdapter?.notifyDataSetChanged()
                         } else {

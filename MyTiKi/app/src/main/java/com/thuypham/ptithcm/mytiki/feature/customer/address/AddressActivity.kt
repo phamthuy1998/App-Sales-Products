@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.feature.address
+package com.thuypham.ptithcm.mytiki.feature.customer.address
 
 import android.annotation.TargetApi
 import android.app.Dialog
@@ -18,7 +18,7 @@ import com.thuypham.ptithcm.mytiki.data.Address
 import com.thuypham.ptithcm.mytiki.data.Order
 import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
-import com.thuypham.ptithcm.mytiki.feature.address.adapter.AddressAdapter
+import com.thuypham.ptithcm.mytiki.feature.customer.address.adapter.AddressAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.ProductConfirmAdapter

@@ -3,6 +3,7 @@ package com.thuypham.ptithcm.mytiki.data
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.thuypham.ptithcm.mytiki.base.DynamicSearchAdapter
 import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
@@ -19,7 +20,8 @@ data class User(
     var role: Long? = 1,
     var active: Boolean? = null,
     var del: Boolean? = null
-): Parcelable {
+): Parcelable , DynamicSearchAdapter.Searchable {
+    override fun getSearchCriteria(): String = "$name $phone $email $birthday"
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(

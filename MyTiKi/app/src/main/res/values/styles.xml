@@ -13,7 +13,7 @@
         <item name="colorAccent">@color/colorBlue</item>
     </style>
 
-    <style name="TxtButton" >
+    <style name="TxtButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
@@ -23,10 +23,42 @@
         <item name="android:padding">15dp</item>
     </style>
 
+    <style name="Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+
+    <style name="EditText" parent="Text">
+        <item name="android:padding">@dimen/margin16</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:background">@drawable/bg_stroke_rounded_corner</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="Text.Title" parent="Text">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="Text.Title.BlueDark" parent="Text.Title">
+        <item name="android:textColor">@color/colorBlueDark</item>
+    </style>
+
+
 
     <style name="Button" parent="TxtButton">
         <item name="android:background">@drawable/bg_rounded_corner</item>
         <item name="android:textColor">@color/colorWhiteBG</item>
+    </style>
+
+    <style name="textHome">
+        <item name="android:textColor">@color/colorWhiteBG</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Button.CircleCorner" parent="TxtButton">

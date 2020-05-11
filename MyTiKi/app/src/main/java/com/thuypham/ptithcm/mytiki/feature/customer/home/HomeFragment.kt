@@ -24,7 +24,7 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
 import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
-import com.thuypham.ptithcm.mytiki.data.Advertisement
+import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.data.Category
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
     private lateinit var categoryAdapter: CategoryAdapterHome
 
     // List
-    private var arrAdvertisement = ArrayList<Advertisement>()
+    private var arrAdvertisement = ArrayList<Slide>()
 
     //product
     private var productAdapter: ProductAdapter? = null
@@ -551,13 +551,13 @@ class HomeFragment : Fragment() {
                     arrAdvertisement.clear()
                     for (ds in dataSnapshot.children) {
                         val id = ds.child(Constant.CATEGORY_ID).value as String
-                        val name = ds.child(Constant.NAME_AVT).value as String
-                        val image = ds.child(Constant.IMAGE_AVT).value as String
-                        val id_category = ds.child(Constant.AVT_ID_CATEGORY).value as String
+                        val name = ds.child(Constant.SLIDE_NAME).value as String
+                        val image = ds.child(Constant.SLIDE_IMAGE).value as String
+                        val id_category = ds.child(Constant.SLIDE_ID_CATEGORY).value as String
                         val name_category =
-                            ds.child(Constant.AVT_NAME_CATEGORY).value as String
+                            ds.child(Constant.SLIDE_NAME_CATEGORY).value as String
                         val advertisement =
-                            Advertisement(
+                            Slide(
                                 name,
                                 id,
                                 image,

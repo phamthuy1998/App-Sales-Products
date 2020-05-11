@@ -2,6 +2,7 @@ package com.thuypham.ptithcm.mytiki.data
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.thuypham.ptithcm.mytiki.base.DynamicSearchAdapter
 import java.io.Serializable
 
 @IgnoreExtraProperties
@@ -14,7 +15,8 @@ data class Order(
     var date: String? = null,
     var price: Long? = null,
     var status: Long? = null
-) : Serializable {
+) : Serializable , DynamicSearchAdapter.Searchable {
+    override fun getSearchCriteria(): String = "$name $phone $address $date $price"
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(

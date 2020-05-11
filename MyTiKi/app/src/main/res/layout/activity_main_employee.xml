@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isAdmin"
+            type="Boolean" />
+    </data>
 
     <com.thuypham.ptithcm.mytiki.widget.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawerMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".feature.employee.main.MainEmployeeActivity"
+        tools:context=".feature.employee.main.HomeEmployeeActivity"
         tools:openDrawer="start">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,6 +25,149 @@
             android:layout_height="match_parent"
             android:layoutDirection="ltr">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:layoutDirection="ltr"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glCenterV"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <LinearLayout
+                    android:id="@+id/llSlide"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C83473A5"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/glCenterV"
+                    app:layout_constraintHeight_percent="0.3333"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/slide" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C8FF9800"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.3333"
+                    app:layout_constraintStart_toStartOf="@id/glCenterV"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/products" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C8F44336"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/glCenterV"
+                    app:layout_constraintHeight_percent="0.3333"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llSlide">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/categories" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOrder"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C82F8893"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.3333"
+                    app:layout_constraintStart_toStartOf="@id/glCenterV"
+                    app:layout_constraintTop_toBottomOf="@id/llProduct">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/orders" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRevenue"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C8287C2B"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/glCenterV"
+                    app:layout_constraintHeight_percent="0.3333"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/llCategory">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/revenue" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAcc"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="#C8673AB7"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:orientation="vertical"
+                    android:visibility="@{safeUnbox(isAdmin) ?View.VISIBLE: View.GONE }"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.333"
+                    app:layout_constraintStart_toStartOf="@id/glCenterV"
+                    app:layout_constraintTop_toBottomOf="@id/llOrder">
+
+                    <TextView
+                        style="@style/textHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/accounts" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

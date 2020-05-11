@@ -13,6 +13,7 @@ import com.thuypham.ptithcm.mytiki.base.BaseActivity
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.databinding.NavigationViewMainBinding
 import com.thuypham.ptithcm.mytiki.event.DrawableListener
+import com.thuypham.ptithcm.mytiki.ext.gone
 
 class CustomDrawerLayout(context: Context, attrs: AttributeSet, defStyle: Int) :
     DrawerLayout(context, attrs, defStyle) {
@@ -27,6 +28,8 @@ class CustomDrawerLayout(context: Context, attrs: AttributeSet, defStyle: Int) :
         setBackgroundColor(Color.WHITE)
     }
 
+    override fun isOpen() = isDrawerOpen(GravityCompat.START)
+
     fun onClick(destActivity: ActivityType) {
         when (destActivity) {
             srcActivityType -> closeDrawer(GravityCompat.START)
@@ -34,19 +37,24 @@ class CustomDrawerLayout(context: Context, attrs: AttributeSet, defStyle: Int) :
         }
     }
 
+    fun setUser(user: User?){
+        if (user?.role != 3L) navigationBinding.btnAccounts.gone()
+        navigationBinding.user = user
+    }
+
     fun addNavigationView(
         activity: BaseActivity<*>,
         srcActivityType: ActivityType,
-        user: User,
         listener: DrawableListener?
     ) {
         navigationBinding = DataBindingUtil.inflate(
             activity.layoutInflater,
             R.layout.navigation_view_main, this, false
         )
+        // Not admin, hide accounts
+
         drawableListener = listener
         navigationBinding.parentView = this
-        navigationBinding.user = user
         addView(navigationBinding.root)
         this.srcActivityType = srcActivityType
     }

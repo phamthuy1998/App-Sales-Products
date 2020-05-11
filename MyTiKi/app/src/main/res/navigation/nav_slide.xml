@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_slide"
+    app:startDestination="@id/slidesFragment">
+
+    <fragment
+        android:id="@+id/slidesFragment"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.slide.SlidesFragment"
+        android:label="fragment_slides"
+        tools:layout="@layout/fragment_slides" >
+        <action
+            android:id="@+id/action_slidesFragment_to_slideDetailFragment"
+            app:destination="@id/slideDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/slideDetailFragment"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.slide.SlideDetailFragment"
+        android:label="fragment_slide_detail"
+        tools:layout="@layout/fragment_slide_detail" />
+</navigation>

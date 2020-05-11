@@ -12,7 +12,7 @@ import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
-import com.thuypham.ptithcm.mytiki.feature.employee.main.MainEmployeeActivity
+import com.thuypham.ptithcm.mytiki.feature.employee.main.HomeEmployeeActivity
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
@@ -56,7 +56,7 @@ class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
             /* Customer */
             if (user.role == 1L) startActivity<MainActivity>()
             /* Employee, include admin */
-            else startActivity<MainEmployeeActivity>()
+            else startActivity<HomeEmployeeActivity>()
         }
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()

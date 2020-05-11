@@ -7,8 +7,9 @@ import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.data.ResultData
 
 interface OrderRepository {
+    fun getAllOrder(): ResultData<ArrayList<Order>>
     fun getAllOrderByType(type: Int): ResultData<ArrayList<Order>>
     fun changeStatusOfOrder(type: Int, orderId:String): MutableLiveData<NetworkState>
-    fun getOrderByDate(type:Int, date: String): ResultData<ArrayList<Order>>
+    fun getOrderByDate(type:Int?=null, date: String): ResultData<ArrayList<Order>>
     fun getOrderDetail(orderID: String): ResultData<ArrayList<OrderDetail>>
 }
