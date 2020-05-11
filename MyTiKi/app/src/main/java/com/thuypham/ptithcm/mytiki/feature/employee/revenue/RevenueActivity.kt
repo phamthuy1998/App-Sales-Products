@@ -1,13 +1,16 @@
 package com.thuypham.ptithcm.mytiki.feature.employee.revenue
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.BaseActivity
+import com.thuypham.ptithcm.mytiki.databinding.ActivityRevenueBinding
 
-class RevenueActivity : AppCompatActivity() {
+class RevenueActivity: BaseActivity<ActivityRevenueBinding>()  {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_revenue)
-    }
+    override val layoutId: Int = R.layout.activity_revenue
+
+    override var toolbarViewParentId: Int = R.id.ctlRevenueContainer
+
+    override fun onSupportNavigateUp(): Boolean =
+        Navigation.findNavController(this, R.id.frRevenueNavigator).navigateUp()
 }

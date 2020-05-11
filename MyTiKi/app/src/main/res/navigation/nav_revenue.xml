@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_revenue"
+    app:startDestination="@id/revenuesFragment">
+
+    <fragment
+        android:id="@+id/revenuesFragment"
+        tools:layout="@layout/fragment_revenues"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.RevenuesFragment"
+        android:label="RevenuesFragment" >
+        <action
+            android:id="@+id/action_revenuesFragment_to_revenueDetailFragment"
+            app:destination="@id/revenueDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/revenueDetailFragment"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.RevenueDetailFragment"
+        android:label="fragment_revenue_detail"
+        tools:layout="@layout/fragment_revenue_detail" />
+</navigation>

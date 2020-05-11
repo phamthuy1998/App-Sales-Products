@@ -13,6 +13,7 @@ data class Order(
     var phone: String? = null,
     var address: String? = null,
     var date: String? = null,
+    var dateSearch: String? = null,
     var price: Long? = null,
     var status: Long? = null
 ) : Serializable , DynamicSearchAdapter.Searchable {

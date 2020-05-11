@@ -215,7 +215,9 @@ class AddressActivity : AppCompatActivity() {
                 // add order into
                 val current = LocalDateTime.now()
                 val dateFormatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
+                val dateSearchFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                 val dateFormatted = current.format(dateFormatter)
+                val dateSearch= current.format(dateSearchFormatter)
 
 //                id, name, phone, address, date, price, status
                 val order = Order(
@@ -225,6 +227,7 @@ class AddressActivity : AppCompatActivity() {
                     currentAddress.phone,
                     currentAddress.address,
                     dateFormatted,
+                    dateSearch,
                     priceAmount.toLong(),
                     1
                 )

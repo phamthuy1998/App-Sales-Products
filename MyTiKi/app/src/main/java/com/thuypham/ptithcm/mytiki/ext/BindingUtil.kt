@@ -75,6 +75,15 @@ fun bindPrice(view: TextView, price: Long?) {
     view.text = priceSelling
     view.paintFlags = view.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }
+
+@BindingAdapter("totalPrice")
+fun bindTotalPrice(view: TextView, price: Long?) {
+    val df = DecimalFormat("#,###,###")
+    df.roundingMode = RoundingMode.CEILING
+    val priceSelling = df.format(price) + " đ"
+    view.text = view.context.getString(R.string.totalPriceRe, priceSelling)
+}
+
 @BindingAdapter("txtPriceNoStrike")
 fun binPriceNoCeiling(view: TextView, price: Long?) {
     val df = DecimalFormat("#,###,###")

@@ -190,6 +190,9 @@
     <string name="thanks_order">Thank you for purchasing our store.</string>
     <string name="view_orders">View orders</string>
     <string name="order_id">Order ID:</string>
+    <string name="date">Date </string>
+    <string name="totalOrder">Total order: </string>
+    <string name="totalPriceRe">Total price: %1$s</string>
     <string name="err_address_empty">You have not selected an address, please enter a new address to continue</string>
     <string name="order_date">Order date:</string>
     <string name="order_status">Order status:</string>

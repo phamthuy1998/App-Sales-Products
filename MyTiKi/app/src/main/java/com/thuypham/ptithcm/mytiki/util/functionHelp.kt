@@ -1,6 +1,7 @@
 package com.thuypham.ptithcm.mytiki.util
 
 import android.os.Handler
+import java.text.DecimalFormat
 import java.util.regex.Pattern
 
 fun after(delay: Long, process: () -> Unit) {
@@ -41,7 +42,12 @@ fun getDayInMonth(month: Int, year: Int) = run {
         1, 3, 5, 7, 8, 10, 12 -> 31
         4, 6, 9, 11 -> 30
         2 -> if (year % 400 == 0 || year % 4 == 0 && year % 100 != 0) 29 else 28
-        else -> null
+        else -> 30
     }
 }
 
+fun formatNumber(number: Int) =
+    if (number.toString().length == 1) "0$number" else number.toString()
+
+
+fun formatPrice(price: Long?) = DecimalFormat("#,###,###").format(price) + " đ"
