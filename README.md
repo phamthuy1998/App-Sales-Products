@@ -4,6 +4,8 @@ Dependency injection: Koin
 
 MVVM, Navigation, Paged lib
 
+databinding 
+
 
 
 
