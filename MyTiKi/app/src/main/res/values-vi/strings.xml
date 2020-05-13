@@ -188,5 +188,10 @@
     <string name="accounts">Tài khoản</string>
     <string name="navHome">Trang chủ</string>
     <string name="cancel">Hủy</string>
+    <string name="dayCreateAcc">Ngày tạo tài khoản: %1$s</string>
+    <string name="totalPrice">Tổng tiền: %1$d</string>
+    <string name="date">Ngày</string>
+    <string name="totalOrder">"Tổng đơn hàng: "</string>
+    <string name="totalPriceRe">Tổng tiền: %1$s</string>
 
 </resources>

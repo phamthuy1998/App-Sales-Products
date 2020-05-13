@@ -24,9 +24,9 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
 import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
-import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.data.Category
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.CategoryAdapterHome
@@ -89,6 +89,8 @@ class HomeFragment : Fragment() {
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
 
+
+        if(progress==null) return
         if (isConnected) {
             ll_no_wifi.visibility = View.GONE
             inItView()
@@ -356,6 +358,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun inItView() {
+
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
 
@@ -482,17 +485,18 @@ class HomeFragment : Fragment() {
 
     // set image for avt
     fun inIt() {
-        pager!!.adapter = SlidingImageAdapter(
+        if(pager==null) return
+        pager?.adapter = SlidingImageAdapter(
             requireContext(),
             arrAdvertisement
         )
-        indicator.setViewPager(pager)
+        indicator?.setViewPager(pager)
 
 
         val density = resources.displayMetrics.density
 
         //Set circle indicator radius
-        indicator.radius = 5 * density
+        indicator?.radius = 5 * density
         NUM_PAGES = arrAdvertisement.size
 
         // Auto start of viewpager
@@ -512,7 +516,7 @@ class HomeFragment : Fragment() {
         }, 3000, 3000)
 
         // Pager listener over indicator
-        indicator.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        indicator?.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageSelected(position: Int) {
                 currentPage = position
@@ -527,7 +531,7 @@ class HomeFragment : Fragment() {
 
             }
         })
-        indicator.setOnClickListener() {
+        indicator?.setOnClickListener() {
             val intent = Intent(context, ProductOfCategoryActivity::class.java)
             intent.putExtra("id_category", arrAdvertisement[currentPage].id_category)
             intent.putExtra("name_category", arrAdvertisement[currentPage].name_category)
@@ -542,6 +546,7 @@ class HomeFragment : Fragment() {
 
     // get all avt
     private fun getDataAVT() {
+        if(progress==null) return
         mDatabaseReference = mDatabase!!.reference.child(Constant.SLIDE)
         progress.visibility = View.VISIBLE
         ll_home.visibility = View.GONE
@@ -567,6 +572,8 @@ class HomeFragment : Fragment() {
                         arrAdvertisement.add(advertisement)
                     }
                     inIt()
+
+                    if(progress==null) return
                     progress.visibility = View.GONE
                     ll_home.visibility = View.VISIBLE
                 }

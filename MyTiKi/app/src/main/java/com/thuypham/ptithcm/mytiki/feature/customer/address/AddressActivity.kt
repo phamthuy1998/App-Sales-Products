@@ -238,7 +238,6 @@ class AddressActivity : AppCompatActivity() {
                     query = mDatabase!!
                         .reference
                         .child(Constant.ORDER_DETAIL)
-                        .child(key.toString())
                         .push()
 
                     val keyDetail = query.key

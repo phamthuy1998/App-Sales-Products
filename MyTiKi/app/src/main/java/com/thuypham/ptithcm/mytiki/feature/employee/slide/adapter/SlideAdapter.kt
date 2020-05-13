@@ -9,9 +9,8 @@ import com.thuypham.ptithcm.mytiki.databinding.ItemSlideBinding
 
 class SlideAdapter(
     private var listSlide: MutableList<Slide> = arrayListOf(),
-    private var onItemClick: (id: String) -> Unit
+    private var onItemClick: (slide: Slide) -> Unit
 ) : DynamicSearchAdapter<Slide>(listSlide) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         SlideViewHolder(
@@ -60,7 +59,7 @@ class SlideAdapter(
             binding.apply {
                 slide = item
                 executePendingBindings()
-                itemSlide.setOnClickListener { item.id?.let { it1 -> onItemClick(it1) } }
+                itemSlide.setOnClickListener { onItemClick(item)  }
             }
         }
     }

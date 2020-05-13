@@ -15,7 +15,7 @@ data class User(
     var email: String? = null,
     var password: String? = null,
     var birthday: String? = null,
-    var gender: String? = null,
+    var gender: Boolean? = null,
     var daycreate: String? = null,
     var role: Long? = 1,
     var active: Boolean? = null,

@@ -43,12 +43,7 @@ class EditProfileActivity : AppCompatActivity() {
         val newPassword = edt_new_pasword_edit.text?.trim().toString()
         val reNewPassword = edt_retype_new_pasword_edit.text?.trim().toString()
         changePassword = ck_change_pasword.isChecked
-        var gender = getString(R.string.rab_male)
-        if (rad_male_edit.isChecked) {
-            gender = getString(R.string.rab_male)
-        } else if (rad_female_edit.isChecked) {
-            gender = getString(R.string.female)
-        }
+        val genderCheck = rad_male_edit.isChecked
 
         // check user input correct?
         if (name.isEmpty()) {
@@ -143,9 +138,11 @@ class EditProfileActivity : AppCompatActivity() {
                     user?.email,
                     newPassword,
                     birthday,
-                    gender,
+                    genderCheck,
                     user?.daycreate,
-                    1
+                    1,
+                    active = true,
+                    del = false
                 )
                 // user has changed password
                 return 1
@@ -160,8 +157,10 @@ class EditProfileActivity : AppCompatActivity() {
                 user?.email,
                 user?.password,
                 birthday,
-                gender,
+                genderCheck,
                 user?.daycreate
+                , active = true,
+                del = false
             )
             //user not change password
             return 2
@@ -176,7 +175,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun isEditProfile(): Boolean {
         if (!(user?.name.equals(userInput?.name) && user?.phone.equals(userInput?.phone) && user?.birthday.equals(
                 userInput?.birthday
-            ) && !changePassword && user?.gender?.compareTo(userInput?.gender!!, true) == 0)
+            ) && !changePassword && user?.gender == userInput?.gender!!)
         ) {
             return true
         }
@@ -185,7 +184,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun setTextDefault() {
         var name: String
-        var gender: String
+        var gender: Boolean
         var dayCreate: String
         var birthday: String
         var phone: String
@@ -198,7 +197,7 @@ class EditProfileActivity : AppCompatActivity() {
         mUserReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 name = snapshot.child(Constant.NAME).value as String
-                gender = snapshot.child(Constant.GENDER).value as String
+                gender = snapshot.child(Constant.GENDER).value as Boolean
                 dayCreate = snapshot.child(Constant.DAY_CREATE).value as String
                 birthday = snapshot.child(Constant.BIRTHDAY).value as String
                 phone = snapshot.child(Constant.PHONE).value as String
@@ -207,12 +206,8 @@ class EditProfileActivity : AppCompatActivity() {
                 edt_phone_edit.setText(phone)
                 edt_birthday_sign_up.setText(birthday)
 
-                if (gender.compareTo("Male", true) == 0 || gender.compareTo("Nam", true) == 0) {
-                    rad_male_edit.isChecked = true
-                }
-                if (gender.compareTo("Female", true) == 0 || gender.compareTo("Nữ", true) == 0) {
-                    rad_female_edit.isChecked = true
-                }
+                if (gender) rad_male_edit.isChecked = true
+                else rad_female_edit.isChecked = true
                 // save info into user
                 user = User(
                     mUser.uid,
@@ -223,6 +218,8 @@ class EditProfileActivity : AppCompatActivity() {
                     birthday,
                     gender,
                     dayCreate
+                    , active = true,
+                    del = false
                 )
 
             }
@@ -253,7 +250,8 @@ class EditProfileActivity : AppCompatActivity() {
         // if not, show toast that user had not changed data
 
         //If user checked to change password
-        if (getInfoInput() == 1) {
+        val check  = getInfoInput()
+        if (check == 1) {
             // if user's profile didn't change
             if (!isEditProfile()) {
                 Toast.makeText(
@@ -278,7 +276,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         // if user didn't check(checkbox) to change password
-        if (getInfoInput() == 2) {
+        if (check == 2) {
             if (!isEditProfile()) {
                 Toast.makeText(
                     applicationContext,
@@ -315,29 +313,39 @@ class EditProfileActivity : AppCompatActivity() {
         progress.visibility = View.VISIBLE
         val userID = mAuth?.currentUser?.uid
         mDatabaseReference =
-            FirebaseDatabase.getInstance().getReference(Constant.USER).child(userID!!)
-        val userMap = HashMap<String, String>()
-        userMap[Constant.NAME] = user?.name!!
-        userMap[Constant.GENDER] = user.gender!!
-        userMap[Constant.BIRTHDAY] = user.birthday!!
-        userMap[Constant.PASSWORD] = user.password!!
-        userMap[Constant.PHONE] = user.phone!!
-        userMap[Constant.EMAIL] = user.email!!
-        userMap[Constant.DAY_CREATE] = user.daycreate!!
-        mDatabaseReference!!.setValue(userMap).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                updatePasswordSuccess()
-            } else {
-                updatePasswordFail()
-            }
-            progress.visibility = View.GONE
-            // hide layout edit password
-            ll_edit_profile.visibility = View.GONE
-            edt_old_pasword_edit.setText("")
-            edt_new_pasword_edit.setText("")
-            edt_retype_new_pasword_edit.setText("")
-            ck_change_pasword.isChecked = false
-        }
+            FirebaseDatabase.getInstance().getReference(Constant.USER).child(userID.toString())
+        mDatabaseReference?.child(Constant.NAME)?.setValue(user?.name)
+        mDatabaseReference?.child(Constant.GENDER)?.setValue(user?.gender)
+        mDatabaseReference?.child(Constant.BIRTHDAY)?.setValue(user?.birthday)
+        mDatabaseReference?.child(Constant.PASSWORD)?.setValue(user?.password)
+        mDatabaseReference?.child(Constant.PHONE)?.setValue(user?.phone)
+        updatePasswordSuccess()
+
+//        val userMap = HashMap<String, String>()
+//        userMap[Constant.NAME] = user?.name!!
+//        userMap[Constant.GENDER] = user.gender!!
+//        userMap[Constant.BIRTHDAY] = user.birthday!!
+//        userMap[Constant.PASSWORD] = user.password!!
+//        userMap[Constant.PHONE] = user.phone!!
+//        userMap[Constant.EMAIL] = user.email!!
+//        userMap[Constant.DAY_CREATE] = user.daycreate!!
+//
+//        mDatabaseReference?.setValue(userMap)?.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                updatePasswordSuccess()
+//            } else {
+//                updatePasswordFail()
+//            }
+//
+//        }
+
+        progress.visibility = View.GONE
+        // hide layout edit password
+        ll_edit_profile.visibility = View.GONE
+        edt_old_pasword_edit.setText("")
+        edt_new_pasword_edit.setText("")
+        edt_retype_new_pasword_edit.setText("")
+        ck_change_pasword.isChecked = false
     }
 
 

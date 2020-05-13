@@ -3,7 +3,8 @@
 
     <data>
 
-        <import type="com.thuypham.ptithcm.mytiki.util.FunctionHelpKt"/>
+        <import type="com.thuypham.ptithcm.mytiki.util.FunctionHelpKt" />
+
         <variable
             name="revenue"
             type="com.thuypham.ptithcm.mytiki.data.Revenue" />
@@ -27,28 +28,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{@string/date+revenue.date}"
+            android:text="@{@string/date+` `+revenue.date}"
             android:textColor="@color/colorTextHint"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Ngày 20/11/2020" />
 
         <TextView
+            android:text="@{@string/totalOrder+` `+revenue.totalOrder}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="16sp"
             android:textColor="@color/colorText"
+            android:textSize="16sp"
             tools:text="Tổng đơn: 10" />
 
         <TextView
+            totalPrice="@{revenue.totalPrice}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="16sp"
             android:textColor="@color/colorBlueDark"
+            android:textSize="16sp"
             android:textStyle="bold"
-            totalPrice="@{revenue.totalPrice}"
             tools:text="Tổng tiền: 100.000.000 đ" />
 
     </LinearLayout>

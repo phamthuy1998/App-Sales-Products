@@ -19,7 +19,10 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
         Glide.with(view.context)
             .load(imageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.noimg)
             .into(view)
+    }else{
+        view.setImageResource(R.drawable.noimg)
     }
 }
 

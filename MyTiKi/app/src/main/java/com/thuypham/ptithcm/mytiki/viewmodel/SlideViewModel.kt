@@ -1,14 +1,22 @@
 package com.thuypham.ptithcm.mytiki.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.thuypham.ptithcm.mytiki.data.Category
 import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.repository.SlideRepository
 
 class SlideViewModel(private val repository:SlideRepository) :ViewModel(){
+
+
+    var name = MutableLiveData<String>().apply { value = "" }
+//    var image = MutableLiveData<String>().apply { value = "" }
+    var slide = MutableLiveData<Slide>().apply { value = Slide() }
+    var category = MutableLiveData<Category>().apply { value = Category() }
 
     /* get all slide */
     private val responseAllListSlide = MutableLiveData<ResultData<ArrayList<Slide>>>()
@@ -33,10 +41,18 @@ class SlideViewModel(private val repository:SlideRepository) :ViewModel(){
     }
 
     /* add slide */
-    private var responseAddSlide = MutableLiveData<NetworkState>()
+    var responseAddSlide = MutableLiveData<ResultData<Slide>>()
 
-    fun addSlide(slide: Slide){
-        responseAddSlide = repository.addSlide(slide)
+    val networkAddSlide = Transformations.switchMap(responseAddSlide) {
+        it.networkState
+    }
+
+    val slideAdd = Transformations.switchMap(responseAddSlide) {
+        it.data
+    }
+
+    fun addSlide(slide: Slide, imageUri: Uri?=null){
+        responseAddSlide.value = repository.addSlide(slide,imageUri)
     }
 
     /* update slide*/

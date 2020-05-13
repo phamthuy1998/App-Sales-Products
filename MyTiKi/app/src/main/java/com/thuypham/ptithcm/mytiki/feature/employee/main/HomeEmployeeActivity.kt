@@ -1,6 +1,5 @@
 package com.thuypham.ptithcm.mytiki.feature.employee.main
 
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
@@ -17,11 +16,6 @@ class HomeEmployeeActivity : BaseActivity<ActivityMainEmployeeBinding>() {
 
     override var toolbarViewParentId: Int = R.id.clMain
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setUpToolbar()
-    }
-
     override fun updateUser() {
         super.updateUser()
         viewBinding.isAdmin = user?.role == 3L
@@ -31,7 +25,7 @@ class HomeEmployeeActivity : BaseActivity<ActivityMainEmployeeBinding>() {
         drawerLayout = viewBinding.drawerMain
     }
 
-    private fun setUpToolbar() {
+    override fun setUpToolbar() {
         setupToolbar(
             toolbarLayoutId = R.layout.toolbar_main,
             rootViewId = toolbarViewParentId,

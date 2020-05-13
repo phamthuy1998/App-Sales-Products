@@ -43,8 +43,8 @@ abstract class BaseFragment<ViewBinding : ViewDataBinding> : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
-        setUpToolbar()
         initView()
+        setUpToolbar()
         setEvents()
         bindViewModel()
     }

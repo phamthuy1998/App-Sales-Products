@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="category"
+            type="com.thuypham.ptithcm.mytiki.data.Category" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/itemCategorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/colorWhiteBG">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSlide"
+            imageFromUrl="@{category.image}"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/tvNameSlide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="start"
+            android:layout_marginStart="@dimen/margin10"
+            android:text="@{category.name}"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="18sp"
+            tools:text="Name's slide" />
+    </LinearLayout>
+</layout>

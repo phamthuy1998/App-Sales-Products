@@ -97,6 +97,7 @@ class AuthRepositoryImpl : AuthRepository {
         val networkState = MutableLiveData<NetworkState>()
         val responseUpdateInfo = MutableLiveData<Boolean>()
         networkState.postValue(NetworkState.LOADING)
+
         databaseRef()?.child(USER)?.child(currentUser()?.uid.toString())?.setValue(user)
             ?.addOnCompleteListener {
                 networkState.value = NetworkState.LOADED

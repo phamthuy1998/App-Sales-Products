@@ -7,10 +7,16 @@ import com.thuypham.ptithcm.mytiki.base.DynamicSearchAdapter
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.databinding.ItemProductEmployeeBinding
 
+
 class ProductEmployeeAdapter(
     private var listProductSale: MutableList<Product> = arrayListOf(),
     private var onProductClick: (id: String) -> Unit
 ) : DynamicSearchAdapter<Product>(listProductSale) {
+
+//    private val itemStateArray = SparseBooleanArray()
+//    itemStateArray.put(adapterPosition, true);
+//    if (!itemStateArray.get(position, false)) {
+//        mCheckedTextView.setChecked(false);}
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =

@@ -65,16 +65,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         val phoneEdt = edt_phone_sign_up.getTxtTrim()
         val emailEdt = edt_email_sign_up.getTxtTrim()
         val passwordEdt = edt_pasword_sign_up.getTxtTrim()
-        val radBtnGroup = rad_btn_gender
-        var genderEdt: String?
+        val genderCheck = rad_male.isChecked
         val birthDayEdt = edt_birthday_sign_up.getTxtTrim()
-        radBtnGroup.let {
-            genderEdt = when {
-                rad_male.isChecked -> getString(R.string.rab_male)
-                rad_female.isChecked -> getString(R.string.female)
-                else -> getString(R.string.rab_male)
-            }
-        }
+
         if (!isPhoneValid(phoneEdt)) {
             edt_phone_sign_up.error =
                 getString(R.string.error_input_phone_not_correct)
@@ -104,8 +97,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 email = emailEdt
                 password = passwordEdt
                 birthday = birthDayEdt
-                gender = genderEdt
+                gender = genderCheck
                 daycreate = dayCreate
+                active = false
+                del = false
             }
             userViewModel.register(user)
             isClickSignUp = true
@@ -128,7 +123,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 }
                 Status.SUCCESS -> {
                     viewBinding.progressSignUp.gone()
-                    if(isClickSignUp){
+                    if (isClickSignUp) {
                         showDialogRegisterSuccess()
                         isClickSignUp = false
                     }

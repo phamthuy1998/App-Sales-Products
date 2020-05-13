@@ -1,9 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature.employee.profiile.ProfileActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View"/>
+        <variable
+            name="isChangePw"
+            type="Boolean" />
+
+        <variable
+            name="user"
+            type="com.thuypham.ptithcm.mytiki.data.User" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/clProfileContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:theme="@style/TextLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                    android:id="@+id/edtNameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name_sign_up"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:text="@={user.name}"
+                    android:textSize="16sp"
+                    android:theme="@style/EditTextTheme"
+                    app:clearButtonMode="whileEditing" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtPhone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:theme="@style/TextLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtName">
+
+                <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                    android:id="@+id/edtPhoneEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:text="@={user.phone}"
+                    android:textSize="16sp"
+                    android:theme="@style/EditTextTheme"
+                    app:clearButtonMode="whileEditing" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:id="@+id/llBirthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtPhone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ll_text_birthday"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtBirthEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/birthday"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@={user.birthday}"
+                        android:theme="@style/EditTextTheme" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_edt_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_edit" />
+
+            </FrameLayout>
+
+            <RadioGroup
+                android:id="@+id/rad_gender_edit_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:theme="@style/MyRadioButtonStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llBirthday">
+
+                <RadioButton
+                    android:id="@+id/rad_male_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="@={user.gender}"
+                    android:text="@string/rab_male"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/rad_female_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="@={!user.gender}"
+                    android:text="@string/female"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/ckChangePw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:checked="@={isChangePw}"
+                android:padding="16dp"
+                android:text="@string/change_pasword"
+                android:textColor="@color/colorTextHint"
+                android:textSize="18sp"
+                android:theme="@style/checkBoxStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rad_gender_edit_group" />
+
+            <LinearLayout
+                android:id="@+id/llChangePass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhiteBG"
+                android:orientation="vertical"
+                android:visibility="@{isChangePw ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ckChangePw">
+
+                <!--Old password-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorGray">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtOldPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/old_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        android:theme="@style/EditTextTheme" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--New password-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorGray">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtNewPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/new_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        android:theme="@style/EditTextTheme" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--New password-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorGray">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtReNewPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/retype_new_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        android:theme="@style/EditTextTheme" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/progressProfile"/>
+
+            <Button
+                android:id="@+id/btnSave"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:enabled="@{!TextUtils.isEmpty(user.name)&amp;!TextUtils.isEmpty(user.phone)}"
+                android:linksClickable="true"
+                android:onClick="onClickEditProfile"
+                android:text="@string/save_changes"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

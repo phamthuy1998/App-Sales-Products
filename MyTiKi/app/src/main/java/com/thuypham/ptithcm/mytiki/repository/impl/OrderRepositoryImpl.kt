@@ -10,6 +10,7 @@ import com.thuypham.ptithcm.mytiki.data.Order
 import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.OrderRepository
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_DATE
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_DETAIL
@@ -138,7 +139,8 @@ class OrderRepositoryImpl : OrderRepository {
         networkState.postValue(NetworkState.LOADING)
         val listProduct = ArrayList<OrderDetail>()
         var orderDetail: OrderDetail?
-        val query = databaseRef()?.child(ORDER_DETAIL)?.child(orderID)
+        val query = databaseRef()?.child(ORDER_DETAIL)?.orderByChild(Constant.ORDER_DETAIL_ID_ORDER)
+            ?.equalTo(orderID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {

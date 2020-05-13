@@ -28,7 +28,7 @@ class RevenuesFragment : BaseFragment<FragmentRevenuesBinding>() {
 
     private fun showRevenueByDate(dateStr: String) {
         val bundle = bundleOf(Constant.REVENUE_DATE to dateStr)
-        findNavController().navigate(R.id.orderDetailFragment, bundle)
+        findNavController().navigate(R.id.revenueDetailFragment, bundle)
     }
 
     override fun initView() {

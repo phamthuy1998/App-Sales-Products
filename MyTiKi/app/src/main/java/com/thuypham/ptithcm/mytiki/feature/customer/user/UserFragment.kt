@@ -21,8 +21,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.databinding.UserFragmentBinding
-import com.thuypham.ptithcm.mytiki.feature.customer.address.AddressActivity
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
+import com.thuypham.ptithcm.mytiki.feature.customer.address.AddressActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity

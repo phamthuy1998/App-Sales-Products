@@ -1,17 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="isAdd"
+            type="Boolean" />
+
+        <variable
+            name="product"
+            type="com.thuypham.ptithcm.mytiki.data.Product" />
+
+        <variable
+            name="viewModel"
+            type="com.thuypham.ptithcm.mytiki.viewmodel.SlideViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature.employee.product.ProductDetailFragment">
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorWhiteBG"
+        android:padding="@dimen/margin16">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btnSave"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivProduct"
+                    imageFromUrl="@{product.image}"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/noimg" />
+
+                <TextView
+                    android:id="@+id/btnChooseImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin10"
+                    android:padding="@dimen/margin5"
+                    android:text="@string/choose_an_image"
+                    android:textColor="@color/colorBlueDark"
+                    app:layout_constraintEnd_toEndOf="@id/ivProduct"
+                    app:layout_constraintStart_toStartOf="@id/ivProduct"
+                    app:layout_constraintTop_toBottomOf="@id/ivProduct" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtProductName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnChooseImg">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/slide_s_name"
+                        android:importantForAutofill="auto"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text="@={product.name}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtPrice"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtProductName">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/price"
+                        android:importantForAutofill="auto"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:text="@={product.price.toString()}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtProductCount"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtPrice">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtProductCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/product_count"
+                        android:importantForAutofill="auto"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@={product.product_count.toString()}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtInfo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtProductCount">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/info_s_product"
+                        android:importantForAutofill="auto"
+                        android:inputType="text"
+                        android:text="@={product.infor}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtSale"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtInfo">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edtSale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/info_s_product"
+                        android:importantForAutofill="auto"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text="@{Long.toString(product.sale)}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvTitleCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/bot_nav_category"
+                    android:textColor="@color/colorBlueDark"
+                    app:layout_constraintStart_toStartOf="@id/spCategory"
+                    app:layout_constraintTop_toBottomOf="@id/txtSale" />
+
+                <Spinner
+                    android:id="@+id/spCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="@dimen/margin5"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:background="@drawable/bg_dropdown"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitleCategory"
+                    tools:listitem="@layout/item_category_spinner" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:enabled="true"
+            android:linksClickable="true"
+            android:onClick="onClickEditProfile"
+            android:text="@{isAdd ? @string/btnAdd : @string/save_changes}"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/progressProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

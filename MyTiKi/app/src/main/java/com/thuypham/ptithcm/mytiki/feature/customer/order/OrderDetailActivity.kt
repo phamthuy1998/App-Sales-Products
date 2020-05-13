@@ -233,7 +233,8 @@ class OrderDetailActivity : AppCompatActivity() {
             val query = mDatabase!!
                 .reference
                 .child(Constant.ORDER_DETAIL)
-                .child(orderId)
+                .orderByChild(Constant.ORDER_DETAIL_ID_ORDER)
+                .equalTo(orderId)
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

@@ -51,6 +51,7 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding> : AppCompatActivity()
         viewBinding = DataBindingUtil.setContentView(this, layoutId)
         viewBinding.lifecycleOwner = this
         viewBinding.root.setAutoHideKeyboard(this)
+        setUpToolbar()
         bindView()
         bindViewModel()
         setEvents()
@@ -114,7 +115,7 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding> : AppCompatActivity()
     fun closeDrawer() {
         drawerLayout?.closeDrawers()
     }
-
+    open fun setUpToolbar() {}
     open fun toolbarFunc(curActivity: Activity?, toolbar: Toolbar?) {}
     open fun bindView() {}
     open fun setEvents() {}

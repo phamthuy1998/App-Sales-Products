@@ -20,7 +20,7 @@
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_category_employee" />
+                tools:listitem="@layout/item_slide" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar

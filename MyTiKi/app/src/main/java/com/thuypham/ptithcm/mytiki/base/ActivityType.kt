@@ -5,7 +5,7 @@ import com.thuypham.ptithcm.mytiki.feature.employee.category.CategoriesActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.main.HomeEmployeeActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.order.OrdersActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.product.ProductsActivity
-import com.thuypham.ptithcm.mytiki.feature.employee.profiile.ProfileActivity
+import com.thuypham.ptithcm.mytiki.feature.employee.profile.ProfileActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.revenue.RevenueActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.slide.SlidesActivity
 

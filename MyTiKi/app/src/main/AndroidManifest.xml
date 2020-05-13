@@ -16,21 +16,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".feature.admin.acc.AccountsActivity" />
-        <activity android:name=".feature.employee.category.CategoriesActivity" />
-        <activity android:name=".feature.employee.slide.SlidesActivity" />
-        <activity android:name=".feature.employee.revenue.RevenueActivity" />
-        <activity android:name=".feature.employee.profiile.ProfileActivity" />
-        <activity android:name=".feature.employee.order.OrdersActivity" />
-        <activity android:name=".feature.employee.product.ProductsActivity" />
-        <activity android:name=".feature.employee.main.HomeEmployeeActivity" />
-        <activity android:name=".feature.authentication.AuthActivity" />
-        <activity android:name=".feature.customer.order.OrderDetailActivity" />
-        <activity android:name=".feature.customer.address.AddressActivity" />
-        <activity android:name=".feature.customer.cart.CartActivity" />
-        <activity android:name=".feature.customer.product.ProductOfCategoryActivity" />
-        <activity android:name=".feature.customer.product.FavoriteActivity" />
-        <activity android:name=".feature.customer.product.ProductDetailActivity" />
+        <activity
+            android:name=".feature.admin.acc.AccountsActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.category.CategoriesActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.slide.SlidesActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.revenue.RevenueActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.profile.ProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.order.OrdersActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.product.ProductsActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.employee.main.HomeEmployeeActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.authentication.AuthActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.order.OrderDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.address.AddressActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.cart.CartActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.product.ProductOfCategoryActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.product.FavoriteActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.customer.product.ProductDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".feature.splash.SplashActivity"
             android:launchMode="singleTop"

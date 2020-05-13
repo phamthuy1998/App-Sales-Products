@@ -132,7 +132,8 @@ class OrderActivity : AppCompatActivity() {
                 val query = mDatabase!!
                     .reference
                     .child(Constant.ORDER_DETAIL)
-                    .child(o.id.toString())
+                    .orderByChild(Constant.ORDER_DETAIL_ID_ORDER)
+                    .equalTo(o.id.toString())
 
                 var orderDetail: OrderDetail?
                 val valueEventListener = object : ValueEventListener {

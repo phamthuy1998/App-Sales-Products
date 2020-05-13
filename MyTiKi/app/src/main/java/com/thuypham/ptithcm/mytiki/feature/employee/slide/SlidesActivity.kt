@@ -9,7 +9,7 @@ class SlidesActivity: BaseActivity<ActivitySlidesBinding>()  {
 
     override val layoutId: Int = R.layout.activity_slides
 
-    override var toolbarViewParentId: Int = R.id.ctlSlideContainer
+    override var toolbarViewParentId: Int = R.id.clSlideContainer
 
     override fun onSupportNavigateUp(): Boolean =
         Navigation.findNavController(this, R.id.frSlideNavigator).navigateUp()

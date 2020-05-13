@@ -50,6 +50,7 @@
     <string name="dialogLogout">Are you sure you want to log out this account?</string>
     <string name="dialogSendMail">Password reset successfully, please check your email</string>
     <string name="dialogRegister">Account successfully created, please check your email to activate your account</string>
+    <string name="dialogDelSlide">Are you sure you want to delete this ad?</string>
     <string name="add_like_product">Added to favorite product list</string>
     <string name="rab_male">Male</string>
     <string name="female">Female</string>
@@ -71,6 +72,7 @@
     <string name="change_pasword">Change pasword</string>
     <string name="account_information">Account information</string>
     <string name="save_changes">Save changes</string>
+    <string name="btnAdd">Add</string>
     <string name="you_have_no_orders_yet">You have no orders yet</string>
     <string name="continue_shopping">Continue shopping</string>
     <string name="product_name">Product name</string>
@@ -151,8 +153,11 @@
     <string name="err_del_address">You cannot delete the default address</string>
     <string name="_100" translatable="false">100%</string>
     <string name="err_add_cart">Number of products is not enough, can not be added to the cart</string>
+    <string name="errNoImage">You have not selected any images</string>
+    <string name="nothingChange">No changes yet</string>
     <string name="content_of_product_detail">Content of product detail</string>
     <string name="make_a_comment">Make a comment</string>
+    <string name="addSuccess">Successful</string>
     <string name="title_comment">Title comment</string>
     <string name="time_commnent">Time commnent</string>
     <string name="have_purchase" translatable="false">Have purchase</string>
@@ -217,6 +222,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="cancel">Cancel</string>
+    <string name="slide_s_name">Slide\'s name</string>
+    <string name="choose_an_image">Select available image</string>
+    <string name="newPoto">Take a new picture</string>
+    <string name="change_image">Change image</string>
+    <string name="price">Price</string>
+    <string name="product_count">Product count</string>
+    <string name="info_s_product">Info\'s product</string>
 
 
 </resources>

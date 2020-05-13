@@ -18,10 +18,11 @@ data class Product(
     var product_count: Long? = null,
     var id_category: String? = null,
     var sale: Long = 0,
+    var sold: Long = 0,
     var del: Boolean? = false
 ) : Serializable, Parcelable, DynamicSearchAdapter.Searchable {
     override fun getSearchCriteria(): String = name ?: ""
-    override fun toString() = name ?: ""
+    fun toStringSale() = sale.toString()
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -33,6 +34,7 @@ data class Product(
             "product_count" to product_count,
             "id_category" to id_category,
             "sale" to sale,
+            "sold" to sold,
             "del" to del
         )
     }

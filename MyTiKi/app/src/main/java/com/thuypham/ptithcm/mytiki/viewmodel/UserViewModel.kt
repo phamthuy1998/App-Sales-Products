@@ -26,6 +26,7 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
     private val responseCurrentUser = MutableLiveData<ResultData<User>>()
     private val responseRegister = MutableLiveData<ResultData<Boolean>>()
     private val responseForgotPW = MutableLiveData<ResultData<Boolean>>()
+    private val responseUpdateProfile= MutableLiveData<ResultData<Boolean>>()
 
     /* user login */
     val userInfoLogin = Transformations.switchMap(responseLogin) {
@@ -92,5 +93,14 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
 
     fun resetPassword(email: String) {
         responseForgotPW.value = repository.sendMailResetPassword(email)
+    }
+
+    /*    Forgot password  */
+    val networkUpdateProfile = Transformations.switchMap(responseUpdateProfile) {
+        it.networkState
+    }
+
+    fun updateProfile(user: User?) {
+        responseUpdateProfile.value = user?.let { repository.updateUserInfo(it) }
     }
 }

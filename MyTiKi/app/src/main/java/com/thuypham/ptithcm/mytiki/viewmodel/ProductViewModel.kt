@@ -10,6 +10,10 @@ import com.thuypham.ptithcm.mytiki.repository.ProductRepository
 
 class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
 
+
+
+    var product = MutableLiveData<Product>().apply { value = Product() }
+
     /* get list product of category */
     private val listProductResponse = MutableLiveData<ResultData<ArrayList<Product>>>()
     val listProduct = Transformations.switchMap(listProductResponse) {
