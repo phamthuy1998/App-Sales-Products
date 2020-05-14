@@ -71,7 +71,7 @@ class SlideDetailFragment : BaseFragment<FragmentSlideDetailBinding>() {
         builder.setCancelable(false)
         with(builder)
         {
-            setMessage(getString(R.string.dialogDelSlide))
+            setMessage(getString(R.string.dialogDelProduct))
             setPositiveButton(getString(R.string.dialogOk)) { dialog, _ ->
                 slideViewModel.slide.value?.id?.let { slideViewModel.delSlide(it) }
                 activity?.onBackPressed()
@@ -152,8 +152,10 @@ class SlideDetailFragment : BaseFragment<FragmentSlideDetailBinding>() {
         super.initView()
         slideViewModel.slide.value = arguments?.get(Constant.SLIDE) as? Slide
         slideViewModel.name.value = slideViewModel.slide.value?.name
+
         categoryViewModel.getAllCategory()
         viewBinding.spCategory.adapter = categoryAdapter
+
         viewBinding.slide = slideViewModel.slide.value
         viewBinding.viewModel = slideViewModel
         viewBinding.isAdd = slideViewModel.slide.value?.id == null

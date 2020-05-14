@@ -1,18 +1,18 @@
 package com.thuypham.ptithcm.mytiki.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.thuypham.ptithcm.mytiki.data.Category
 import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
 
 class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
-
-
-
     var product = MutableLiveData<Product>().apply { value = Product() }
+    var category = MutableLiveData<Category>().apply { value = Category() }
 
     /* get list product of category */
     private val listProductResponse = MutableLiveData<ResultData<ArrayList<Product>>>()
@@ -44,10 +44,18 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
     }
 
     /* add product */
-    private var responseAddProduct = MutableLiveData<NetworkState>()
+    private var responseAddProduct = MutableLiveData<ResultData<Product>>()
 
-    fun addProduct(product: Product){
-        responseAddProduct = repository.addProduct(product)
+    val networkAddProduct = Transformations.switchMap(responseAddProduct) {
+        it.networkState
+    }
+
+    val productAdd = Transformations.switchMap(responseAddProduct) {
+        it.data
+    }
+
+    fun addProduct(product: Product, imageUri:Uri?){
+        responseAddProduct.value = repository.addProduct(product,imageUri)
     }
 
     /* get info of product by id */

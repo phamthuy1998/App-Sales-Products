@@ -17,7 +17,7 @@
 
         <variable
             name="viewModel"
-            type="com.thuypham.ptithcm.mytiki.viewmodel.SlideViewModel" />
+            type="com.thuypham.ptithcm.mytiki.viewmodel.ProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +78,7 @@
                         android:id="@+id/edtProductName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/slide_s_name"
+                        android:hint="@string/product_s_name"
                         android:importantForAutofill="auto"
                         android:inputType="text"
                         android:singleLine="true"
@@ -107,7 +107,7 @@
                         android:importantForAutofill="auto"
                         android:inputType="numberDecimal"
                         android:singleLine="true"
-                        android:text="@={product.price.toString()}"
+                        android:text="@{product.price.toString()}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -132,7 +132,7 @@
                         android:importantForAutofill="auto"
                         android:inputType="number"
                         android:singleLine="true"
-                        android:text="@={product.product_count.toString()}"
+                        android:text="@{product.product_count.toString()}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -155,7 +155,9 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/info_s_product"
                         android:importantForAutofill="auto"
-                        android:inputType="text"
+                        android:minLines="1"
+                        android:scrollbars="vertical"
+                        android:inputType="textMultiLine"
                         android:text="@={product.infor}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
@@ -177,7 +179,7 @@
                         android:id="@+id/edtSale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/info_s_product"
+                        android:hint="@string/sale"
                         android:importantForAutofill="auto"
                         android:inputType="text"
                         android:singleLine="true"

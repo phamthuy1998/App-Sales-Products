@@ -371,16 +371,6 @@ class ProductDetailActivity : AppCompatActivity() {
                 if (ds.exists()) {
                     val name = ds.child(Constant.NAME_PRODUCT).value as String
                     var price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                    if (hours >= 7 && hours < 11)
-                        price = price * Constant.coefficientMorning
-                    else if (hours >= 11 && hours < 13)
-                        price = (price * Constant.coefficientLunch).toLong()
-                    else if (hours >= 13 && hours < 18)
-                        price = (price * Constant.coefficientAft).toLong()
-                    else if (hours >= 18 && hours <= 23)
-                        price = (price * Constant.coefficientNight).toLong()
-                    else if (hours >= 0 && hours < 7)
-                        price = (price * Constant.coefficientMidNight).toLong()
                     val image = ds.child(Constant.IMAGE_PRODUCT).value as String
                     val infor = ds.child(Constant.INFO_PRODUCT).value as String
                     val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long

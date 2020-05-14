@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.mytiki.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,9 @@ import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.CategoryRepository
 
 class CategoryViewModel(private val repository:CategoryRepository) :ViewModel(){
+
+    var name = MutableLiveData<String>().apply { value = "" }
+    var category = MutableLiveData<Category>().apply { value = Category() }
 
     /* get all list category */
     private val responseListCategory = MutableLiveData<ResultData<ArrayList<Category>>>()
@@ -25,10 +29,18 @@ class CategoryViewModel(private val repository:CategoryRepository) :ViewModel(){
     }
 
     /* add category */
-    private var responseAddCategory = MutableLiveData<NetworkState>()
+    var responseAddCategory = MutableLiveData<ResultData<Category>>()
 
-    fun addCategory(category: Category){
-        responseAddCategory = repository.addCategory(category)
+    val networkAddCategory = Transformations.switchMap(responseAddCategory) {
+        it.networkState
+    }
+
+    val categoryAdd = Transformations.switchMap(responseAddCategory) {
+        it.data
+    }
+
+    fun addCategory(category: Category, imageUri: Uri?=null){
+        responseAddCategory.value = repository.addCategory(category,imageUri)
     }
 
     /*  update category */

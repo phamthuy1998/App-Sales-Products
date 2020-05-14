@@ -33,6 +33,7 @@ object Constant {
 
     //Category
     const val CATEGORY = "CATEGORY"
+    const val CATEGORY_DEL = "del"
     const val CATEGORY_ID = "id"
     const val CATEGORY_NAME = "name"
     const val CATEGORY_IMAGE = "image"

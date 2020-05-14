@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -115,11 +116,12 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding> : AppCompatActivity()
     fun closeDrawer() {
         drawerLayout?.closeDrawers()
     }
+
     open fun setUpToolbar() {}
     open fun toolbarFunc(curActivity: Activity?, toolbar: Toolbar?) {}
     open fun bindView() {}
     open fun setEvents() {}
-    open fun updateUser(){}
+    open fun updateUser() {}
     open fun bindViewModel() {
         authViewModel.currentUser.observe(this, Observer { user ->
             this.user = user
@@ -128,4 +130,7 @@ abstract class BaseActivity<ViewBinding : ViewDataBinding> : AppCompatActivity()
         })
     }
 
+    fun showToast(msg: String, typeToast: Int) {
+        Toast.makeText(this, msg, typeToast).show()
+    }
 }

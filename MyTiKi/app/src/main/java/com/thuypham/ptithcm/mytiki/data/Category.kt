@@ -11,7 +11,8 @@ import kotlinx.android.parcel.Parcelize
 data class Category(
     var id: String? = null,
     var name: String? = null,
-    var image: String? = null
+    var image: String? = null,
+    var del: Boolean? = false
 ) : Parcelable, DynamicSearchAdapter.Searchable  {
     override fun getSearchCriteria(): String = name ?: ""
     override fun toString() = name ?: ""

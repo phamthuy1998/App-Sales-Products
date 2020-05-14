@@ -1,17 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="isAdd"
+            type="Boolean" />
+
+        <variable
+            name="category"
+            type="com.thuypham.ptithcm.mytiki.data.Category" />
+
+        <variable
+            name="viewModel"
+            type="com.thuypham.ptithcm.mytiki.viewmodel.CategoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".feature.employee.category.CategoryDetailFragment">
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorWhiteBG"
+        android:padding="@dimen/margin16">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivcategory"
+            imageFromUrl="@{category.image}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="catedetail" />
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/noimg" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/btnChooseImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin10"
+            android:padding="@dimen/margin5"
+            android:text="@string/choose_an_image"
+            android:textColor="@color/colorBlueDark"
+            app:layout_constraintEnd_toEndOf="@id/ivcategory"
+            app:layout_constraintStart_toStartOf="@id/ivcategory"
+            app:layout_constraintTop_toBottomOf="@id/ivcategory" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtcategoryName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:theme="@style/TextLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnChooseImg">
+
+            <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                android:id="@+id/edtNamecategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/category_s_name"
+                android:importantForAutofill="auto"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:text="@={viewModel.name}"
+                android:theme="@style/EditTextTheme"
+                app:clearButtonMode="whileEditing" />
+        </com.google.android.material.textfield.TextInputLayout>
+        
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:enabled="@{!(TextUtils.isEmpty(viewModel.name.trim()))}"
+            android:linksClickable="true"
+            android:onClick="onClickEditProfile"
+            android:text="@{isAdd ? @string/btnAdd : @string/save_changes}"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

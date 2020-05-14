@@ -10,7 +10,7 @@ import com.thuypham.ptithcm.mytiki.databinding.ItemProductEmployeeBinding
 
 class ProductEmployeeAdapter(
     private var listProductSale: MutableList<Product> = arrayListOf(),
-    private var onProductClick: (id: String) -> Unit
+    private var onProductClick: (product: Product) -> Unit
 ) : DynamicSearchAdapter<Product>(listProductSale) {
 
 //    private val itemStateArray = SparseBooleanArray()
@@ -66,7 +66,7 @@ class ProductEmployeeAdapter(
             binding.apply {
                 product = item
                 executePendingBindings()
-                itemProduct.setOnClickListener { item.id?.let { it1 -> onProductClick(it1) } }
+                itemProduct.setOnClickListener { onProductClick(item)  }
             }
         }
     }
