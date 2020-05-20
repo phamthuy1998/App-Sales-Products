@@ -1,343 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?><!--<layout>-->
 
 <!--<data>--><!--<variable--><!--name="viewModel"--><!--type="com.thuypham.ptithcm.mytiki.main.fragment.home.viewmodel.HomeViewModel" />--><!--</data>-->
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhiteBG">
 
-    <com.todou.nestrefresh.RefreshHeaderView
-        android:id="@+id/view_refresh_header"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_search_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhiteBG"
-        app:layout_behavior="@string/nest_refresh_single_behavior" />
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.todou.nestrefresh.ChildCoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/nest_refresh_scroll_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_seach_bg"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:onClick="showSearchFragment"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="@string/search"
+                android:textColor="@color/colorTextHint"
+                android:textSize="16sp" />
+
+            <include layout="@layout/ll_cart" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_search_home">
+
+        <LinearLayout
+            android:id="@+id/ll_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_fragment_home">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_search_home"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@color/colorBlue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorWhiteBG">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true" />
+
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:padding="10dip"
+                    app:fillColor="@color/colorBlue"
+                    app:pageColor="@color/colorWhiteBG"
+                    app:radius="0.5dp"
+                    app:snap="false" />
+            </RelativeLayout>
+
+            <!--view under viewpager-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/colorGrayBghint" />
+
+            <!--list product sale-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorWhiteBG"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteBG"
+                    android:orientation="horizontal">
+                    <!--Text title product sale-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/saling_product"
+                        android:textColor="@color/colorBlue_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_viewmore_product_sale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:padding="10dp"
+                        android:text="@string/view_more"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <!--recyclerview product sale-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product_sale_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_sale" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_viewed_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorWhiteBG"
+                android:orientation="vertical">
+
+                <!--view under sale product-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="@color/colorGrayBghint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteBG"
+                    android:orientation="horizontal">
+                    <!--Text title product sale-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/viewed_product"
+                        android:textColor="@color/colorBlue_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_viewmore_viewed_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:padding="10dp"
+                        android:text="@string/view_more"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <!--recyclerview product sale-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product_viewed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_product_viewed" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/colorGrayBghint" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorWhiteBG"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteBG"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_weight="1"
-                        android:background="@drawable/edit_seach_bg"
-                        android:drawableStart="@drawable/ic_search"
-                        android:drawablePadding="10dp"
-                        android:ellipsize="end"
-                        android:onClick="showSearchFragment"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:text="@string/search"
-                        android:textColor="@color/colorTextHint"
-                        android:textSize="16sp" />
+                        android:text="@string/bot_nav_category"
+                        android:textColor="@color/colorBlue_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                    <include layout="@layout/ll_cart"/>
-                </LinearLayout>
-
-            </androidx.appcompat.widget.Toolbar>
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar_search_home">
-
-                <LinearLayout
-                    android:id="@+id/ll_home"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_viewmore_category"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@color/colorWhiteBG">
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_alignParentTop="true" />
-
-                        <com.viewpagerindicator.CirclePageIndicator
-                            android:id="@+id/indicator"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:gravity="bottom"
-                            android:padding="10dip"
-                            app:fillColor="@color/colorBlue"
-                            app:pageColor="@color/colorWhiteBG"
-                            app:radius="0.5dp"
-                            app:snap="false" />
-                    </RelativeLayout>
-
-                    <!--view under viewpager-->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/colorGrayBghint" />
-
-                    <!--list product sale-->
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/colorWhiteBG"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhiteBG"
-                            android:orientation="horizontal">
-                            <!--Text title product sale-->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
-                                android:layout_weight="1"
-                                android:text="@string/saling_product"
-                                android:textColor="@color/colorBlue_text"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_viewmore_product_sale"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:padding="10dp"
-                                android:text="@string/view_more"
-                                android:textColor="@color/colorBlue"
-                                android:textSize="18sp" />
-
-                        </LinearLayout>
-
-                        <!--recyclerview product sale-->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_product_sale_home"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_product_sale" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_viewed_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/colorWhiteBG"
-                        android:orientation="vertical">
-
-                        <!--view under sale product-->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp"
-                            android:background="@color/colorGrayBghint" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhiteBG"
-                            android:orientation="horizontal">
-                            <!--Text title product sale-->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
-                                android:layout_weight="1"
-                                android:text="@string/viewed_product"
-                                android:textColor="@color/colorBlue_text"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_viewmore_viewed_product"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:padding="10dp"
-                                android:text="@string/view_more"
-                                android:textColor="@color/colorBlue"
-                                android:textSize="18sp" />
-
-                        </LinearLayout>
-
-                        <!--recyclerview product sale-->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_product_viewed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_product_viewed" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/colorGrayBghint" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/colorWhiteBG"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhiteBG"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_weight="1"
-                                android:text="@string/bot_nav_category"
-                                android:textColor="@color/colorBlue_text"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_viewmore_category"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:linksClickable="true"
-                                android:onClick="showCategoryFragment"
-                                android:padding="10dp"
-                                android:text="@string/view_more"
-                                android:textColor="@color/colorBlue"
-                                android:textSize="18sp" />
-                        </LinearLayout>
-
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_category_home"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_category" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/colorGrayBghint" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/colorWhiteBG"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:text="@string/list_product"
-                            android:textColor="@color/colorBlue_text"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_product_home"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhiteBG"
-                            tools:listitem="@layout/item_product" />
-                    </LinearLayout>
-
-
+                        android:linksClickable="true"
+                        android:onClick="showCategoryFragment"
+                        android:padding="10dp"
+                        android:text="@string/view_more"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
 
-            <include
-                layout="@layout/loading_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/ll_no_wifi"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/colorWhiteBG"
-                android:gravity="center"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar_search_home">
-
-                <include
-                    layout="@layout/no_wifi"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_category_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:orientation="horizontal"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_category" />
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/colorGrayBghint" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/colorWhiteBG"
+                android:orientation="vertical">
 
-    </com.todou.nestrefresh.ChildCoordinatorLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/list_product"
+                    android:textColor="@color/colorBlue_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout><!--</layout>-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_product_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteBG"
+                    tools:listitem="@layout/item_product" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        layout="@layout/loading_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_no_wifi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhiteBG"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_search_home">
+
+        <include
+            layout="@layout/no_wifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

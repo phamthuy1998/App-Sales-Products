@@ -34,9 +34,10 @@
         <TextView
             android:id="@+id/tv_price_product_favorite"
             android:text="@{category.name}"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/colorTextHint"

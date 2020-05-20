@@ -36,7 +36,6 @@ import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductViewedAd
 import com.thuypham.ptithcm.mytiki.feature.customer.product.FavoriteActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.product.ProductOfCategoryActivity
 import com.thuypham.ptithcm.mytiki.util.Constant
-import com.todou.nestrefresh.base.OnRefreshListener
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.ll_cart.*
 import kotlinx.android.synthetic.main.loading_layout.*
@@ -361,22 +360,6 @@ class HomeFragment : Fragment() {
 
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
-
-        view_refresh_header.setOnRefreshListener(object : OnRefreshListener {
-            override fun onRefresh() {
-                view_refresh_header.postDelayed({
-                    getListProductSale()
-
-                    // Get list product sale
-                    getListIdProductViewed()
-
-                    getDataCategory()
-                    getListProduct()
-
-                    view_refresh_header.stopRefresh()
-                }, 1000)
-            }
-        })
 
         // product viewed init
         productViewedAdapter = ProductViewedAdapter(productViewedList, requireContext())

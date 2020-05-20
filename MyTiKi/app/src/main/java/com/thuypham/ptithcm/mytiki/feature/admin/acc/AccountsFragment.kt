@@ -1,13 +1,19 @@
 package com.thuypham.ptithcm.mytiki.feature.admin.acc
 
 import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.base.BaseActivity
 import com.thuypham.ptithcm.mytiki.base.BaseFragment
+import com.thuypham.ptithcm.mytiki.builder.toolbarFunctionQueue
 import com.thuypham.ptithcm.mytiki.data.Status
+import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.databinding.FragmentAccountsBinding
 import com.thuypham.ptithcm.mytiki.ext.findNavController
+import com.thuypham.ptithcm.mytiki.ext.setupToolbar
 import com.thuypham.ptithcm.mytiki.feature.admin.acc.adapter.AccountAdapter
 import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.viewmodel.AccountViewModel
@@ -18,11 +24,31 @@ class AccountsFragment : BaseFragment<FragmentAccountsBinding>() {
     override val layoutId: Int = R.layout.fragment_accounts
     private val accViewModel: AccountViewModel by viewModel()
     private val accountAdapter by lazy {
-        AccountAdapter { orderId -> showCategoryDetail(orderId) }
+        AccountAdapter { user -> showAccountDetail(user) }
     }
 
-    private fun showCategoryDetail(orderId: String) {
-        val bundle = bundleOf(Constant.ORDER_ID to orderId)
+    override fun setUpToolbar() {
+        super.setUpToolbar()
+        (activity as? BaseActivity<*>)?.setupToolbar(
+            toolbarLayoutId = R.layout.toolbar_option,
+            rootViewId = (activity as? BaseActivity<*>)?.toolbarViewParentId, hasBack = false,
+            messageQueue = toolbarFunctionQueue {
+                func { curActivity, toolbar ->
+                    toolbar?.findViewById<TextView>(R.id.tvTitleToolbar)?.text =
+                        getString(R.string.categories)
+                    curActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
+                    toolbar?.findViewById<ImageButton>(R.id.icBack)?.apply {
+                        setOnClickListener { activity?.onBackPressed() }
+                    }
+                    toolbar?.findViewById<ImageButton>(R.id.btnOption)?.apply {
+                        setOnClickListener { showAccountDetail(null) }
+                    }
+                }
+            })
+    }
+
+    private fun showAccountDetail(user: User?) {
+        val bundle = bundleOf(Constant.USER to user)
         findNavController().navigate(R.id.accountDetailFragment, bundle)
     }
 

@@ -10,6 +10,7 @@ import com.thuypham.ptithcm.mytiki.repository.AccountRepository
 
 class AccountViewModel(private val repository: AccountRepository) : ViewModel() {
 
+    val user = MutableLiveData<User>().apply { value = User() }
     /* get all acc */
     private val responseListAccount = MutableLiveData<ResultData<ArrayList<User>>>()
     val listAccount = Transformations.switchMap(responseListAccount) {

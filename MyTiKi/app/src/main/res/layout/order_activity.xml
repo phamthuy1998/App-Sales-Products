@@ -11,7 +11,7 @@
         android:layout_height="?actionBarSize"
         android:background="@color/colorBlue">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_back_user_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

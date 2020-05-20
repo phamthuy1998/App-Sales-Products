@@ -9,7 +9,7 @@ import com.thuypham.ptithcm.mytiki.databinding.ItemAccountBinding
 
 class AccountAdapter(
     private var listUser: MutableList<User> = arrayListOf(),
-    private var onItemClick: (id: String) -> Unit
+    private var onItemClick: (user: User) -> Unit
 ) : DynamicSearchAdapter<User>(listUser) {
 
 
@@ -60,7 +60,7 @@ class AccountAdapter(
             binding.apply {
                 user = item
                 executePendingBindings()
-                itemAccount.setOnClickListener { item.id?.let { it1 -> onItemClick(it1) } }
+                itemAccount.setOnClickListener { onItemClick(item)  }
             }
         }
     }

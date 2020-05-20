@@ -130,7 +130,7 @@ class UserFragment : Fragment() {
     private fun getCartCount() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user!!.uid
+            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!

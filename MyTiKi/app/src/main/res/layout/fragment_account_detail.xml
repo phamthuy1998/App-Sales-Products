@@ -1,14 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature.admin.acc.AccountDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="fragment"
+            type="com.thuypham.ptithcm.mytiki.feature.authentication.SignUpFragment" />
+
+        <variable
+            name="userViewModel"
+            type="com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ll_text_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edt_name_sign_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/name_sign_up"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:text="@={userViewModel.name}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edt_phone_sign_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/phone"
+                        android:inputType="phone"
+                        android:singleLine="true"
+                        android:text="@={userViewModel.phone}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel">
+
+                    <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                        android:id="@+id/edt_email_sign_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:text="@={userViewModel.email}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/colorGray">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_pasword_sign_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:text="@={userViewModel.password}"
+                        android:theme="@style/EditTextTheme" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ll_text_birthday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:theme="@style/TextLabel">
+
+                        <com.thuypham.ptithcm.mytiki.widget.EditTextField
+                            android:id="@+id/edt_birthday_sign_up"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/birthday"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:text="@={userViewModel.birthday}"
+                            android:theme="@style/EditTextTheme" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btn_edt_birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                </FrameLayout>
+
+                <RadioGroup
+                    android:id="@+id/rad_btn_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    android:theme="@style/MyRadioButtonStyle">
+
+                    <RadioButton
+                        android:id="@+id/rad_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/rab_male" />
+
+                    <RadioButton
+                        android:id="@+id/rad_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/female" />
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/btn_sign_up"
+                    style="@style/Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:enabled="@{!(TextUtils.isEmpty(userViewModel.name))&amp; !(TextUtils.isEmpty(userViewModel.phone))&amp; !(TextUtils.isEmpty(userViewModel.email))&amp; !(TextUtils.isEmpty(userViewModel.password))&amp; !(TextUtils.isEmpty(userViewModel.birthday))}"
+                    android:onClick="@{() -> fragment.onClickSignUp()}"
+                    android:text="@string/btn_sign_up"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </ScrollView>
+
+
+        <ProgressBar
+            android:id="@+id/progressSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

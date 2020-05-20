@@ -6,6 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.firebase.crashlytics'
 
 apply plugin: 'com.google.gms.google-services'
 
@@ -102,9 +103,6 @@ dependencies {
         exclude module: 'support-v4'
     }
 
-    implementation 'com.github.todou:nestrefresh-androidx:0.0.7'
-
-
     /*-------------------- Admin --------------------------*/
     //permission
     implementation 'pub.devrel:easypermissions:3.0.0'
@@ -146,5 +144,12 @@ dependencies {
 
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
     implementation 'androidx.paging:paging-rxjava2-ktx:2.1.2'
+
+    /*-----Crashlytics-----*/
+    // Recommended: Add the Firebase SDK for Google Analytics.
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.1'
+
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

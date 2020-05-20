@@ -327,7 +327,6 @@
                 android:background="@color/grayLight" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/btn_cancel_order_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -341,7 +340,8 @@
                 android:text="@string/cancel_order"
                 android:textAllCaps="true"
                 android:textColor="@color/colorBlue"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
