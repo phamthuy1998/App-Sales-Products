@@ -377,19 +377,22 @@ class ProductDetailActivity : AppCompatActivity() {
                     val id_category =
                         ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                     val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                    product =
-                        Product(
-                            id,
-                            name,
-                            price,
-                            image,
-                            infor,
-                            product_count,
-                            id_category,
-                            sale
-                        )
-                    productDetail = product
-                    setData(product)
+                    val del = ds.child(Constant.PRODUCT_DEL).value as Boolean
+                    if (!del) {
+                        product =
+                            Product(
+                                id,
+                                name,
+                                price,
+                                image,
+                                infor,
+                                product_count,
+                                id_category,
+                                sale
+                            )
+                        productDetail = product
+                        setData(product)
+                    }
                 }
             }
 

@@ -13,6 +13,7 @@ import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.feature.employee.main.HomeEmployeeActivity
+import com.thuypham.ptithcm.mytiki.util.Constant.CUSTOMER
 import com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
@@ -54,7 +55,7 @@ class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
             startActivity<AuthActivity>()
         else {
             /* Customer */
-            if (user.role == 1L) startActivity<MainActivity>()
+            if (user.role == CUSTOMER) startActivity<MainActivity>()
             /* Employee, include admin */
             else startActivity<HomeEmployeeActivity>()
         }

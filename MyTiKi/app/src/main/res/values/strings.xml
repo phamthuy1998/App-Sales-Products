@@ -56,6 +56,8 @@
     <string name="rab_male">Male</string>
     <string name="female">Female</string>
     <string name="btn_sign_up">Sign up</string>
+    <string name="btnAddAcc">Add account</string>
+    <string name="btnUpdateAcc">Update Account</string>
     <string name="show_password">Show</string>
     <string name="user_not_change">User information has not changed</string>
     <string name="user_change_success">User information has been updated</string>

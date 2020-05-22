@@ -141,7 +141,7 @@ class SlideDetailFragment : BaseFragment<FragmentSlideDetailBinding>() {
             name_category = slideViewModel.category.value?.name
             image = if (imageUri == null) viewBinding.slide?.image else ""
         }
-        if (slideViewModel.slide.value?.equals(slideInput) == true) {
+        if (slideViewModel.slide.value?.equals(slideInput) == true&&imageUri==null) {
             Toast.makeText(activity, getString(R.string.nothingChange), Toast.LENGTH_LONG).show()
             return
         }

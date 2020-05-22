@@ -143,7 +143,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
                 id_category = idCategoryInput
             }
 
-            if (productViewModel.product.value?.equals(product) == true) {
+            if (productViewModel.product.value?.equals(product) == true&&imageUri==null) {
                 Toast.makeText(activity, getString(R.string.nothingChange), Toast.LENGTH_LONG).show()
                 return
             }

@@ -9,7 +9,8 @@ interface AccountRepository {
     /* For admin */
     fun getAllEmployee(): ResultData<ArrayList<User>>
     fun getEmployeeByRole(role: Long): ResultData<ArrayList<User>>
-    fun createAcc(user: User): MutableLiveData<NetworkState>
-    fun updateAccount(user: User): MutableLiveData<NetworkState>
+    fun createAcc(user: User): ResultData<User>
+    fun updateAccount(user: User): ResultData<User>
     fun deleteAcc(user: User): MutableLiveData<NetworkState>
+    fun getAllRoleLogin(): ResultData<NetworkState>
 }

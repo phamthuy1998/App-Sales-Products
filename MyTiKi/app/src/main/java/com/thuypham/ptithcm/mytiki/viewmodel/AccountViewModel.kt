@@ -11,6 +11,7 @@ import com.thuypham.ptithcm.mytiki.repository.AccountRepository
 class AccountViewModel(private val repository: AccountRepository) : ViewModel() {
 
     val user = MutableLiveData<User>().apply { value = User() }
+
     /* get all acc */
     private val responseListAccount = MutableLiveData<ResultData<ArrayList<User>>>()
     val listAccount = Transformations.switchMap(responseListAccount) {
@@ -30,17 +31,33 @@ class AccountViewModel(private val repository: AccountRepository) : ViewModel() 
     }
 
     /* create account */
-    private var responseCreateAcc = MutableLiveData<NetworkState>()
+    private var responseCreateAcc = MutableLiveData<ResultData<User>>()
+
+    val userCreated = Transformations.switchMap(responseCreateAcc) {
+        it.data
+    }
+
+    val networkCreateAcc = Transformations.switchMap(responseCreateAcc) {
+        it.networkState
+    }
 
     fun createAcc(user: User) {
-        responseCreateAcc = repository.createAcc(user)
+        responseCreateAcc.value = repository.createAcc(user)
     }
 
     /* update account*/
-    private var responseUpdateAccount = MutableLiveData<NetworkState>()
+    private var responseUpdateAccount = MutableLiveData<ResultData<User>>()
+
+    val userUpdated = Transformations.switchMap(responseUpdateAccount) {
+        it.data
+    }
+
+    val networkUpdateAcc = Transformations.switchMap(responseUpdateAccount) {
+        it.networkState
+    }
 
     fun updateAcc(user: User) {
-        responseUpdateAccount = repository.updateAccount(user)
+        responseUpdateAccount.value = repository.updateAccount(user)
     }
 
     /* Del account*/

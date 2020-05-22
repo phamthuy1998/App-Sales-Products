@@ -35,7 +35,7 @@ class AccountsFragment : BaseFragment<FragmentAccountsBinding>() {
             messageQueue = toolbarFunctionQueue {
                 func { curActivity, toolbar ->
                     toolbar?.findViewById<TextView>(R.id.tvTitleToolbar)?.text =
-                        getString(R.string.categories)
+                        getString(R.string.accounts)
                     curActivity?.supportActionBar?.setDisplayShowTitleEnabled(false)
                     toolbar?.findViewById<ImageButton>(R.id.icBack)?.apply {
                         setOnClickListener { activity?.onBackPressed() }

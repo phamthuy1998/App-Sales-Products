@@ -8,6 +8,10 @@
         <import type="android.text.TextUtils" />
 
         <variable
+            name="isAdd"
+            type="Boolean" />
+
+        <variable
             name="fragment"
             type="com.thuypham.ptithcm.mytiki.feature.authentication.SignUpFragment" />
 
@@ -151,6 +155,13 @@
 
                 </FrameLayout>
 
+                <Spinner
+                    android:id="@+id/spRole"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin" />
+
                 <RadioGroup
                     android:id="@+id/rad_btn_gender"
                     android:layout_width="match_parent"
@@ -178,7 +189,7 @@
                 </RadioGroup>
 
                 <Button
-                    android:id="@+id/btn_sign_up"
+                    android:id="@+id/btnAddAcc"
                     style="@style/Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,14 +198,14 @@
                     android:layout_marginEnd="16dp"
                     android:enabled="@{!(TextUtils.isEmpty(userViewModel.name))&amp; !(TextUtils.isEmpty(userViewModel.phone))&amp; !(TextUtils.isEmpty(userViewModel.email))&amp; !(TextUtils.isEmpty(userViewModel.password))&amp; !(TextUtils.isEmpty(userViewModel.birthday))}"
                     android:onClick="@{() -> fragment.onClickSignUp()}"
-                    android:text="@string/btn_sign_up"
+                    android:text="@{isAdd ? @string/btnAddAcc : @string/btnUpdateAcc}"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </ScrollView>
 
 
         <ProgressBar
-            android:id="@+id/progressSignUp"
+            android:id="@+id/progressAcc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

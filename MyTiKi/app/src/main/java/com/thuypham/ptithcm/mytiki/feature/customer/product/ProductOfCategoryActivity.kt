@@ -6,8 +6,8 @@ import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -15,17 +15,19 @@ import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
 import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
-import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.data.Slide
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductSaleAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductViewedAdapter
 import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.viewmodel.ProductViewModel
+import com.thuypham.ptithcm.mytiki.viewmodel.SlideViewModel
 import kotlinx.android.synthetic.main.activity_product_of_category.*
 import kotlinx.android.synthetic.main.ll_cart.*
-import kotlinx.android.synthetic.main.loading_layout.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -44,6 +46,9 @@ class ProductOfCategoryActivity : AppCompatActivity() {
         private var NUM_PAGES = 0
     }
 
+    private val productViewModel: ProductViewModel by viewModel()
+    private val slideViewModel: SlideViewModel by viewModel()
+
     //product
     private var productAdapter: ProductAdapter? = null
     private var productList = ArrayList<Product>()
@@ -55,7 +60,7 @@ class ProductOfCategoryActivity : AppCompatActivity() {
     private var productBestSellerAdapter: ProductViewedAdapter? = null
     private var productBestSellerList = ArrayList<Product>()
 
-    private var id_category = ""
+    private var idCategory: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +68,32 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
         getIdCategory()
         addEvent()
-        getCartCount()
+        productViewModel.getCartCount()
+        bindViewModel()
+    }
+
+    private fun bindViewModel() {
+        productViewModel.cartCount.observe(this) { cartCount ->
+            if (cartCount != null) {
+                if (cartCount > 0 && tv_number_cart != null) {
+                    tv_number_cart.visibility = View.VISIBLE
+                    tv_number_cart.text = cartCount.toString()
+                } else if (tv_number_cart != null) {
+                    tv_number_cart.visibility = View.GONE
+                }
+            }
+        }
+
+        productViewModel.listProduct.observe(this) {
+
+        }
+
+        slideViewModel.listSlide.observe(this) {
+            if (it != null) {
+                arrAdvertisement.addAll(it)
+                initSlide()
+            }
+        }
     }
 
     private fun addEvent() {
@@ -81,83 +111,38 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
         // show more sale product
         tv_viewmore_product_sale_category.setOnClickListener() {
-            var intent = Intent(this, FavoriteActivity::class.java)
+            val intent = Intent(this, FavoriteActivity::class.java)
             intent.putExtra("nameToolbar", getString(R.string.saling_product))
-            intent.putExtra("id_category", id_category)
+            intent.putExtra("id_category", idCategory)
             intent.putExtra("viewMore", 1)
             startActivity(intent)
         }
 
         //show more best seller product
         tv_viewmore_best_slae.setOnClickListener() {
-            var intent = Intent(this, FavoriteActivity::class.java)
+            val intent = Intent(this, FavoriteActivity::class.java)
             intent.putExtra("nameToolbar", getString(R.string.best_seller))
-            intent.putExtra("id_category", id_category)
+            intent.putExtra("id_category", idCategory)
             intent.putExtra("viewMore", 2)
             startActivity(intent)
         }
 
     }
 
-    private fun getCartCount() {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        if (user != null) {
-            val uid = user!!.uid
-            mDatabase = FirebaseDatabase.getInstance()
-
-            val query = mDatabase!!
-                .reference
-                .child(Constant.CART)
-                .child(uid)
-            var cartCount = 0
-
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        cartCount = 0
-                        for (ds in dataSnapshot.children) {
-                            if (ds.exists()) {
-                                cartCount++
-                            }
-                        }
-                        if (cartCount > 0 && tv_number_cart != null) {
-                            tv_number_cart.visibility = View.VISIBLE
-                            tv_number_cart.text = cartCount.toString()
-                        } else if (tv_number_cart != null) {
-                            tv_number_cart.visibility = View.GONE
-                        }
-                    } else if (tv_number_cart != null) {
-                        tv_number_cart.visibility = View.GONE
-                        cartCount = 0
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            }
-            query.addValueEventListener(valueEventListener)
-        } else {
-            tv_number_cart.visibility = View.GONE
-        }
-    }
-
     private fun getIdCategory() {
         // Get id category to get list item
-        id_category = intent.getStringExtra("id_category")
-        if (id_category != null) {
-            val name_category = intent.getStringExtra("name_category")
-            tv_toolbar_product_category.text = name_category
+        idCategory = intent.getStringExtra("id_category")
+        if (idCategory == null) return
+        val nameCategory = intent.getStringExtra("name_category")
+        tv_toolbar_product_category.text = nameCategory
 
-            // init view
-            initView()
+        // init view
+        initView()
+        slideViewModel.getAllSlideOfCategory(idCategory!!)
+        // get all list product
+        getListProduct(idCategory!!)
+        productViewModel.getAllProductOfCategory(idCategory!!)
 
-            // get list AVT
-            getDataAVT(id_category)
-
-            // get all list product
-            getListProduct(id_category)
-
-        }
     }
 
     private fun getListProduct(idCategory: String) {
@@ -185,7 +170,6 @@ class ProductOfCategoryActivity : AppCompatActivity() {
                             ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(Constant.PRODUCT_SALE).value as Long
                         val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-
                         val product =
                             Product(
                                 id,
@@ -206,7 +190,6 @@ class ProductOfCategoryActivity : AppCompatActivity() {
                             productBestSellerList.add(product)
                         }
                         productList.add(product)
-
                     }
                     if (productSaleList.isEmpty() && productBestSellerList.isEmpty() && productList.isEmpty())
                         tv_list_empty.visibility = View.VISIBLE
@@ -235,100 +218,26 @@ class ProductOfCategoryActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
 
-
         // product best seller init
         productBestSellerAdapter = ProductViewedAdapter(productBestSellerList, applicationContext)
         // Set rcyclerview horizontal
-        rv_product_best_sale_category.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
         rv_product_best_sale_category.adapter = productBestSellerAdapter
 
         // product sale init
         productSaleAdapter = ProductSaleAdapter(productSaleList, applicationContext)
         // Set rcyclerview horizontal
-        rv_product_sale_category.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
         rv_product_sale_category.adapter = productSaleAdapter
 
         // Product list init
         productAdapter = ProductAdapter(productList, this)
         rv_all_product_categgory.adapter = productAdapter
         rv_all_product_categgory.layoutManager = GridLayoutManager(this, 2)
-        //This will for default android divider
-        rv_all_product_categgory.addItemDecoration(
-            GridItemDecoration(
-                10,
-                2
-            )
-        )
-    }
-
-    private fun getDataAVT(idCategory: String) {
-        val query = mDatabase!!
-            .reference
-            .child(Constant.SLIDE)
-            .orderByChild(Constant.SLIDE_ID_CATEGORY)
-            .equalTo(idCategory)
-
-        // Show progressbar
-        progress.visibility = View.VISIBLE
-
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    arrAdvertisement.clear()
-                    for (ds in dataSnapshot.children) {
-                        val id = ds.child(Constant.CATEGORY_ID).value as String
-                        val name = ds.child(Constant.SLIDE_NAME).value as String
-                        val image = ds.child(Constant.SLIDE_IMAGE).value as String
-                        val id_category = ds.child(Constant.SLIDE_ID_CATEGORY).value as String
-                        val name_category =
-                            ds.child(Constant.SLIDE_NAME_CATEGORY).value as String
-
-                        val advertisement =
-                            Slide(
-                                name,
-                                id,
-                                image,
-                                id_category,
-                                name_category
-                            )
-                        arrAdvertisement.add(advertisement)
-                    }
-                    inIt()
-                    progress.visibility = View.GONE
-                } else {
-                    progress.visibility = View.GONE
-                }
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(
-                    applicationContext,
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
-                    Toast.LENGTH_LONG
-                ).show()
-                progress.visibility = View.GONE
-            }
-
-        }
-        query.addValueEventListener(valueEventListener)
+        rv_all_product_categgory.addItemDecoration(GridItemDecoration(10, 2))
     }
 
 
-    fun inIt() {
-        pager_category!!.adapter =
-            SlidingImageAdapter(
-                applicationContext,
-                arrAdvertisement
-            )
+    private fun initSlide() {
+        pager_category?.adapter = SlidingImageAdapter(applicationContext, arrAdvertisement)
         indicator_category.setViewPager(pager_category)
         val density = resources.displayMetrics.density
 
@@ -338,7 +247,7 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
         // Auto start of viewpager
         val handler = Handler()
-        val Update = Runnable {
+        val update = Runnable {
             if (currentPage == NUM_PAGES) {
                 currentPage = 0
             }
@@ -347,7 +256,7 @@ class ProductOfCategoryActivity : AppCompatActivity() {
         val swipeTimer = Timer()
         swipeTimer.schedule(object : TimerTask() {
             override fun run() {
-                handler.post(Update)
+                handler.post(update)
             }
         }, 3000, 3000)
 

@@ -196,7 +196,6 @@ class FavoriteActivity : AppCompatActivity() {
                             ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(Constant.PRODUCT_SALE).value as Long
                         val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-
                         val product =
                             Product(
                                 id,
@@ -266,7 +265,6 @@ class FavoriteActivity : AppCompatActivity() {
                             ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(Constant.PRODUCT_SALE).value as Long
                         val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-
                         val product =
                             Product(
                                 id,
@@ -383,7 +381,6 @@ class FavoriteActivity : AppCompatActivity() {
                         val id_category =
                             ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                         val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-
                         product =
                             Product(
                                 id,
@@ -395,7 +392,6 @@ class FavoriteActivity : AppCompatActivity() {
                                 id_category,
                                 sale
                             )
-
                         productViewedList.add(product)
                         productViewedAdapter?.notifyDataSetChanged()
                     }

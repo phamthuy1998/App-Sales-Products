@@ -43,6 +43,48 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         responeAllProducts.value = repository.getAllProducts()
     }
 
+     /* get all product sale */
+    private val responeAllProductsSale = MutableLiveData<ResultData<ArrayList<Product>>>()
+
+    val listAllProductsSale = Transformations.switchMap(responeAllProductsSale) {
+        it.data
+    }
+
+    val networkAllProductsSale = Transformations.switchMap(responeAllProductsSale) {
+        it.networkState
+    }
+
+    fun getAllProductSale(){
+        responeAllProductsSale.value = repository.getAllProductsSale()
+    }
+
+
+    /* get cart count*/
+    private val responeAllPCartCount = MutableLiveData<ResultData<Int>>()
+
+    val cartCount = Transformations.switchMap(responeAllPCartCount) {
+        it.data
+    }
+
+    val networkCartCount = Transformations.switchMap(responeAllPCartCount) {
+        it.networkState
+    }
+
+    fun getCartCount(){
+        responeAllPCartCount.value = repository.getCartCount()
+    }
+
+    /* get productId viewed*/
+    private val responeAllProductIDViewed = MutableLiveData<ResultData<ArrayList<String>>>()
+
+    val listIdProductViewed = Transformations.switchMap(responeAllProductIDViewed) {
+        it.data
+    }
+
+    fun getListProductViewed(){
+        responeAllProductIDViewed.value = repository.getListIdProductViewed()
+    }
+
     /* add product */
     private var responseAddProduct = MutableLiveData<ResultData<Product>>()
 

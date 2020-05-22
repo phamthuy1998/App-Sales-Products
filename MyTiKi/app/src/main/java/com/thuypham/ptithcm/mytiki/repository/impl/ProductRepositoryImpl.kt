@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,9 +17,11 @@ import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
+import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.Constant.ID_CATEGORY_PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_DEL
+import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_SALE
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,10 +32,13 @@ class ProductRepositoryImpl : ProductRepository {
     private val fireStore: FirebaseStorage? by lazy {
         Firebase.storage
     }
+    private val firebaseAuth: FirebaseAuth? by lazy {
+        FirebaseAuth.getInstance()
+    }
 
     private fun storeRef() = fireStore?.reference
     private fun databaseRef() = firebaseDatabase?.reference
-
+    private fun currentUser() = firebaseAuth?.currentUser
     override fun getAllProductOfCategory(categoryId: String): ResultData<ArrayList<Product>> {
         val networkState = MutableLiveData<NetworkState>()
         val responseListProduct = MutableLiveData<ArrayList<Product>>()
@@ -95,6 +101,105 @@ class ProductRepositoryImpl : ProductRepository {
         query?.addValueEventListener(valueEventListener)
         return ResultData(
             data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getAllProductsSale(): ResultData<ArrayList<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProduct = MutableLiveData<ArrayList<Product>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Product>()
+        var product: Product?
+        val query = databaseRef()?.child(PRODUCT)?.orderByChild(PRODUCT_SALE)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        product = ds.getValue(Product::class.java)
+                        if (product?.del == false && product?.sale != 0L)
+                            product?.let { listProduct.add(it) }
+                    }
+                    responseListProduct.value = listProduct
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getListIdProductViewed(): ResultData<ArrayList<String>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProductID = MutableLiveData<ArrayList<String>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProductID = ArrayList<String>()
+        val query = databaseRef()?.child(Constant.USER)?.child(currentUser()?.uid.toString())
+            ?.child(Constant.VIEWED_PRODUCT)
+            ?.limitToLast(10)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        val id: String? = ds.child(Constant.VIEWED_PRODUCT_ID).value as String?
+                        id?.let { listProductID.add(it) }
+                    }
+                    responseListProductID.value = listProductID
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProductID,
+            networkState = networkState
+        )
+    }
+
+    override fun getCartCount(): ResultData<Int> {
+        val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<Int>()
+        networkState.postValue(NetworkState.LOADING)
+        var cartCount = 0
+        val query = databaseRef()?.child(Constant.CART)?.child(currentUser()?.uid.toString())
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    cartCount = 0
+                    for (ds in dataSnapshot.children) {
+                        if (ds.exists()) {
+                            cartCount++
+                        }
+                    }
+                    response.value = cartCount
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = response,
             networkState = networkState
         )
     }

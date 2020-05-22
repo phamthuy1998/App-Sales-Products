@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @IgnoreExtraProperties
 @Parcelize
 data class User(
-    var id: String?= null,
+    var id: String? = null,
     var name: String? = null,
     var phone: String? = null,
     var email: String? = null,
@@ -20,8 +20,9 @@ data class User(
     var role: Long? = 1,
     var active: Boolean? = null,
     var del: Boolean? = null
-): Parcelable , DynamicSearchAdapter.Searchable {
+) : Parcelable, DynamicSearchAdapter.Searchable {
     override fun getSearchCriteria(): String = "$name $phone $email $birthday"
+
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -38,3 +39,8 @@ data class User(
         )
     }
 }
+
+data class Role(
+    val id: Int? = null,
+    val name: String? = null
+)

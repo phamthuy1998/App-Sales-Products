@@ -9,6 +9,7 @@ import com.thuypham.ptithcm.mytiki.base.BaseActivity
 import com.thuypham.ptithcm.mytiki.builder.toolbarFunctionQueue
 import com.thuypham.ptithcm.mytiki.databinding.ActivityMainEmployeeBinding
 import com.thuypham.ptithcm.mytiki.ext.setupToolbar
+import com.thuypham.ptithcm.mytiki.util.Constant.ADMIN
 
 class HomeEmployeeActivity : BaseActivity<ActivityMainEmployeeBinding>() {
 
@@ -18,7 +19,7 @@ class HomeEmployeeActivity : BaseActivity<ActivityMainEmployeeBinding>() {
 
     override fun updateUser() {
         super.updateUser()
-        viewBinding.isAdmin = user?.role == 3L
+        viewBinding.isAdmin = user?.role == ADMIN
     }
     override fun bindView() {
         super.bindView()

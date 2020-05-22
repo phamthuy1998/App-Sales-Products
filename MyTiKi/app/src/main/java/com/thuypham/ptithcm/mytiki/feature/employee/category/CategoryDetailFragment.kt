@@ -118,7 +118,7 @@ class CategoryDetailFragment : BaseFragment<FragmentCategoryDetailBinding>() {
             id = categoryViewModel.category.value?.id
             image = categoryViewModel.category.value?.image ?: ""
         }
-        if (categoryViewModel.category.value?.equals(category) == true) {
+        if (categoryViewModel.category.value?.equals(category) == true && imageUri == null) {
             Toast.makeText(activity, getString(R.string.nothingChange), Toast.LENGTH_LONG).show()
             return
         }

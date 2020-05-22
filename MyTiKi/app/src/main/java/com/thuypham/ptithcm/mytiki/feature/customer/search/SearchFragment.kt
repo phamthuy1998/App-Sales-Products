@@ -109,7 +109,6 @@ class SearchFragment : Fragment() {
                             val id_category =
                                 ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
                             val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-
                             //Chuyển qua tiếng việt không dáu để tìm kiếm
                             if (removeAccent(name).contains(search)
                                 || id.contains(search)

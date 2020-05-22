@@ -35,8 +35,9 @@ class AccountRepositoryImpl : AccountRepository {
 
     private fun databaseRef() = firebaseDatabase?.reference
 
-    override fun createAcc(user: User): MutableLiveData<NetworkState> {
+    override fun createAcc(user: User): ResultData<User> {
         val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<User>()
         networkState.postValue(NetworkState.LOADING)
         firebaseAuth?.createUserWithEmailAndPassword(
             user.email.toString(),
@@ -49,6 +50,7 @@ class AccountRepositoryImpl : AccountRepository {
                 user.del = false
                 databaseRef()?.child(USER)?.child(currentUser()?.uid.toString())?.setValue(user)
                 networkState.postValue(NetworkState.LOADED)
+                response.value = user
             } else
                 try {
                     throw it.exception!!
@@ -62,20 +64,28 @@ class AccountRepositoryImpl : AccountRepository {
                     networkState.postValue(NetworkState.error(Throwable(it.exception).message))
                 }
         }
-        return networkState
+        return ResultData(
+            data = response,
+            networkState = networkState
+        )
     }
 
-    override fun updateAccount(user: User): MutableLiveData<NetworkState> {
+    override fun updateAccount(user: User): ResultData<User> {
         val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<User>()
         networkState.value = NetworkState.LOADING
         databaseRef()?.child(USER)?.child(user.id.toString())?.setValue(user)
             ?.addOnCompleteListener {
                 networkState.value = NetworkState.LOADED
+                response.value = user
             }
             ?.addOnFailureListener { err ->
                 networkState.postValue(NetworkState.error(err.message))
             }
-        return networkState
+        return ResultData(
+            data = response,
+            networkState = networkState
+        )
     }
 
     override fun getAllEmployee(): ResultData<ArrayList<User>> {
@@ -172,6 +182,10 @@ class AccountRepositoryImpl : AccountRepository {
             }
 
         return networkState
+    }
+
+    override fun getAllRoleLogin(): ResultData<NetworkState> {
+        TODO("Not yet implemented")
     }
 
     private fun verifyEmail() {
