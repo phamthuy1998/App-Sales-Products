@@ -38,7 +38,7 @@ class CustomDrawerLayout(context: Context, attrs: AttributeSet, defStyle: Int) :
     }
 
     fun setUser(user: User?){
-        if (user?.role != 3L) navigationBinding.btnAccounts.gone()
+        if (user?.role != 3) navigationBinding.btnAccounts.gone()
         navigationBinding.user = user
     }
 

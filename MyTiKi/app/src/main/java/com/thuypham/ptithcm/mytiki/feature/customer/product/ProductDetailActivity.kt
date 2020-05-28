@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.mytiki.feature.customer.product
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Build
@@ -8,26 +9,26 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.ext.gone
+import com.thuypham.ptithcm.mytiki.ext.visible
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_cart.view.*
 import kotlinx.android.synthetic.main.ll_cart.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -36,11 +37,11 @@ class ProductDetailActivity : AppCompatActivity() {
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
 
-    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private var productDetail: Product? = null
 
     var checkAddcart: Boolean = false
 
+    private val productViewModel: ProductViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
@@ -49,18 +50,28 @@ class ProductDetailActivity : AppCompatActivity() {
         mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         getData()
         addEvent()
-        getCartCount()
+        productViewModel.getCartCount()
+        bindViewModel()
     }
 
-    private fun addEvent() {
-        btn_search_pr_đetail.setOnClickListener() {
-            val intentSearch = Intent(this, MainActivity::class.java)
-            intentSearch.putExtra("search", true)
-            startActivity(intentSearch)
-        }
+    private fun bindViewModel() {
 
-        ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+        productViewModel.cartCount.observe(this) { cartCount ->
+            if (cartCount != null) {
+                if (cartCount > 0 && tv_number_cart != null) {
+                    tv_number_cart.visibility = View.VISIBLE
+                    tv_number_cart.text = cartCount.toString()
+                } else if (tv_number_cart != null) {
+                    tv_number_cart.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun addEvent() {
+        ll_cart_number.setOnClickListener {
+            val user: FirebaseUser? = mAuth?.currentUser
             if (user != null) {
                 val intentCart = Intent(this, CartActivity::class.java)
                 startActivity(intentCart)
@@ -70,9 +81,9 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        btn_buy_product_detail.setOnClickListener() {
+        btn_buy_product_detail.setOnClickListener {
             checkAddcart = true
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
+            val user: FirebaseUser? = mAuth?.currentUser
             // Check user loged in firebase yet?
             if (user != null) {
                 if (productDetail?.product_count!! > 0) {
@@ -98,11 +109,11 @@ class ProductDetailActivity : AppCompatActivity() {
                     mBottomSheetDialog.setContentView(sheetView)
                     mBottomSheetDialog.show()
 
-                    sheetView.btn_cancel_dialog_add_cart.setOnClickListener() {
+                    sheetView.btn_cancel_dialog_add_cart.setOnClickListener {
                         mBottomSheetDialog.dismiss()
                     }
 
-                    sheetView.btn_view_cart.setOnClickListener() {
+                    sheetView.btn_view_cart.setOnClickListener {
                         val intent = Intent(this, CartActivity::class.java)
                         startActivity(intent)
                     }
@@ -117,62 +128,15 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-    // get cart count
-    private fun getCartCount() {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        if (user != null) {
-            val uid = user.uid
-            mDatabase = FirebaseDatabase.getInstance()
-
-            val query = mDatabase!!
-                .reference
-                .child(Constant.CART)
-                .child(uid)
-            var cartCount = 0
-
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        cartCount = 0
-                        for (ds in dataSnapshot.children) {
-                            if (ds.exists()) {
-                                cartCount++
-                            }
-                        }
-                        if (cartCount > 0 && tv_number_cart != null) {
-                            tv_number_cart.visibility = View.VISIBLE
-                            tv_number_cart.text = cartCount.toString()
-                        } else if (tv_number_cart != null) {
-                            tv_number_cart.visibility = View.GONE
-                        }
-                    } else if (tv_number_cart != null) {
-                        tv_number_cart.visibility = View.GONE
-                        cartCount = 0
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            }
-            query.addValueEventListener(valueEventListener)
-        } else {
-            tv_number_cart.visibility = View.GONE
-        }
-    }
-
     private fun addCart(id: String?) {
 
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser
         // Check user loged in firebase yet?
         if (user != null) {
             var i = 1// use i to exit add number of cart, because it run anyway
             mDatabase = FirebaseDatabase.getInstance()
-            val query = mDatabase!!
-                .reference
-                .child(Constant.CART)
-                .child(user.uid)
-                .child(id.toString())
-
+            val query =
+                mDatabase!!.reference.child(Constant.CART).child(user.uid).child(id.toString())
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
@@ -186,7 +150,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         }
                         i++
 
-                    } else if (checkAddcart == true) {
+                    } else if (checkAddcart) {
                         i++
                         query.child(Constant.CART_ID)
                             .setValue(id)
@@ -206,7 +170,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     // add product into viewed product if user had login
     private fun addViewedProduct(id: String) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser
         // Check user loged in firebase yet?
         if (user != null) {
             // Add product into viewed list product
@@ -217,7 +181,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
             currentUserDb.child(id).child(Constant.VIEWED_PRODUCT_ID)
                 .setValue(id)
-
         }
     }
 
@@ -247,7 +210,8 @@ class ProductDetailActivity : AppCompatActivity() {
         // Giá gốc của sản phẩm
         val price = df.format(product.price) + " đ"
         tv_price_product_detail.text = price
-        tv_price_product_detail.setPaintFlags(tv_price_product_detail.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
+        tv_price_product_detail.paintFlags =
+            tv_price_product_detail.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 
         // Show or hide discount percent
         if (product.sale > 0) {
@@ -269,47 +233,25 @@ class ProductDetailActivity : AppCompatActivity() {
         setBtnLikeIsCheck(product.id)
 
         // Set ic like in toobar
-        btn_like.setOnClickListener() {
+        btn_like.setOnClickListener {
             val like = !btn_like.isSelected
-            var user: FirebaseUser? = mAuth?.getCurrentUser();
-            if (user != null) {
-                checkFavoriteProduct(product.id, like)
-                btn_like.isSelected = like
-            } else {
-                // If user haven't login yet, intent to sign in
-                val intent = Intent(baseContext, AuthActivity::class.java)
-                startActivity(intent)
-                user = mAuth?.getCurrentUser()
-                if (user != null) {
-                    checkFavoriteProduct(product.id, like)
-                    btn_like.isSelected = like
-                } else {
-                }
-            }
+            checkFavoriteProduct(product.id, like)
+            btn_like.isSelected = like
         }
     }
 
     // Set status for btn like
     private fun setBtnLikeIsCheck(id: String?) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        // Check user loged in firebase yet?
+        val user: FirebaseUser? = mAuth?.currentUser
+        // Check user logged in firebase yet?
         if (user != null) {
             // Check this product
-            val query = mDatabase!!
-                .reference
-                .child(Constant.USER)
-                .child(user.uid)
-                .child(Constant.FAVORITE_PRODUCT)
-                .child(id!!)
-
+            val query = mDatabase!!.reference.child(Constant.USER).child(user.uid)
+                .child(Constant.FAVORITE_PRODUCT).child(id!!)
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     // if user haven 't add this product into favorite list, then add this
-                    if (!ds.exists()) {
-                        btn_like.isSelected = false;
-                    } else {
-                        btn_like.isSelected = true
-                    }
+                    btn_like.isSelected = ds.exists()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -321,41 +263,38 @@ class ProductDetailActivity : AppCompatActivity() {
 
 
     private fun checkFavoriteProduct(id: String?, like: Boolean) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        // Check user loged in firebase yet?
-        if (user != null) {
-            if (like) {
-                // Add product into favrite list product
-                mDatabaseReference = mDatabase!!.reference
-                val currentUserDb = mDatabaseReference.child(Constant.USER)
-                    .child(user.uid)
-                    .child(Constant.FAVORITE_PRODUCT)
-                currentUserDb.child(id!!).child(Constant.FAVORITE_ID)
-                    .setValue(id)
-
-            } else {// Del product from list
-                mDatabaseReference = mDatabase!!.reference
-                val currentUserDb = mDatabaseReference.child(Constant.USER)
-                    .child(user.uid)
-                    .child(Constant.FAVORITE_PRODUCT)
-                    .child(id!!)
-                    .removeValue()
-            }
+        val user: FirebaseUser? = mAuth?.currentUser
+        if (like) {
+            // Add product into favrite list product
+            mDatabaseReference = mDatabase!!.reference
+            val currentUserDb = mDatabaseReference.child(Constant.USER)
+                .child(user?.uid.toString())
+                .child(Constant.FAVORITE_PRODUCT)
+            currentUserDb.child(id!!).child(Constant.FAVORITE_ID)
+                .setValue(id)
+        }
+        else {// Del product from list
+            mDatabaseReference = mDatabase!!.reference
+            mDatabaseReference.child(Constant.USER)
+                .child(user?.uid.toString())
+                .child(Constant.FAVORITE_PRODUCT)
+                .child(id!!)
+                .removeValue()
         }
     }
 
     private fun getData() {
-        // Get id product to get infor
-        val id_product = intent.getStringExtra("id_product")
-        if (id_product != null) {
-            //CHeck login to add viewd product
-            addViewedProduct(id_product)
-            getProductById(id_product)
+        // Get id product to get info
+        val productID = intent.getStringExtra("id_product")
+        if (productID != null) {
+            //CHeck login to add viewed product
+            addViewedProduct(productID)
+            getProductById(productID)
         }
     }
 
     private fun getProductById(id: String) {
-        var product: Product
+        var product: Product?
         mDatabase = FirebaseDatabase.getInstance()
         val query = mDatabase!!
             .reference
@@ -365,34 +304,13 @@ class ProductDetailActivity : AppCompatActivity() {
         val valueEventListener = object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(ds: DataSnapshot) {
-                val current = LocalDateTime.now()
-                val dateFormatter = DateTimeFormatter.ofPattern("HH")
-                val hours = current.format(dateFormatter).toLong()
                 if (ds.exists()) {
-                    val name = ds.child(Constant.NAME_PRODUCT).value as String
-                    var price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                    val image = ds.child(Constant.IMAGE_PRODUCT).value as String
-                    val infor = ds.child(Constant.INFO_PRODUCT).value as String
-                    val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
-                    val id_category =
-                        ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
-                    val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                    val del = ds.child(Constant.PRODUCT_DEL).value as Boolean
-                    if (!del) {
-                        product =
-                            Product(
-                                id,
-                                name,
-                                price,
-                                image,
-                                infor,
-                                product_count,
-                                id_category,
-                                sale
-                            )
+                    product = ds.getValue(Product::class.java)
+                    if (product?.del == false) {
                         productDetail = product
-                        setData(product)
-                    }
+                        setData(product!!)
+                        productDeleted.gone()
+                    } else productDeleted.visible()
                 }
             }
 

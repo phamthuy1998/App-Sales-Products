@@ -26,9 +26,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/tvRole"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvName"
             app:srcCompat="@drawable/ic_user_profile" />
 
         <TextView
@@ -51,24 +51,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
             android:text="@{user.email}"
             android:textColor="@color/colorTextHint"
-            android:layout_marginTop="@dimen/margin5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvName"
             app:layout_constraintTop_toBottomOf="@id/tvName"
             tools:text="phamthithuyptithcm@gmail.com" />
+
         <TextView
+            android:id="@+id/tvDayCreate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
             android:text="@{@string/dayCreateAcc(user.daycreate)}"
             android:textColor="@color/colorGrayBtn"
-            android:layout_marginTop="@dimen/margin5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvName"
             app:layout_constraintTop_toBottomOf="@id/tvEmail"
             tools:text="20-12-2020" />
+
+        <TextView
+            android:id="@+id/tvRole"
+            txtAccountRole="@{user.role}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin5"
+            android:textColor="@color/colorGrayBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvDayCreate"
+            tools:text="role" />
 
         <TextView
             android:layout_width="match_parent"

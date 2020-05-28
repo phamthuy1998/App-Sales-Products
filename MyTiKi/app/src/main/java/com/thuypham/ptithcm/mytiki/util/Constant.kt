@@ -86,9 +86,9 @@ object Constant {
     const val coefficientNight = 1.5//18 --> 23
     const val coefficientMidNight = 0.9// 0 --> 7
 
-    const val ADMIN = 1L
-    const val CUSTOMER = 3L
-    const val EMPLOYEE = 2L
+    const val ADMIN = 1
+    const val EMPLOYEE = 2
+    const val CUSTOMER = 3
 
     const val REVENUE = "REVENUE"
     const val REVENUE_DATE = "date"

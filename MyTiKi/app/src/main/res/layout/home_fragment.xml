@@ -25,7 +25,6 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_seach_bg"
                 android:drawableStart="@drawable/ic_search"
@@ -74,12 +73,11 @@
 
                 <com.viewpagerindicator.CirclePageIndicator
                     android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/padding10"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:gravity="bottom"
-                    android:padding="10dip"
+                    android:layout_marginBottom="@dimen/padding10"
                     app:fillColor="@color/colorBlue"
                     app:pageColor="@color/colorWhiteBG"
                     app:radius="0.5dp"
@@ -136,8 +134,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/item_product_sale" />
 
@@ -189,11 +187,11 @@
                 <!--recyclerview product sale-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_product_viewed"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/item_product_viewed" />
 
@@ -245,10 +243,10 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_category_home"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/item_category" />
 

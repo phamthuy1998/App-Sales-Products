@@ -1,6 +1,5 @@
 package com.thuypham.ptithcm.mytiki.feature.customer.product.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -15,18 +14,34 @@ import kotlinx.android.synthetic.main.item_product_favorite.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-class ProductDetailApdater(
-    private var items: ArrayList<Product>,
-    private val context: Context
-) : RecyclerView.Adapter<BaseItem>() {
+class ProductDetailAdapter() : RecyclerView.Adapter<BaseItem>() {
+
+    private var items: ArrayList<Product> = arrayListOf()
+
+    fun setData(listProduct: List<Product>?) {
+        if(listProduct==null) return
+        items.apply {
+            clear()
+            addAll(listProduct)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun addProduct(product: Product){
+        items.add(product)
+        notifyItemChanged(items.size-1)
+    }
+
+    fun removeAllData(){items.clear(); notifyDataSetChanged()}
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseItem {
         val view = LayoutInflater
             .from(viewGroup.context)
             .inflate(R.layout.item_product_favorite, viewGroup, false);
-        return ProductViewholder(view)
+        return ProductViewHolder(view)
     }
 
-    inner class ProductViewholder(view: View) : BaseItem(view) {
+    inner class ProductViewHolder(view: View) : BaseItem(view) {
         override fun bind(position: Int) {
             val product = items[position]
 
@@ -52,9 +67,9 @@ class ProductDetailApdater(
 
             // set on click item product
             itemView.ll_product_like.setOnClickListener {
-                var intent = Intent(context, ProductDetailActivity::class.java)
+                val intent = Intent(itemView.context, ProductDetailActivity::class.java)
                 intent.putExtra("id_product", product.id)
-                context.startActivity(intent)
+                itemView.context.startActivity(intent)
             }
         }
 

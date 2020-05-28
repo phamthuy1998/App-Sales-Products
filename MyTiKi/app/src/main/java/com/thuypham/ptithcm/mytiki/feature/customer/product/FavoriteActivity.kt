@@ -3,26 +3,24 @@ package com.thuypham.ptithcm.mytiki.feature.customer.product
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.observe
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
-import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailApdater
+import com.thuypham.ptithcm.mytiki.feature.customer.product.adapter.ProductDetailAdapter
 import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.viewmodel.ProductViewModel
 import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.ll_cart.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import org.jetbrains.anko.startActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteActivity : AppCompatActivity() {
 
@@ -30,11 +28,13 @@ class FavoriteActivity : AppCompatActivity() {
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
 
-
     //Viewed product
     private var arrIdProductViewed = ArrayList<String>()
-    private var productViewedAdapter: ProductDetailApdater? = null
+    private val productViewedAdapter: ProductDetailAdapter by lazy { ProductDetailAdapter() }
     private var productViewedList = ArrayList<Product>()
+
+
+    private val productViewModel: ProductViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,21 +44,9 @@ class FavoriteActivity : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference
 
-        // product viewed init
-        productViewedAdapter =
-            ProductDetailApdater(
-                productViewedList,
-                this
-            )
-        // Set rcyclerview horizontal
-        rv_product_favorite.layoutManager = LinearLayoutManager(
-            application,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        rv_product_favorite.adapter = productViewedAdapter
+        initViews()
 
-        // Get id product to get infor
+        // Get id product to get info
         val childKey = intent.getStringExtra("childKey")
 
         // Set name for toolbar
@@ -68,273 +56,109 @@ class FavoriteActivity : AppCompatActivity() {
 
         var numViewMore = 0
         numViewMore = intent.getIntExtra("viewMore", 0)
-        Log.d("search12346", numViewMore.toString())
 
         // Choose num view more
         // product viewed or product like to get infor
         if (numViewMore == 0) {
-            if (childKey != null) {
-                val user: FirebaseUser? = mAuth?.currentUser;
-                // Check user loged in firebase yet?
-                if (user != null) {
-                    getListIdProductViewed(childKey)
-                } else {
-                    val intent = Intent(this, AuthActivity::class.java)
-                    startActivity(intent)
-                }
-            } else {
-                ll_favorite_empty.visibility = View.VISIBLE
-            }
+            getListIdProductViewed(childKey)
         }
         // get product sale and viewed by category id
-        else if (numViewMore == 1 || numViewMore == 2) {
-            val id_category = intent.getStringExtra("id_category")
-            if (id_category != null)
-                getListProduct(id_category, numViewMore)
+        else if (numViewMore == 1) {
+            val idCategory = intent.getStringExtra("id_category")
+            if (idCategory != null)
+                productViewModel.getAllProductSaleOfCate(idCategory, 1)
+        } else if (numViewMore == 2) {
+            val idCategory = intent.getStringExtra("id_category")
+            if (idCategory != null)
+                productViewModel.getAllProductSoldOfCate(idCategory, 1)
         }
+
         // get product sale of all product
         else if (numViewMore == 3) {
-            getListProductSale()
+            productViewModel.getAllProductSale(1)
         }
 
         addEvent()
-        getCartCount()
+        productViewModel.getCartCount()
+        bindViewModel()
+    }
+
+    private fun initViews() {
+        rv_product_favorite.adapter = productViewedAdapter
+    }
+
+    private fun bindViewModel() {
+
+        productViewModel.cartCount.observe(this) { cartCount ->
+            if (cartCount != null) {
+                if (cartCount > 0 && tv_number_cart != null) {
+                    tv_number_cart.visibility = View.VISIBLE
+                    tv_number_cart.text = cartCount.toString()
+                } else if (tv_number_cart != null) {
+                    tv_number_cart.visibility = View.GONE
+                }
+            }
+        }
+
+        productViewModel.listAllProductsSale.observe(this) {
+            if (it.isNotEmpty()) {
+                ll_favorite_empty.visibility = View.GONE
+                it.reverse()
+                productViewedAdapter.setData(it)
+            } else {
+                ll_favorite_empty.visibility = View.VISIBLE
+            }
+            productViewedAdapter.notifyDataSetChanged()
+        }
+
+        productViewModel.listAllProductsSaleOfCate.observe(this) {
+            if (it.isNotEmpty()) {
+                ll_favorite_empty.visibility = View.GONE
+                productViewedAdapter.setData(it)
+            } else {
+                ll_favorite_empty.visibility = View.VISIBLE
+            }
+            productViewedAdapter.notifyDataSetChanged()
+        }
+
+        productViewModel.listAllProductsSoldOfCate.observe(this) {
+            if (it.isNotEmpty()) {
+                ll_favorite_empty.visibility = View.GONE
+                productViewedAdapter.setData(it)
+            } else {
+                ll_favorite_empty.visibility = View.VISIBLE
+            }
+            productViewedAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun addEvent() {
-        tv_List_product_toolbar_name.setOnClickListener() {
+        tv_List_product_toolbar_name.setOnClickListener {
             val intentSearch = Intent(this, MainActivity::class.java)
             intentSearch.putExtra("search", true)
             startActivity(intentSearch)
         }
-        ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.currentUser;
-            if (user != null) {
-                val intentCart = Intent(this, CartActivity::class.java)
-                startActivity(intentCart)
-            } else {
-                val intentCart = Intent(this, AuthActivity::class.java)
-                startActivity(intentCart)
-            }
-        }
-
-        btn_continue_shopping_favorite.setOnClickListener() {
-            val intent = Intent(this, MainActivity::class.java)
-            finishAffinity()
-            startActivity(intent)
-            finish()
-        }
-    }
-
-    // get cart count
-    private fun getCartCount() {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        if (user != null) {
-            val uid = user.uid
-            mDatabase = FirebaseDatabase.getInstance()
-
-            val query = mDatabase!!
-                .reference
-                .child(Constant.CART)
-                .child(uid)
-            var cartCount = 0
-
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        cartCount = 0
-                        for (ds in dataSnapshot.children) {
-                            if (ds.exists()) {
-                                cartCount++
-                            }
-                        }
-                        if (cartCount > 0 && tv_number_cart != null) {
-                            tv_number_cart.visibility = View.VISIBLE
-                            tv_number_cart.text = cartCount.toString()
-                        } else if (tv_number_cart != null) {
-                            tv_number_cart.visibility = View.GONE
-                        }
-                    } else if (tv_number_cart != null) {
-                        tv_number_cart.visibility = View.GONE
-                        cartCount = 0
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            }
-            query.addValueEventListener(valueEventListener)
-        } else {
-            tv_number_cart.visibility = View.GONE
-        }
-    }
-
-    // get list product best seller or sale
-    private fun getListProduct(idCategory: String, numViewMore: Int) {
-        val query = mDatabase!!
-            .reference
-            .child(Constant.PRODUCT)
-            .orderByChild(Constant.ID_CATEGORY_PRODUCT)
-            .equalTo(idCategory)
-
-        val valueEventListener = object : ValueEventListener {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    productViewedList.clear()
-                    val current = LocalDateTime.now()
-                    val dateFormatter = DateTimeFormatter.ofPattern("HH")
-                    val hours = current.format(dateFormatter).toLong()
-                    for (ds in dataSnapshot.children) {
-                        val id = ds.child(Constant.PRODUCT_ID).value as String
-                        val name = ds.child(Constant.NAME_PRODUCT).value as String
-                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
-                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
-                        val id_category =
-                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                        val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-                        val product =
-                            Product(
-                                id,
-                                name,
-                                price,
-                                image,
-                                infor,
-                                product_count,
-                                id_category,
-                                sale
-                            )
-                        if (sale > 1 && numViewMore == 1) {
-                            productViewedList.add(product)
-                        }
-                        if (sold > 10 && numViewMore == 2) {
-                            productViewedList.add(product)
-                        }
-                    }
-                    if (!productViewedList.isEmpty()) {
-                        productViewedList.reverse()
-                        ll_favorite_empty.visibility = View.GONE
-                    } else {
-                        ll_favorite_empty.visibility = View.VISIBLE
-                    }
-                    // product
-                    productViewedAdapter?.notifyDataSetChanged()
-                } else {
-                    ll_favorite_empty.visibility = View.VISIBLE
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                ll_favorite_empty.visibility = View.VISIBLE
-                Toast.makeText(
-                    applicationContext,
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-        query.addValueEventListener(valueEventListener)
-    }
-
-
-    // get list product sale of all product
-    private fun getListProductSale() {
-        val query = mDatabase!!
-            .reference
-            .child(Constant.PRODUCT)
-
-        val valueEventListener = object : ValueEventListener {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    productViewedList.clear()
-                    val current = LocalDateTime.now()
-                    val dateFormatter = DateTimeFormatter.ofPattern("HH")
-                    val hours = current.format(dateFormatter).toLong()
-                    for (ds in dataSnapshot.children) {
-                        val id = ds.child(Constant.PRODUCT_ID).value as String
-                        val name = ds.child(Constant.NAME_PRODUCT).value as String
-                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
-                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
-                        val id_category =
-                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                        val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-                        val product =
-                            Product(
-                                id,
-                                name,
-                                price,
-                                image,
-                                infor,
-                                product_count,
-                                id_category,
-                                sale
-                            )
-                        if (sale > 1) {
-                            productViewedList.add(product)
-                        }
-                    }
-                    if (!productViewedList.isEmpty()) {
-                        ll_favorite_empty.visibility = View.GONE
-                        productViewedList.reverse()
-                    } else {
-                        ll_favorite_empty.visibility = View.VISIBLE
-                    }
-                    // product
-                    productViewedAdapter?.notifyDataSetChanged()
-                } else {
-                    ll_favorite_empty.visibility = View.VISIBLE
-                }
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                ll_favorite_empty.visibility = View.VISIBLE
-                Toast.makeText(
-                    applicationContext,
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-        query.addValueEventListener(valueEventListener)
+        ll_cart_number.setOnClickListener { startActivity<CartActivity>() }
+        btn_continue_shopping_favorite.setOnClickListener { startActivity<MainActivity>() }
     }
 
     // get list of id product inside user
     // then map id product to product root child
-    // show into home fragment if it have data
     private fun getListIdProductViewed(childKey: String) {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
-        val uid = user!!.uid
+        val user: FirebaseUser? = mAuth?.currentUser
+        val uid = user?.uid
         mDatabase = FirebaseDatabase.getInstance()
-        val query = mDatabase!!
-            .reference
-            .child(Constant.USER)
-            .child(uid)
-            .child(childKey)
-
+        val query = mDatabase!!.reference.child(Constant.USER).child(uid.toString()).child(childKey)
         val valueEventListener = object : ValueEventListener {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     arrIdProductViewed.clear()
                     for (ds in dataSnapshot.children) {
-                        val id: String? =
-                            ds.child(Constant.VIEWED_PRODUCT_ID).value as String?
-                        if (id != null) {
-                            arrIdProductViewed.add(id)
-                        }
+                        val id: String? = ds.child(Constant.VIEWED_PRODUCT_ID).value as String?
+                        id?.let { arrIdProductViewed.add(it) }
                     }
-                    productViewedAdapter?.notifyDataSetChanged()
-
-                    // get product viewed infor
-                    if (!arrIdProductViewed.isEmpty()) {
+                    if (arrIdProductViewed.isNotEmpty()) {
                         ll_favorite_empty.visibility = View.GONE
                         arrIdProductViewed.reverse()
                         getListProductByID(arrIdProductViewed)
@@ -355,52 +179,25 @@ class FavoriteActivity : AppCompatActivity() {
 
     }
 
-    // From list product id, then get all infor
-    @RequiresApi(Build.VERSION_CODES.O)
+    // From list product id, then get all info of product
     fun getListProductByID(arrId: ArrayList<String>) {
-        var product: Product
-        productViewedList.clear()
-        val current = LocalDateTime.now()
-        val dateFormatter = DateTimeFormatter.ofPattern("HH")
-        val hours = current.format(dateFormatter).toLong()
+        var product: Product?
         for (id in arrId) {
             mDatabase = FirebaseDatabase.getInstance()
-            val query = mDatabase!!
-                .reference
-                .child(Constant.PRODUCT)
-                .child(id)
-
+            val query = mDatabase?.reference?.child(Constant.PRODUCT)?.child(id)
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(ds: DataSnapshot) {
                     if (ds.exists()) {
-                        val name = ds.child(Constant.NAME_PRODUCT).value as String
-                        var price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
-                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
-                        val id_category =
-                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                        product =
-                            Product(
-                                id,
-                                name,
-                                price,
-                                image,
-                                infor,
-                                product_count,
-                                id_category,
-                                sale
-                            )
-                        productViewedList.add(product)
-                        productViewedAdapter?.notifyDataSetChanged()
+                        product = ds.getValue(Product::class.java)
+                        if (product?.del == false)
+                            product?.let { productViewedAdapter.addProduct(it) }
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             }
-            query.addValueEventListener(valueEventListener)
+            query?.addValueEventListener(valueEventListener)
         }
     }
 

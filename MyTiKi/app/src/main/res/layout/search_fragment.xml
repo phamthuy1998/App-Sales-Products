@@ -14,15 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btn_cancel_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:padding="16dp"
-            android:tint="@color/colorDarkGray"
-            app:srcCompat="@drawable/ic_left_arrow" />
-
         <androidx.appcompat.widget.SearchView
             android:id="@+id/sv_product"
             android:layout_width="match_parent"
@@ -37,6 +28,7 @@
         android:id="@+id/rv_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:background="@color/colorWhiteBG"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

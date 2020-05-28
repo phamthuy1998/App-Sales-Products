@@ -10,7 +10,7 @@ import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
 
-class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
+class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
     var product = MutableLiveData<Product>().apply { value = Product() }
     var category = MutableLiveData<Category>().apply { value = Category() }
 
@@ -24,7 +24,7 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.networkState
     }
 
-    fun getAllProductOfCategory(categoryID: String){
+    fun getAllProductOfCategory(categoryID: String) {
         listProductResponse.value = repository.getAllProductOfCategory(categoryID)
     }
 
@@ -39,11 +39,26 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.networkState
     }
 
-    fun getAllProduct(){
+    fun getAllProduct() {
         responeAllProducts.value = repository.getAllProducts()
     }
 
-     /* get all product sale */
+    /* get all product search*/
+    private val responseProductSearch = MutableLiveData<ResultData<ArrayList<Product>>>()
+
+    val listProductSearch = Transformations.switchMap(responseProductSearch) {
+        it.data
+    }
+
+    val networkProductSearch = Transformations.switchMap(responseProductSearch) {
+        it.networkState
+    }
+
+    fun getProductSearch(keySearch: String) {
+        responseProductSearch.value = repository.searchProduct(keySearch)
+    }
+
+    /* get all product sale */
     private val responeAllProductsSale = MutableLiveData<ResultData<ArrayList<Product>>>()
 
     val listAllProductsSale = Transformations.switchMap(responeAllProductsSale) {
@@ -54,8 +69,38 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.networkState
     }
 
-    fun getAllProductSale(){
-        responeAllProductsSale.value = repository.getAllProductsSale()
+    fun getAllProductSale(limit: Int? = 10) {
+        responeAllProductsSale.value = repository.getAllProductsSale(limit)
+    }
+
+    /* get all product sale of category*/
+    private val responseAllProductsSaleOfCate = MutableLiveData<ResultData<List<Product>>>()
+
+    val listAllProductsSaleOfCate = Transformations.switchMap(responseAllProductsSaleOfCate) {
+        it.data
+    }
+
+    val networkAllProductsSaleOfCate = Transformations.switchMap(responseAllProductsSaleOfCate) {
+        it.networkState
+    }
+
+    fun getAllProductSaleOfCate(categoryID: String, limit: Int? = 10) {
+        responseAllProductsSaleOfCate.value = repository.getProductSaleOfCategory(categoryID, limit)
+    }
+
+    /* get all product sold of category*/
+    private val responseAllProductsSoldOfCate = MutableLiveData<ResultData<List<Product>>>()
+
+    val listAllProductsSoldOfCate = Transformations.switchMap(responseAllProductsSoldOfCate) {
+        it.data
+    }
+
+    val networkAllProductsSoldOfCate = Transformations.switchMap(responseAllProductsSoldOfCate) {
+        it.networkState
+    }
+
+    fun getAllProductSoldOfCate(categoryID: String, limit: Int? = 10) {
+        responseAllProductsSoldOfCate.value = repository.getProductSoldOfCategory(categoryID, limit)
     }
 
 
@@ -70,7 +115,7 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.networkState
     }
 
-    fun getCartCount(){
+    fun getCartCount() {
         responeAllPCartCount.value = repository.getCartCount()
     }
 
@@ -81,7 +126,7 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.data
     }
 
-    fun getListProductViewed(){
+    fun getListProductViewed() {
         responeAllProductIDViewed.value = repository.getListIdProductViewed()
     }
 
@@ -96,8 +141,8 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.data
     }
 
-    fun addProduct(product: Product, imageUri:Uri?){
-        responseAddProduct.value = repository.addProduct(product,imageUri)
+    fun addProduct(product: Product, imageUri: Uri?) {
+        responseAddProduct.value = repository.addProduct(product, imageUri)
     }
 
     /* get info of product by id */
@@ -111,21 +156,21 @@ class ProductViewModel(private val repository:ProductRepository) :ViewModel(){
         it.networkState
     }
 
-    fun getProductByID(productId: String){
+    fun getProductByID(productId: String) {
         responseProductByID.value = repository.getProductByID(productId)
     }
 
     /* update product*/
     private var responseUpdateProduct = MutableLiveData<NetworkState>()
 
-    fun updateProduct(product: Product){
+    fun updateProduct(product: Product) {
         responseUpdateProduct = repository.updateProduct(product)
     }
 
     /* Del product*/
     private var responseDelProduct = MutableLiveData<NetworkState>()
 
-    fun delProduct(productId: String){
+    fun delProduct(productId: String) {
         responseDelProduct = repository.delProduct(productId)
     }
 }

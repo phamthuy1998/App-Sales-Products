@@ -1,11 +1,8 @@
 package com.thuypham.ptithcm.mytiki.repository.impl
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.*
 import com.google.firebase.auth.FirebaseAuth.getInstance
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -14,6 +11,7 @@ import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.repository.AccountRepository
+import com.thuypham.ptithcm.mytiki.util.Constant.CUSTOMER
 import com.thuypham.ptithcm.mytiki.util.Constant.USER
 import com.thuypham.ptithcm.mytiki.util.Constant.USER_IS_DEL
 import com.thuypham.ptithcm.mytiki.util.Constant.USER_ROLE
@@ -100,7 +98,8 @@ class AccountRepositoryImpl : AccountRepository {
                 if (dataSnapshot.exists()) {
                     for (ds in dataSnapshot.children) {
                         user = ds.getValue(User::class.java)
-                        if (user?.role != 1L) user?.let { listUser.add(it) }
+                        if (user?.role != CUSTOMER && user?.id != currentUser()?.uid && user?.del != true)
+                            user?.let { listUser.add(it) }
                     }
                     responseListAcc.value = listUser
                     networkState.postValue(NetworkState.LOADED)
@@ -153,33 +152,30 @@ class AccountRepositoryImpl : AccountRepository {
     }
 
     override fun deleteAcc(user: User): MutableLiveData<NetworkState> {
-        /* val networkState = MutableLiveData<NetworkState>()
-
-         // Get auth credentials from the user for re-authentication. The example below shows
-         // email and password credentials but there are multiple possible providers,
-         // such as GoogleAuthProvider or FacebookAuthProvider.
-         val credential = EmailAuthProvider
-             .getCredential(user.email.toString(), user.password.toString())
-
-         // Prompt the user to re-provide their sign-in credentials
-         currentUser()?.reauthenticate(credential)?.addOnCompleteListener {
-             currentUser()?.delete()?.addOnCompleteListener {
-                 databaseRef()?.child(USER)?.child(user.id.toString())?.removeValue()
-                 networkState.postValue(NetworkState.LOADED)
-             }?.addOnFailureListener{err->
-                 networkState.postValue(NetworkState.error(err.message.toString()))
-             }
-         }*/
-
         val networkState = MutableLiveData<NetworkState>()
+
         networkState.postValue(NetworkState.LOADING)
-        databaseRef()?.child(USER)?.child(user.id.toString())?.child(USER_IS_DEL)?.setValue(true)
-            ?.addOnCompleteListener {
-                networkState.value = NetworkState.LOADED
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        val credential = EmailAuthProvider
+            .getCredential(user.email.toString(), user.password.toString())
+
+        // Prompt the user to re-provide their sign-in credentials
+        currentUser()?.reauthenticate(credential)?.addOnCompleteListener {
+            currentUser()?.delete()?.addOnCompleteListener {
+                databaseRef()?.child(USER)?.child(user.id.toString())?.child(USER_IS_DEL)
+                    ?.setValue(true)
+                    ?.addOnCompleteListener {
+                        networkState.value = NetworkState.LOADED
+                    }
+                    ?.addOnFailureListener { err ->
+                        networkState.postValue(NetworkState.error(err.message))
+                    }
+            }?.addOnFailureListener { err ->
+                networkState.postValue(NetworkState.error(err.message.toString()))
             }
-            ?.addOnFailureListener { err ->
-                networkState.postValue(NetworkState.error(err.message))
-            }
+        }
 
         return networkState
     }

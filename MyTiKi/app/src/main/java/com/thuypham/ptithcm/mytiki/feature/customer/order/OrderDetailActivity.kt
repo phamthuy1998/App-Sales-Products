@@ -81,7 +81,7 @@ class OrderDetailActivity : AppCompatActivity() {
     private fun getCartCount() {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user!!.uid
+            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!
@@ -124,11 +124,12 @@ class OrderDetailActivity : AppCompatActivity() {
         val user: FirebaseUser? = mAuth?.currentUser;
         if (user != null) {
             if (orderId != null) {
-                val currentUserDb = mDatabase!!.reference
+                mDatabase!!.reference
                     .child(Constant.ORDER)
                     .child(orderId)
                     .child(Constant.ORDER_STATUS)
                     .setValue(4)
+                finish()
             }
         }
     }
@@ -136,7 +137,6 @@ class OrderDetailActivity : AppCompatActivity() {
     private fun getInfoOrderDetail(id_order: String) {
         val user: FirebaseUser? = mAuth?.getCurrentUser();
         if (user != null) {
-            val uid = user.uid
             mDatabase = FirebaseDatabase.getInstance()
 
             val query = mDatabase!!

@@ -132,6 +132,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                     viewBinding.progressSignUp.gone()
                     Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
                 }
+                else -> {}
             }
         })
     }

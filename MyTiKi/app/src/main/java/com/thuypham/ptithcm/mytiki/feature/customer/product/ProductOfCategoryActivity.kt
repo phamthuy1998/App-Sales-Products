@@ -10,23 +10,27 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.GridItemDecoration
 import com.thuypham.ptithcm.mytiki.base.SlidingImageAdapter
 import com.thuypham.ptithcm.mytiki.data.Product
 import com.thuypham.ptithcm.mytiki.data.Slide
-import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
+import com.thuypham.ptithcm.mytiki.data.Status
+import com.thuypham.ptithcm.mytiki.ext.gone
+import com.thuypham.ptithcm.mytiki.ext.visible
 import com.thuypham.ptithcm.mytiki.feature.customer.cart.CartActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductSaleAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.ProductViewedAdapter
-import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.viewmodel.ProductViewModel
 import com.thuypham.ptithcm.mytiki.viewmodel.SlideViewModel
 import kotlinx.android.synthetic.main.activity_product_of_category.*
 import kotlinx.android.synthetic.main.ll_cart.*
+import kotlinx.android.synthetic.main.loading_layout.*
+import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -84,8 +88,91 @@ class ProductOfCategoryActivity : AppCompatActivity() {
             }
         }
 
-        productViewModel.listProduct.observe(this) {
+        productViewModel.listProduct.observe(this) { listProduct ->
+            if (listProduct.isNotEmpty()) {
+                productList.clear()
+                productList.addAll(listProduct)
+                productAdapter?.notifyDataSetChanged()
+                llProductEmpty.gone()
+            } else llProductEmpty.visible()
+        }
+        productViewModel.networkListProduct.observe(this) {
+            when (it.status) {
+                Status.RUNNING -> {
+                    progress.visible()
+                }
+                Status.SUCCESS -> {
+                    progress.gone()
+                    llProductEmpty.gone()
+                }
+                Status.LOADING_PROCESS -> {
+                }
+                Status.FAILED -> {
+                    progress.gone()
+                    llProductEmpty.visible()
+                    Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
 
+
+        productViewModel.networkAllProductsSoldOfCate.observe(this) {
+            when (it.status) {
+                Status.RUNNING -> {
+                    progress.visible()
+                }
+                Status.SUCCESS -> {
+                    progress.gone()
+                    tv_best_sale.visible()
+                    tv_viewmore_best_slae.visible()
+                }
+                Status.LOADING_PROCESS -> {
+                }
+                Status.FAILED -> {
+                    progress.gone()
+                    tv_best_sale.gone()
+                    tv_viewmore_best_slae.gone()
+                    Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+
+        productViewModel.listAllProductsSoldOfCate.observe(this) { listProductSold ->
+            if (listProductSold.isNotEmpty()) {
+                productBestSellerList.clear()
+                productBestSellerList.addAll(listProductSold)
+                productBestSellerAdapter?.notifyDataSetChanged()
+            }
+        }
+
+        productViewModel.networkAllProductsSaleOfCate.observe(this) {
+            when (it.status) {
+                Status.RUNNING -> {
+                    progress.visible()
+                }
+                Status.SUCCESS -> {
+                    progress.gone()
+                    tv_salse.visible()
+                    tv_viewmore_product_sale_category.visible()
+                }
+                Status.LOADING_PROCESS -> {
+                }
+                Status.FAILED -> {
+                    progress.gone()
+                    tv_salse.gone()
+                    tv_viewmore_product_sale_category.gone()
+                    Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        productViewModel.listAllProductsSaleOfCate.observe(this) { listProductSale ->
+            if (listProductSale.isNotEmpty()) {
+                productSaleList.clear()
+                productSaleList.addAll(listProductSale)
+                productSaleAdapter?.notifyDataSetChanged()
+            }
         }
 
         slideViewModel.listSlide.observe(this) {
@@ -98,16 +185,8 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
     private fun addEvent() {
 
-        ll_cart_number.setOnClickListener() {
-            val user: FirebaseUser? = mAuth?.getCurrentUser();
-            if (user != null) {
-                val intentCart = Intent(this, CartActivity::class.java)
-                startActivity(intentCart)
-            } else {
-                val intentCart = Intent(this, AuthActivity::class.java)
-                startActivity(intentCart)
-            }
-        }
+        btnContinueShoppingProduct.setOnClickListener {  startActivity<MainActivity>() ; finish() }
+        ll_cart_number.setOnClickListener { startActivity<CartActivity>() }
 
         // show more sale product
         tv_viewmore_product_sale_category.setOnClickListener() {
@@ -140,78 +219,10 @@ class ProductOfCategoryActivity : AppCompatActivity() {
         initView()
         slideViewModel.getAllSlideOfCategory(idCategory!!)
         // get all list product
-        getListProduct(idCategory!!)
         productViewModel.getAllProductOfCategory(idCategory!!)
+        productViewModel.getAllProductSoldOfCate(idCategory!!)
+        productViewModel.getAllProductSaleOfCate(idCategory!!)
 
-    }
-
-    private fun getListProduct(idCategory: String) {
-        val query = mDatabase!!
-            .reference
-            .child(Constant.PRODUCT)
-            .orderByChild(Constant.ID_CATEGORY_PRODUCT)
-            .equalTo(idCategory)
-
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    productList.clear()
-
-                    var i = 0
-                    var j = 0
-                    for (ds in dataSnapshot.children) {
-                        val id = ds.child(Constant.PRODUCT_ID).value as String
-                        val name = ds.child(Constant.NAME_PRODUCT).value as String
-                        val price = ds.child(Constant.PRICE_PRODUCT).value as Long
-                        val image = ds.child(Constant.IMAGE_PRODUCT).value as String
-                        val infor = ds.child(Constant.INFO_PRODUCT).value as String
-                        val product_count = ds.child(Constant.PRODUCT_COUNT).value as Long
-                        val id_category =
-                            ds.child(Constant.ID_CATEGORY_PRODUCT).value as String
-                        val sale = ds.child(Constant.PRODUCT_SALE).value as Long
-                        val sold = ds.child(Constant.PRODUCT_SOLD).value as Long
-                        val product =
-                            Product(
-                                id,
-                                name,
-                                price,
-                                image,
-                                infor,
-                                product_count,
-                                id_category,
-                                sale
-                            )
-                        if (sale > 0 && i < 5) {
-                            i++// litmited the count of product
-                            productSaleList.add(product)
-                        }
-                        if (sold > 10 && j < 5) {
-                            j++
-                            productBestSellerList.add(product)
-                        }
-                        productList.add(product)
-                    }
-                    if (productSaleList.isEmpty() && productBestSellerList.isEmpty() && productList.isEmpty())
-                        tv_list_empty.visibility = View.VISIBLE
-                    else tv_list_empty.visibility = View.GONE
-
-                    // product
-                    productAdapter?.notifyDataSetChanged()
-                    productBestSellerAdapter?.notifyDataSetChanged()
-                    productSaleAdapter?.notifyDataSetChanged()
-                }
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(
-                    applicationContext,
-                    getString(com.thuypham.ptithcm.mytiki.R.string.error_load_category),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-        query.addValueEventListener(valueEventListener)
     }
 
     private fun initView() {
@@ -220,12 +231,12 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
         // product best seller init
         productBestSellerAdapter = ProductViewedAdapter(productBestSellerList, applicationContext)
-        // Set rcyclerview horizontal
+        // Set recyclerview horizontal
         rv_product_best_sale_category.adapter = productBestSellerAdapter
 
         // product sale init
         productSaleAdapter = ProductSaleAdapter(productSaleList, applicationContext)
-        // Set rcyclerview horizontal
+        // Set recyclerview horizontal
         rv_product_sale_category.adapter = productSaleAdapter
 
         // Product list init
@@ -237,12 +248,16 @@ class ProductOfCategoryActivity : AppCompatActivity() {
 
 
     private fun initSlide() {
-        pager_category?.adapter = SlidingImageAdapter(applicationContext, arrAdvertisement)
+        if (arrAdvertisement.isEmpty())
+            rlSlide.gone()
+        else rlSlide.visible()
+
+        pager_category?.adapter = SlidingImageAdapter(applicationContext, arrAdvertisement, null)
         indicator_category.setViewPager(pager_category)
         val density = resources.displayMetrics.density
 
         //Set circle indicator radius
-        indicator_category.setRadius(5 * density)
+        indicator_category.radius = 5 * density
         NUM_PAGES = arrAdvertisement.size
 
         // Auto start of viewpager

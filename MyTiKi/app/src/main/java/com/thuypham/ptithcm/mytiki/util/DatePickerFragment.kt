@@ -57,10 +57,10 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
                 day // Day of month
         )
         calendar.add(Calendar.DATE, -1);
-        datePickerDialog.datePicker.maxDate = calendar.getTimeInMillis()
+        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
         calendar.add(Calendar.YEAR, -100);
 //        calendar.add(Calendar.DATE, -6);
-        datePickerDialog.datePicker.minDate = calendar.getTimeInMillis()
+        datePickerDialog.datePicker.minDate = calendar.timeInMillis
         return datePickerDialog
     }
 

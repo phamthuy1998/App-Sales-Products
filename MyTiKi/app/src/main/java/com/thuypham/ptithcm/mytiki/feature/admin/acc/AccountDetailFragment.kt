@@ -1,10 +1,10 @@
 package com.thuypham.ptithcm.mytiki.feature.admin.acc
 
 import android.app.AlertDialog
+import android.os.Build
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.observe
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.BaseActivity
@@ -17,14 +17,18 @@ import com.thuypham.ptithcm.mytiki.ext.gone
 import com.thuypham.ptithcm.mytiki.ext.setupToolbar
 import com.thuypham.ptithcm.mytiki.ext.visible
 import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.util.DatePickerFragment
 import com.thuypham.ptithcm.mytiki.viewmodel.AccountViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class AccountDetailFragment : BaseFragment<FragmentAccountDetailBinding>() {
 
     override val layoutId: Int = R.layout.fragment_account_detail
 
     private val accViewModel: AccountViewModel by viewModel()
+    private lateinit var arrRole: Array<String>
 
     override fun setUpToolbar() {
         super.setUpToolbar()
@@ -69,11 +73,63 @@ class AccountDetailFragment : BaseFragment<FragmentAccountDetailBinding>() {
         }
     }
 
+    // Show calendar to select birthday
+    fun showCalendar() {
+        DatePickerFragment().show(
+            requireActivity().supportFragmentManager,
+            "Choose a date of birth"
+        )
+    }
+
+    override fun setEvents() {
+        super.setEvents()
+        viewBinding.spRole.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+                accViewModel.user.value?.role = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+    }
 
     override fun initView() {
         super.initView()
-        accViewModel.user.value = arguments?.get(Constant.USER) as? User
-        viewBinding.isAdd = accViewModel.user.value?.id == null
+        arrRole = resources.getStringArray(R.array.role)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrRole)
+        viewBinding.spRole.adapter = adapter
+
+        accViewModel.user.value = arguments?.get(Constant.USER) as? User ?: User()
+        accViewModel.user.value?.let { accViewModel.setUser(it) }
+        viewBinding.viewModel = accViewModel
+        viewBinding.fragment = this
+        if (accViewModel.user.value?.email == null) {
+            viewBinding.isAdd = true
+            viewBinding.spRole.setSelection(1)
+        } else {
+            viewBinding.isAdd = false
+            accViewModel.user.value?.role?.minus(1)?.let { viewBinding.spRole.setSelection(it) }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addAcc() {
+        accViewModel.setUserUpdate()
+        if (viewBinding.isAdd == true) {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val dayCreate = current.format(formatter)
+
+            accViewModel.user.value?.let {
+                it.daycreate = dayCreate
+                accViewModel.createAcc(it)
+            }
+        } else accViewModel.user.value?.let { accViewModel.updateAcc(it) }
     }
 
     override fun bindViewModel() {

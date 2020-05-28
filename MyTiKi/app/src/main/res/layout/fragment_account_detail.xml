@@ -13,11 +13,11 @@
 
         <variable
             name="fragment"
-            type="com.thuypham.ptithcm.mytiki.feature.authentication.SignUpFragment" />
+            type="com.thuypham.ptithcm.mytiki.feature.admin.acc.AccountDetailFragment" />
 
         <variable
-            name="userViewModel"
-            type="com.thuypham.ptithcm.mytiki.viewmodel.UserViewModel" />
+            name="viewModel"
+            type="com.thuypham.ptithcm.mytiki.viewmodel.AccountViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +49,7 @@
                         android:hint="@string/name_sign_up"
                         android:inputType="textPersonName"
                         android:singleLine="true"
-                        android:text="@={userViewModel.name}"
+                        android:text="@={viewModel.name}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
 
@@ -70,7 +70,7 @@
                         android:hint="@string/phone"
                         android:inputType="phone"
                         android:singleLine="true"
-                        android:text="@={userViewModel.phone}"
+                        android:text="@={viewModel.phone}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +90,7 @@
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:singleLine="true"
-                        android:text="@={userViewModel.email}"
+                        android:text="@={viewModel.email}"
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +112,7 @@
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:singleLine="true"
-                        android:text="@={userViewModel.password}"
+                        android:text="@={viewModel.password}"
                         android:theme="@style/EditTextTheme" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,7 +141,8 @@
                             android:hint="@string/birthday"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:text="@={userViewModel.birthday}"
+                            android:onClick="@{()->fragment.showCalendar()}"
+                            android:text="@={viewModel.birthday}"
                             android:theme="@style/EditTextTheme" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -157,6 +158,7 @@
 
                 <Spinner
                     android:id="@+id/spRole"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
@@ -177,11 +179,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:checked="true"
+                        android:checked="@={viewModel.user.gender}"
                         android:text="@string/rab_male" />
 
                     <RadioButton
                         android:id="@+id/rad_female"
+                        android:checked="@={!viewModel.user.gender}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -196,8 +199,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
-                    android:enabled="@{!(TextUtils.isEmpty(userViewModel.name))&amp; !(TextUtils.isEmpty(userViewModel.phone))&amp; !(TextUtils.isEmpty(userViewModel.email))&amp; !(TextUtils.isEmpty(userViewModel.password))&amp; !(TextUtils.isEmpty(userViewModel.birthday))}"
-                    android:onClick="@{() -> fragment.onClickSignUp()}"
+                    android:enabled="@{!(TextUtils.isEmpty(viewModel.name))&amp; !(TextUtils.isEmpty(viewModel.phone))&amp; !(TextUtils.isEmpty(viewModel.email))&amp; !(TextUtils.isEmpty(viewModel.password))&amp; !(TextUtils.isEmpty(viewModel.birthday))}"
+                    android:onClick="@{() -> fragment.addAcc()}"
                     android:text="@{isAdd ? @string/btnAddAcc : @string/btnUpdateAcc}"
                     android:textColor="@android:color/white" />
             </LinearLayout>

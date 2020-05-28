@@ -266,14 +266,19 @@ class HomeFragment : Fragment() {
         pager?.adapter = SlidingImageAdapter(
             requireContext(),
             arrAdvertisement
-        )
+        ){cateID, cateName->
+            val intent = Intent(context, ProductOfCategoryActivity::class.java)
+            intent.putExtra("id_category", cateID)
+            intent.putExtra("name_category", cateName)
+            requireActivity().startActivity(intent)
+        }
         indicator?.setViewPager(pager)
 
 
         val density = resources.displayMetrics.density
 
         //Set circle indicator radius
-        indicator?.radius = 5 * density
+        indicator?.radius = 3 * density
         NUM_PAGES = arrAdvertisement.size
 
         // Auto start of viewpager
@@ -293,26 +298,18 @@ class HomeFragment : Fragment() {
         }, 3000, 3000)
 
         // Pager listener over indicator
-        indicator?.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        indicator.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
             override fun onPageSelected(position: Int) {
                 currentPage = position
-
             }
 
             override fun onPageScrolled(pos: Int, arg1: Float, arg2: Int) {
-
             }
 
             override fun onPageScrollStateChanged(pos: Int) {
-
             }
         })
-        indicator?.setOnClickListener{
-            val intent = Intent(context, ProductOfCategoryActivity::class.java)
-            intent.putExtra("id_category", arrAdvertisement[currentPage].id_category)
-            intent.putExtra("name_category", arrAdvertisement[currentPage].name_category)
-            requireActivity().startActivity(intent)
-        }
     }
 
     companion object {

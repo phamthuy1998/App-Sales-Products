@@ -54,7 +54,16 @@ fun setTextStatusOrder(view: TextView, type: Long?) {
         // order cancel
         4L -> view.text = view.context.getString(R.string.status_4)
     }
-
+}
+@BindingAdapter("txtAccountRole")
+fun setTextAcc(view: TextView, type: Int?) {
+    when (type) {
+        1 -> view.text = view.context.resources.getStringArray(R.array.role)[0]
+        // shipping
+        2 -> view.text = view.context.resources.getStringArray(R.array.role)[1]
+        // order success
+        3 -> view.text = view.context.resources.getStringArray(R.array.role)[2]
+    }
 }
 
 @SuppressLint("SetTextI18n")

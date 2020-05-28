@@ -9,7 +9,7 @@ class OrdersActivity : BaseActivity<ActivityOrdersBinding>()  {
 
     override val layoutId: Int = R.layout.activity_orders
 
-    override var toolbarViewParentId: Int = R.id.ctlOrderContainer
+    override var toolbarViewParentId: Int = R.id.clOrderContainer
 
     override fun onSupportNavigateUp(): Boolean =
         Navigation.findNavController(this, R.id.frOrderNavigator).navigateUp()

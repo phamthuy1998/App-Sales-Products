@@ -47,6 +47,13 @@ class AccountsFragment : BaseFragment<FragmentAccountsBinding>() {
             })
     }
 
+    override fun setEvents() {
+        super.setEvents()
+        viewBinding.swAccounts.setOnRefreshListener {
+            accViewModel.getAllAccount(); viewBinding.swAccounts.isRefreshing = false
+        }
+    }
+
     private fun showAccountDetail(user: User?) {
         val bundle = bundleOf(Constant.USER to user)
         findNavController().navigate(R.id.accountDetailFragment, bundle)
@@ -58,6 +65,11 @@ class AccountsFragment : BaseFragment<FragmentAccountsBinding>() {
         viewBinding.rvOrders.adapter = accountAdapter
         viewBinding.rvOrders.setHasFixedSize(true)
         viewBinding.rvOrders.setItemViewCacheSize(20)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        accViewModel.getAllAccount()
     }
 
     override fun bindViewModel() {

@@ -61,7 +61,7 @@ class UserFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        clearInforLogin()
+        clearInfoLogin()
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference.child(Constant.USER)
         mAuth = FirebaseAuth.getInstance()
@@ -192,7 +192,7 @@ class UserFragment : Fragment() {
             if (user != null) {
                 showOrderFragment()
             } else {
-                onOpentSigInUpFragment()
+                onOpenSigInUpFragment()
             }
         }
 
@@ -209,7 +209,7 @@ class UserFragment : Fragment() {
                 setMessage(getString(R.string.dialogLogout))
                 setPositiveButton(getString(R.string.dialogOk)) { dialog, id ->
                     dialog.dismiss()
-                    clearInforLogin()
+                    clearInfoLogin()
                     mAuth?.signOut()
                     startActivity<AuthActivity>()
                     requireActivity().finish()
@@ -389,13 +389,13 @@ class UserFragment : Fragment() {
                         }
                         if (haveRecieved > 0 && tv_num_order_recieved_user != null) {
                             tv_num_order_recieved_user.visibility = View.VISIBLE
-                            tv_num_order_recieved_user.setText(haveRecieved.toString())
+                            tv_num_order_recieved_user.text = haveRecieved.toString()
                         } else if (tv_num_order_recieved_user != null) {
                             tv_num_order_recieved_user.visibility = View.GONE
                         }
                         if (shipping > 0 && tv_num_of_list_order_shipping_user != null) {
                             tv_num_of_list_order_shipping_user.visibility = View.VISIBLE
-                            tv_num_of_list_order_shipping_user.setText(shipping.toString())
+                            tv_num_of_list_order_shipping_user.text = shipping.toString()
                         } else if (tv_num_of_list_order_shipping_user != null) {
                             tv_num_of_list_order_shipping_user.visibility = View.GONE
                         }
@@ -412,14 +412,14 @@ class UserFragment : Fragment() {
         }
     }
 
-    fun showOrderFragment() {
-        val intent = Intent(getActivity(), OrderActivity::class.java)
-        getActivity()?.startActivity(intent)
+    private fun showOrderFragment() {
+        val intent = Intent(activity, OrderActivity::class.java)
+        activity?.startActivity(intent)
     }
 
     // if login fail, we will remove all of infor that you had entered
     // the infor will be remove in SharedPreference
-    private fun clearInforLogin() {
+    private fun clearInfoLogin() {
         val sharedPreference: SharedPreference = SharedPreference(requireContext())
         sharedPreference.removeValue(Constant.EMAIL_OR_PHONE)
         sharedPreference.removeValue(Constant.IS_LOGIN)
@@ -427,14 +427,14 @@ class UserFragment : Fragment() {
     }
 
     private fun onOpenEditProfileFragment() {
-        val intent = Intent(getActivity(), EditProfileActivity::class.java)
-        getActivity()?.startActivity(intent)
+        val intent = Intent(activity, EditProfileActivity::class.java)
+        activity?.startActivity(intent)
 
     }
 
-    fun onOpentSigInUpFragment() {
-        val intent = Intent(getActivity(), AuthActivity::class.java)
-        getActivity()?.startActivity(intent)
+    private fun onOpenSigInUpFragment() {
+        val intent = Intent(activity, AuthActivity::class.java)
+        activity?.startActivity(intent)
     }
 
 }

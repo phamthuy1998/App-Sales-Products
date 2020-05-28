@@ -27,6 +27,7 @@
     <string name="status_3">Orders have been shipped</string>
     <string name="status_4">Order canceled</string>
 
+
     <string name="products_purchased_later">Products purchased later</string>
     <string name="mycomment">Mycomment</string>
     <string name="hot_line_1800_6963_free">Hot line: 0373865759</string>
@@ -239,6 +240,18 @@
     <string name="product_s_name">Product\'s name</string>
     <string name="sale">Sale</string>
     <string name="category_s_name">Category\'s name</string>
+    <string name="delProduct">This product has been deleted</string>
 
+
+    <string-array name="role">
+        <item>Admin</item>
+        <item>Employee</item>
+        <item>Customer</item>
+    </string-array>
+
+    <string name="role_admin">Admin</string>
+    <string name="role_employee">Employee</string>
+    <string name="role_customer">Customer</string>
+    <string name="toggle_order_status">Toggle order status</string>
 
 </resources>

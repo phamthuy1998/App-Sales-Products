@@ -1,14 +1,14 @@
 package com.thuypham.ptithcm.mytiki.feature.splash
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.doOnLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.firebase.auth.FirebaseAuth
 import com.thuypham.ptithcm.mytiki.R
+import com.thuypham.ptithcm.mytiki.data.Status
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.feature.authentication.AuthActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
+class SplashActivity : AppCompatActivity() , Animator.AnimatorListener {
 
     private val authViewModel: UserViewModel by viewModel()
     private var isLogin = false
@@ -31,15 +31,7 @@ class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-//        enablePersistence()
-        ivLogo?.apply {
-            doOnLayout {
-                val animation =
-                    AnimationUtils.loadAnimation(this@SplashActivity, R.anim.anim_splash)
-                startAnimation(animation)
-                animation?.setAnimationListener(this@SplashActivity)
-            }
-        }
+        animationView.addAnimatorListener(this)
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             FirebaseAuth.getInstance()
@@ -68,18 +60,27 @@ class SplashActivity : AppCompatActivity() , Animation.AnimationListener {
             this.user = user
             openNextScreen(user)
         })
+        authViewModel.networkStateUserInfo.observe(this){
+            if(it.status==Status.FAILED) openNextScreen()
+        }
+
     }
 
-//    /* Enable firebase offline mode */
-//    private fun enablePersistence() {
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-//    }
+   /* *//* Enable firebase offline mode *//*
+    private fun enablePersistence() {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+    }*/
 
-    override fun onAnimationRepeat(animation: Animation?) {}
+    override fun onAnimationRepeat(animation: Animator?) {
+    }
 
-    override fun onAnimationEnd(animation: Animation?) {
+    override fun onAnimationEnd(animation: Animator?) {
         if (!isLogin) openNextScreen(null)
     }
 
-    override fun onAnimationStart(animation: Animation?) {}
+    override fun onAnimationCancel(animation: Animator?) {
+    }
+
+    override fun onAnimationStart(animation: Animator?) {
+    }
 }

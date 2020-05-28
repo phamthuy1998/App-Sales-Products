@@ -32,3 +32,8 @@ data class Order(
         )
     }
 }
+
+data class OrderStatus(
+    var id: Int? = null,
+    var statusName: String? = null
+)

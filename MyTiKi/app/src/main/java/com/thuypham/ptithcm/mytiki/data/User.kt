@@ -17,7 +17,7 @@ data class User(
     var birthday: String? = null,
     var gender: Boolean? = null,
     var daycreate: String? = null,
-    var role: Long? = 1,
+    var role: Int? = 1,
     var active: Boolean? = null,
     var del: Boolean? = null
 ) : Parcelable, DynamicSearchAdapter.Searchable {
@@ -44,3 +44,4 @@ data class Role(
     val id: Int? = null,
     val name: String? = null
 )
+

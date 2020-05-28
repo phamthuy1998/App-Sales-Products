@@ -12,6 +12,33 @@ class AccountViewModel(private val repository: AccountRepository) : ViewModel() 
 
     val user = MutableLiveData<User>().apply { value = User() }
 
+    var phone = MutableLiveData<String>().apply { value = "" }
+    var name = MutableLiveData<String>().apply { value = "" }
+    var email = MutableLiveData<String>().apply { value = "" }
+    var password = MutableLiveData<String>().apply { value = "" }
+    var dayCreateAcc = MutableLiveData<String>().apply { value = "" }
+    var birthday = MutableLiveData<String>().apply { value = "" }
+
+    fun setUser(user: User){
+        phone.value = user.phone
+        name.value = user.name
+        email.value = user.email
+        password.value = user.password
+        birthday.value = user.birthday
+    }
+
+     fun setUserUpdate(){
+         user.value.also {
+             it?.phone =  phone.value
+             it?.name =  name.value
+             it?.email =  email.value
+             it?.password =  password.value
+             it?.birthday =  birthday.value
+         }
+    }
+
+
+
     /* get all acc */
     private val responseListAccount = MutableLiveData<ResultData<ArrayList<User>>>()
     val listAccount = Transformations.switchMap(responseListAccount) {

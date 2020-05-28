@@ -1,5 +1,6 @@
 package com.thuypham.ptithcm.mytiki.repository.impl
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Continuation
@@ -22,7 +23,9 @@ import com.thuypham.ptithcm.mytiki.util.Constant.ID_CATEGORY_PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_DEL
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_SALE
+import java.text.Normalizer
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
 class ProductRepositoryImpl : ProductRepository {
@@ -105,13 +108,61 @@ class ProductRepositoryImpl : ProductRepository {
         )
     }
 
-    override fun getAllProductsSale(): ResultData<ArrayList<Product>> {
+    @SuppressLint("DefaultLocale")
+    private fun removeAccent(s: String?): String {
+        val str = s?.toLowerCase()
+        val temp = Normalizer.normalize(str, Normalizer.Form.NFD)
+        val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+        return pattern.matcher(temp).replaceAll("")
+    }
+
+    override fun searchProduct(keySearch: String): ResultData<ArrayList<Product>> {
+        val search = removeAccent(keySearch)
         val networkState = MutableLiveData<NetworkState>()
         val responseListProduct = MutableLiveData<ArrayList<Product>>()
         networkState.postValue(NetworkState.LOADING)
         val listProduct = ArrayList<Product>()
         var product: Product?
-        val query = databaseRef()?.child(PRODUCT)?.orderByChild(PRODUCT_SALE)
+        val query =
+            databaseRef()?.child(PRODUCT)//?.orderByChild(NAME_PRODUCT)?.startAt(keySearch)?.endAt(keySearch + "\uf8ff")
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        product = ds.getValue(Product::class.java)
+                        if (product?.del == false)
+                            if (removeAccent(product?.name).contains(search)
+                                || product?.price.toString().contains(search)
+                                || removeAccent(product?.infor).contains(search)
+                            )
+                                product?.let { listProduct.add(it) }
+                    }
+                    responseListProduct.value = listProduct
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getAllProductsSale(limit: Int?): ResultData<ArrayList<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProduct = MutableLiveData<ArrayList<Product>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Product>()
+        var product: Product?
+        val query = if (limit != 10) databaseRef()?.child(PRODUCT)?.orderByChild(PRODUCT_SALE)
+        else databaseRef()?.child(PRODUCT)?.orderByChild(PRODUCT_SALE)?.limitToLast(10)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -130,6 +181,82 @@ class ProductRepositoryImpl : ProductRepository {
             override fun onCancelled(databaseError: DatabaseError) =
                 networkState.postValue(NetworkState.error(databaseError.toException().toString()))
 
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getProductSaleOfCategory(
+        category: String,
+        limit: Int?
+    ): ResultData<List<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProduct = MutableLiveData<List<Product>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Product>()
+        var product: Product?
+        val query = databaseRef()?.child(PRODUCT)
+            ?.orderByChild(ID_CATEGORY_PRODUCT)
+            ?.equalTo(category)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        product = ds.getValue(Product::class.java)
+                        if (product?.del == false && product?.sale != 0L)
+                            product?.let { listProduct.add(it) }
+                    }
+
+                    val sortedList = listProduct.sortedByDescending(Product::sale)
+                    responseListProduct.value = sortedList
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
+        }
+        query?.addValueEventListener(valueEventListener)
+        return ResultData(
+            data = responseListProduct,
+            networkState = networkState
+        )
+    }
+
+    override fun getProductSoldOfCategory(
+        category: String,
+        limit: Int?
+    ): ResultData<List<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseListProduct = MutableLiveData<List<Product>>()
+        networkState.postValue(NetworkState.LOADING)
+        val listProduct = ArrayList<Product>()
+        var product: Product?
+        val query =databaseRef()?.child(PRODUCT)
+            ?.orderByChild(ID_CATEGORY_PRODUCT)?.equalTo(category)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        product = ds.getValue(Product::class.java)
+                        if (product?.del == false && product?.sold != 0L)
+                            product?.let { listProduct.add(it) }
+                    }
+                    val sortedList = listProduct.sortedByDescending(Product::sold)
+                    responseListProduct.value = sortedList
+                    networkState.postValue(NetworkState.LOADED)
+                } else {
+                    networkState.postValue(NetworkState.error("List product are empty!"))
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) =
+                networkState.postValue(NetworkState.error(databaseError.toException().toString()))
         }
         query?.addValueEventListener(valueEventListener)
         return ResultData(
@@ -175,7 +302,7 @@ class ProductRepositoryImpl : ProductRepository {
         val networkState = MutableLiveData<NetworkState>()
         val response = MutableLiveData<Int>()
         networkState.postValue(NetworkState.LOADING)
-        var cartCount = 0
+        var cartCount: Int
         val query = databaseRef()?.child(Constant.CART)?.child(currentUser()?.uid.toString())
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

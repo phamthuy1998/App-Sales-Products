@@ -36,6 +36,7 @@ class OrderRepositoryImpl : OrderRepository {
                         order = ds.getValue(Order::class.java)
                         order?.let { listProduct.add(it) }
                     }
+                    listProduct.reversed()
                     responseListOrder.value = listProduct
                     networkState.postValue(NetworkState.LOADED)
                 } else {

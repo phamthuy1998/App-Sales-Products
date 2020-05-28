@@ -16,36 +16,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.Toolbar
+            <LinearLayout
                 android:id="@+id/tb_search_product_detail"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@color/colorBlue"
+                android:gravity="center"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/btn_cancel_product_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding10"
                     android:layout_marginEnd="10dp"
                     android:linksClickable="true"
                     android:onClick="onClickQuiteProduct"
-                    android:padding="16dp"
+                    android:padding="8dp"
                     android:tint="@color/colorWhiteBG"
                     app:srcCompat="@drawable/ic_left_arrow" />
 
-                <ImageView
-                    android:id="@+id/btn_search_pr_đetail"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
-                    android:padding="10dp"
-                    android:tint="@color/colorWhiteBG"
-                    app:srcCompat="@drawable/ic_search" />
+                    android:layout_weight="1" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/btn_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,9 +55,9 @@
 
                 <include layout="@layout/ll_cart" />
 
-            </androidx.appcompat.widget.Toolbar>
+            </LinearLayout>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_product_detail"
                 android:layout_width="0dp"
                 android:layout_height="400dp"
@@ -68,30 +67,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tb_search_product_detail" />
 
-
             <TextView
                 android:id="@+id/tv_name_product_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="@string/name_sign_up"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_product_detail" />
+                app:layout_constraintTop_toBottomOf="@id/iv_product_detail"
+                tools:text="@string/name_sign_up" />
 
             <TextView
                 android:id="@+id/tv_price_discount_product_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
-                android:text="@string/_1_290_000"
                 android:textColor="@color/colorTextHint"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_name_product_detail" />
+                app:layout_constraintTop_toBottomOf="@id/tv_name_product_detail"
+                tools:text="@string/_1_290_000" />
 
             <TextView
                 android:id="@+id/tv_price_product_detail"
@@ -99,24 +97,24 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
                 android:layout_marginStart="16dp"
-                android:text="@string/_1_290_000"
                 android:textColor="@color/colorGray"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_price_discount_product_detail"
                 app:layout_constraintStart_toEndOf="@id/tv_price_discount_product_detail"
-                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail" />
+                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail"
+                tools:text="@string/_1_290_000" />
 
             <TextView
                 android:id="@+id/tv_discount_percent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
-                android:text="@string/_1_290_000"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_price_discount_product_detail"
                 app:layout_constraintStart_toEndOf="@id/tv_price_product_detail"
-                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail" />
+                app:layout_constraintTop_toTopOf="@+id/tv_price_discount_product_detail"
+                tools:text="@string/_1_290_000" />
 
             <TextView
                 android:id="@+id/tv_out_of_product"
@@ -124,11 +122,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
                 android:layout_marginStart="16dp"
-                android:text="@string/out_of_product"
                 android:textColor="@color/colorRedError"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_price_discount_product_detail" />
+                app:layout_constraintTop_toBottomOf="@id/tv_price_discount_product_detail"
+                tools:text="@string/out_of_product" />
 
 
             <TextView
@@ -168,12 +166,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/content_of_product_detail"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                tools:text="@string/content_of_product_detail" />
 
             <!--            &lt;!&ndash; Star&ndash;&gt;-->
             <!--            <include-->
@@ -208,6 +206,17 @@
             <!--                app:layout_constraintTop_toBottomOf="@id/btn_write_cmt"-->
             <!--                tools:itemCount="2"-->
             <!--                tools:listitem="@layout/item_comment_product" />-->
+
+            <TextView
+                android:id="@+id/productDeleted"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:text="@string/delProduct"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tb_search_product_detail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

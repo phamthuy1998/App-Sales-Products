@@ -15,13 +15,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_cancel_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
             android:linksClickable="true"
             android:onClick="onClickQuitFavorite"
-            android:padding="16dp"
+            android:paddingStart="5dp"
+            android:paddingTop="@dimen/padding10"
+            android:paddingEnd="5dp"
+            android:paddingBottom="@dimen/padding10"
             android:tint="@color/colorWhiteBG"
             app:srcCompat="@drawable/ic_left_arrow" />
 
@@ -54,7 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorWhiteBG"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_favorite"
         tools:itemCount="3"
