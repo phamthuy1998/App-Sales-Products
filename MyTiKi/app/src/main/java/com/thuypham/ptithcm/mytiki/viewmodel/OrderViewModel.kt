@@ -11,6 +11,7 @@ import com.thuypham.ptithcm.mytiki.repository.OrderRepository
 
 class OrderViewModel(private val repository:OrderRepository) :ViewModel(){
 
+
     /* get all order */
     private val responseListOrder = MutableLiveData<ResultData<ArrayList<Order>>>()
     val listOrder = Transformations.switchMap(responseListOrder) {
@@ -31,7 +32,7 @@ class OrderViewModel(private val repository:OrderRepository) :ViewModel(){
     }
 
     /* get order by date */
-    fun getOrderByDate(type:Int, date: String){
+    fun getOrderByDate(type:Int?=null, date: String){
         responseListOrder.value = repository.getOrderByDate(type, date)
     }
 

@@ -47,22 +47,22 @@ class OrderAdapter(
             var status = ""
             // have received
             when (order.status) {
-                1L -> {
+                1 -> {
                     status = context.getString(R.string.status_1)
                     itemView.iv_order_ic_status.setImageResource(R.drawable.ic_circle_arrow);
                 }
                 // shipping
-                2L -> {
+                2 -> {
                     status = context.getString(R.string.status_2)
                     itemView.iv_order_ic_status.setImageResource(R.drawable.ic_shipping);
                 }
                 // order success
-                3L -> {
+                3-> {
                     status = context.getString(R.string.status_3)
                     itemView.iv_order_ic_status.setImageResource(R.drawable.ic_success);
                 }
                 // order cancel
-                4L -> {
+                4 -> {
                     status = context.getString(R.string.status_4)
                     itemView.iv_order_ic_status.setImageResource(R.drawable.ic_error);
                 }

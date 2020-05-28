@@ -178,13 +178,13 @@ class OrderActivity : AppCompatActivity() {
                             order = ds.getValue(Order::class.java)
                             if (numViewMore == 0) {
                                 order?.let { orderList.add(it) }
-                            } else if (numViewMore == 1 && order?.status == 1.toLong()) {
+                            } else if (numViewMore == 1 && order?.status == 1) {
                                 order?.let { orderList.add(it) }
-                            } else if (numViewMore == 2 && order?.status == 2.toLong()) {
+                            } else if (numViewMore == 2 && order?.status == 2) {
                                 order?.let { orderList.add(it) }
-                            } else if (numViewMore == 3 && order?.status == 3.toLong()) {
+                            } else if (numViewMore == 3 && order?.status == 3) {
                                 order?.let { orderList.add(it) }
-                            } else if (numViewMore == 4 && order?.status == 4.toLong()) {
+                            } else if (numViewMore == 4 && order?.status == 4) {
                                 order?.let { orderList.add(it) }
                             }
 

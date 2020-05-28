@@ -78,14 +78,6 @@ object Constant {
     const val ADDRESS_DEFAULT = "default"
     const val ADDRESS_REAL = "address"
 
-    const val Shipping = 20000
-    const val PriceLeast = 100000
-    const val coefficientMorning = 1// 7 -> 11 h
-    const val coefficientLunch = 1.2// 11 -> 13
-    const val coefficientAft = 0.9// 13 -> 18
-    const val coefficientNight = 1.5//18 --> 23
-    const val coefficientMidNight = 0.9// 0 --> 7
-
     const val ADMIN = 1
     const val EMPLOYEE = 2
     const val CUSTOMER = 3

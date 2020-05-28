@@ -14,6 +14,7 @@
             android:id="@+id/action_ordersFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.thuypham.ptithcm.mytiki.feature.employee.order.OrderDetailFragment"

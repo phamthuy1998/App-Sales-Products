@@ -9,7 +9,7 @@ import com.thuypham.ptithcm.mytiki.databinding.ItemOrderEmployeeBinding
 
 class OrderEmployeeAdapter(
     private var listProductSale: MutableList<Order> = arrayListOf(),
-    private var onItemClick: (id: String) -> Unit
+    private var onItemClick: (order: Order) -> Unit
 ) : DynamicSearchAdapter<Order>(listProductSale) {
 
 
@@ -60,7 +60,7 @@ class OrderEmployeeAdapter(
             binding.apply {
                 order = item
                 executePendingBindings()
-                itemOrder.setOnClickListener { item.id?.let { it1 -> onItemClick(it1) } }
+                itemOrder.setOnClickListener { onItemClick(item)  }
             }
         }
     }

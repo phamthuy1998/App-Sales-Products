@@ -51,7 +51,8 @@ class ProductDetailAdapter() : RecyclerView.Adapter<BaseItem>() {
             df.roundingMode = RoundingMode.CEILING
 
             // set price for product
-            val price = df.format(product.price) + " đ"
+            val pricesale = product.price?.minus(((product.sale*0.01)* product.price!!))
+            val price = df.format(pricesale) + " đ"
             itemView.tv_price_product_favorite.text = price
             val sale = "-" + product.sale.toString() + "%"
             itemView.tv_sale_like.text = sale

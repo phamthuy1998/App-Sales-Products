@@ -39,7 +39,6 @@ class AddressActivity : AppCompatActivity() {
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
 
-
     //product
     private var addressAdapter: AddressAdapter? = null
     private var addressList = ArrayList<Address>()
@@ -181,20 +180,7 @@ class AddressActivity : AppCompatActivity() {
         // format price
         val df = DecimalFormat("#,###,###")
         df.roundingMode = RoundingMode.CEILING
-        var priceTxt = df.format(priceTemp) + " đ"
-        dialog.tv_price_temp_order.text = priceTxt
-
-        var priceAmount = priceTemp
-
-        if (priceTemp > 100000) {
-            dialog.tv_price_shipping.text = "0 đ"
-        } else {
-            priceAmount += Constant.Shipping
-            priceTxt = df.format(Constant.Shipping) + " đ"
-            dialog.tv_price_shipping.text = priceTxt
-        }
-
-        priceTxt = df.format(priceAmount) + " đ"
+        val priceTxt = df.format(priceTemp) + " đ"
         dialog.tv_price_cart_conf.text = priceTxt
 
         // exit dialog
@@ -217,7 +203,7 @@ class AddressActivity : AppCompatActivity() {
                 val dateFormatter = DateTimeFormatter.ofPattern("HH:mm, dd/MM/yyyy")
                 val dateSearchFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                 val dateFormatted = current.format(dateFormatter)
-                val dateSearch= current.format(dateSearchFormatter)
+                val dateSearch = current.format(dateSearchFormatter)
 
 //                id, name, phone, address, date, price, status
                 val order = Order(
@@ -228,7 +214,7 @@ class AddressActivity : AppCompatActivity() {
                     currentAddress.address,
                     dateFormatted,
                     dateSearch,
-                    priceAmount.toLong(),
+                    priceTemp.toLong(),
                     1
                 )
                 query.setValue(order)
@@ -248,7 +234,7 @@ class AddressActivity : AppCompatActivity() {
                             p.id,
                             p.image,
                             p.number_product,
-                            p.price,
+                            p.price?.minus((p.price ?: 0) * 0.01 * (p.sale ?: 0))?.toLong(),
                             key
                         )
                     )

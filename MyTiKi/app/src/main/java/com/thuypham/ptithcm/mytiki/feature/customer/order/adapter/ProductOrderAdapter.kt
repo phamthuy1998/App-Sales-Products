@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
 import com.thuypham.ptithcm.mytiki.data.OrderDetail
+import com.thuypham.ptithcm.mytiki.feature.customer.home.adapter.BaseItem
 import kotlinx.android.synthetic.main.item_product_confirm.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -22,6 +22,14 @@ class ProductOrderAdapter(
             .from(viewGroup.context)
             .inflate(R.layout.item_product_confirm, viewGroup, false);
         return ProductViewholder(view)
+    }
+
+    fun setList(arr: ArrayList<OrderDetail>?) {
+        if (arr != null) {
+            items.clear()
+            items.addAll(arr)
+            notifyDataSetChanged()
+        }
     }
 
     inner class ProductViewholder(view: View) : BaseItem(view) {

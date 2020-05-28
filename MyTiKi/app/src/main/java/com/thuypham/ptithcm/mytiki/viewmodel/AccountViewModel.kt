@@ -3,7 +3,6 @@ package com.thuypham.ptithcm.mytiki.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.data.User
 import com.thuypham.ptithcm.mytiki.repository.AccountRepository
@@ -19,7 +18,7 @@ class AccountViewModel(private val repository: AccountRepository) : ViewModel() 
     var dayCreateAcc = MutableLiveData<String>().apply { value = "" }
     var birthday = MutableLiveData<String>().apply { value = "" }
 
-    fun setUser(user: User){
+    fun setUser(user: User) {
         phone.value = user.phone
         name.value = user.name
         email.value = user.email
@@ -27,16 +26,15 @@ class AccountViewModel(private val repository: AccountRepository) : ViewModel() 
         birthday.value = user.birthday
     }
 
-     fun setUserUpdate(){
-         user.value.also {
-             it?.phone =  phone.value
-             it?.name =  name.value
-             it?.email =  email.value
-             it?.password =  password.value
-             it?.birthday =  birthday.value
-         }
+    fun setUserUpdate() {
+        user.value.also {
+            it?.phone = phone.value
+            it?.name = name.value
+            it?.email = email.value
+            it?.password = password.value
+            it?.birthday = birthday.value
+        }
     }
-
 
 
     /* get all acc */
@@ -88,9 +86,13 @@ class AccountViewModel(private val repository: AccountRepository) : ViewModel() 
     }
 
     /* Del account*/
-    private var responseDelAccount = MutableLiveData<NetworkState>()
+    var responseDelAccount = MutableLiveData<ResultData<Boolean>>()
+
+    val networkDelAcc = Transformations.switchMap(responseDelAccount) {
+        it.networkState
+    }
 
     fun delAccount(user: User) {
-        responseDelAccount = repository.deleteAcc(user)
+        responseDelAccount.value = repository.deleteAcc(user)
     }
 }

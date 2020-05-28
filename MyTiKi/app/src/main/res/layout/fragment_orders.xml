@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="3"
-            tools:listitem="@layout/item_category_employee" />
+            tools:listitem="@layout/item_order_employee" />
 
         <ProgressBar
             android:id="@+id/progressOrder"
@@ -29,5 +29,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            android:text="@string/the_order_list_is_empty"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/tvOrderEmpty"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

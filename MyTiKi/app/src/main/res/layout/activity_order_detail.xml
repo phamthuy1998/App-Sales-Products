@@ -230,64 +230,6 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/grayLight" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:text="@string/the_provisional_amount"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_temp_order_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/_1_290_000"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:text="@string/transportation_fee"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_shipping_order_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/_1_290_000"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -63,7 +63,6 @@ class AccountDetailFragment : BaseFragment<FragmentAccountDetailBinding>() {
             setMessage(getString(R.string.dialogDelProduct))
             setPositiveButton(getString(R.string.dialogOk)) { dialog, _ ->
                 accViewModel.user.value?.let { accViewModel.delAccount(it) }
-                activity?.onBackPressed()
                 dialog.dismiss()
             }
             setNegativeButton(getString(R.string.dialogCancel)) { dialog, _ ->
@@ -165,6 +164,29 @@ class AccountDetailFragment : BaseFragment<FragmentAccountDetailBinding>() {
                     Toast.makeText(requireActivity(), it.msg, Toast.LENGTH_LONG).show()
                     viewBinding.progressAcc.gone()
                     viewBinding.btnAddAcc.isEnabled = true
+                }
+            }
+
+        }
+        accViewModel.networkDelAcc.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.RUNNING -> {
+                    viewBinding.progressAcc.visible()
+                }
+                Status.SUCCESS -> {
+                    viewBinding.progressAcc.gone()
+                    Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.addSuccess),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    activity?.onBackPressed()
+                }
+                Status.LOADING_PROCESS -> {
+                }
+                Status.FAILED -> {
+                    Toast.makeText(requireActivity(), it.msg, Toast.LENGTH_LONG).show()
+                    viewBinding.progressAcc.gone()
                 }
             }
 

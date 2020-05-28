@@ -9,7 +9,7 @@ class RevenueActivity: BaseActivity<ActivityRevenueBinding>()  {
 
     override val layoutId: Int = R.layout.activity_revenue
 
-    override var toolbarViewParentId: Int = R.id.ctlRevenueContainer
+    override var toolbarViewParentId: Int = R.id.clRevenueContainer
 
     override fun onSupportNavigateUp(): Boolean =
         Navigation.findNavController(this, R.id.frRevenueNavigator).navigateUp()

@@ -12,7 +12,7 @@ import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.OrderRepository
 import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER
-import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_DATE
+import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_DATE_SEARCH
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_DETAIL
 import com.thuypham.ptithcm.mytiki.util.Constant.ORDER_STATUS
 
@@ -40,6 +40,7 @@ class OrderRepositoryImpl : OrderRepository {
                     responseListOrder.value = listProduct
                     networkState.postValue(NetworkState.LOADED)
                 } else {
+                    responseListOrder.value = null
                     networkState.postValue(NetworkState.error("List order are empty!"))
                 }
             }
@@ -107,14 +108,16 @@ class OrderRepositoryImpl : OrderRepository {
         networkState.postValue(NetworkState.LOADING)
         val listProduct = ArrayList<Order>()
         var order: Order?
-        val query = databaseRef()?.child(ORDER)?.orderByChild(ORDER_DATE)?.equalTo(date)
+        val query = databaseRef()?.child(ORDER)?.orderByChild(ORDER_DATE_SEARCH)?.equalTo(date)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (ds in dataSnapshot.children) {
                         order = ds.getValue(Order::class.java)
-                        if (order?.status == type?.toLong())
-                            order?.let { listProduct.add(it) }
+                        if(type!=null){
+                            if (order?.status == type)
+                                order?.let { listProduct.add(it) }
+                        }else order?.let { listProduct.add(it) }
                     }
                     responseListOrder.value = listProduct
                     networkState.postValue(NetworkState.LOADED)

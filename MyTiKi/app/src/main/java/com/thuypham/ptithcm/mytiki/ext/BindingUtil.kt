@@ -25,36 +25,53 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
             .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(7)))
             .error(R.drawable.noimg)
             .into(view)
-    }else{
+    } else {
         view.setImageResource(R.drawable.noimg)
     }
 }
 
 @BindingAdapter("imageOrderResource")
-fun bindImageRes(view: ImageView, type: Long?) {
+fun bindImageRes(view: ImageView, type: Int?) {
     when (type) {
-        1L -> view.setImageResource(R.drawable.ic_circle_arrow)
+        1 -> view.setImageResource(R.drawable.ic_circle_arrow)
         // shipping
-        2L -> view.setImageResource(R.drawable.ic_shipping)
+        2 -> view.setImageResource(R.drawable.ic_shipping)
         // order success
-        3L -> view.setImageResource(R.drawable.ic_success)
+        3 -> view.setImageResource(R.drawable.ic_success)
         // order cancel
-        4L -> view.setImageResource(R.drawable.ic_error)
+        4 -> view.setImageResource(R.drawable.ic_error)
     }
 }
 
 @BindingAdapter("txtStatusOrder")
-fun setTextStatusOrder(view: TextView, type: Long?) {
+fun setTextStatusOrder(view: TextView, type: Int?) {
     when (type) {
-        1L -> view.text = view.context.getString(R.string.status_1)
+        1 -> view.text = view.context.getString(R.string.status_1)
         // shipping
-        2L -> view.text = view.context.getString(R.string.status_2)
+        2 -> view.text = view.context.getString(R.string.status_2)
         // order success
-        3L -> view.text = view.context.getString(R.string.status_3)
+        3 -> view.text = view.context.getString(R.string.status_3)
         // order cancel
-        4L -> view.text = view.context.getString(R.string.status_4)
+        4 -> view.text = view.context.getString(R.string.status_4)
     }
 }
+
+@BindingAdapter("txtStatusChange")
+fun changeStatus(view: TextView, type: Int?) {
+    when (type) {
+        1 -> {
+            view.text = view.context.getString(R.string.change1)
+        }
+        // shipping
+        2 -> {
+            view.text = view.context.getString(R.string.change2)
+        }
+        3 -> view.text = view.context.getString(R.string.status_3)
+        // order cancel
+        4 -> view.text = view.context.getString(R.string.status_4)
+    }
+}
+
 @BindingAdapter("txtAccountRole")
 fun setTextAcc(view: TextView, type: Int?) {
     when (type) {
@@ -102,9 +119,13 @@ fun bindTotalPrice(view: TextView, price: Long?) {
 
 @BindingAdapter("txtPriceNoStrike")
 fun binPriceNoCeiling(view: TextView, price: Long?) {
-    val df = DecimalFormat("#,###,###")
-    val priceSelling = df.format(price) + " đ"
-    view.text = priceSelling
+    if (price != null) {
+        val df = DecimalFormat("#,###,###")
+        val priceSelling = df.format(price) + " đ"
+        view.text = priceSelling
+    } else {
+        view.text = "0"
+    }
 }
 
 @BindingAdapter("productStock")

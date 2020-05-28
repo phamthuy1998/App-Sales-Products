@@ -163,19 +163,19 @@ class OrderDetailActivity : AppCompatActivity() {
         tv_item_order_detail_ac_id.text = order.id
         tv_item_order_detail_date.text = order.date
         var status = ""
-        if (order.status == 1.toLong()) {
+        if (order.status == 1) {
             status = getString(R.string.status_1)
         }
         // shipping
-        else if (order.status == 2.toLong()) {
+        else if (order.status == 2) {
             status = getString(R.string.status_2)
         }
         // order success
-        else if (order.status == 3.toLong()) {
+        else if (order.status == 3) {
             status = getString(R.string.status_3)
         }
         // order cancel
-        else if (order.status == 4.toLong()) {
+        else if (order.status == 4) {
             status = getString(R.string.status_4)
         }
         tv_item_order_detail_status.text = status
@@ -187,22 +187,18 @@ class OrderDetailActivity : AppCompatActivity() {
         df.roundingMode = RoundingMode.CEILING
         var price = 0.00.toLong()
         price = order.price!!
-        if (order.price!! >= (Constant.PriceLeast + Constant.Shipping)) {
-            val priceTxt = df.format(price) + " đ"
-            tv_price_shipping_order_detail.text = "0 đ"
-            tv_price_temp_order_detail.text = priceTxt
+////        if (order.price!! >= (Constant.PriceLeast + Constant.Shipping)) {
+//            val priceTxt = df.format(price) + " đ"
+//            tv_price_shipping_order_detail.text = "0 đ"
+//            tv_price_temp_order_detail.text = priceTxt
+//            tv_price_amount_order_detail.text = priceTxt
+//        } else {
+            val priceTxt = df.format(order.price?:0) + " đ"
             tv_price_amount_order_detail.text = priceTxt
-        } else {
-            var priceTxt = df.format(order.price!! - Constant.Shipping) + " đ"
-            tv_price_temp_order_detail.text = priceTxt
-            priceTxt = df.format(Constant.Shipping) + " đ"
-            tv_price_shipping_order_detail.text = priceTxt
-            priceTxt = df.format(price) + " đ"
-            tv_price_amount_order_detail.text = priceTxt
-        }
+//        }
 
         // set button cancel show or hide
-        if (order.status == 1.toLong()) {
+        if (order.status == 1) {
             btn_cancel_order_detail.visibility = View.VISIBLE
         } else {
             btn_cancel_order_detail.visibility = View.GONE

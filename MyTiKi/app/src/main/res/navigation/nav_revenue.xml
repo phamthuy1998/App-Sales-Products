@@ -7,16 +7,28 @@
 
     <fragment
         android:id="@+id/revenuesFragment"
-        tools:layout="@layout/fragment_revenues"
         android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.RevenuesFragment"
-        android:label="RevenuesFragment" >
+        android:label="RevenuesFragment"
+        tools:layout="@layout/fragment_revenues">
         <action
-            android:id="@+id/action_revenuesFragment_to_revenueDetailFragment"
-            app:destination="@id/revenueDetailFragment" />
+            android:id="@+id/action_revenuesFragment_to_ordersFragment2"
+            app:destination="@id/ordersFragment2" />
     </fragment>
+
     <fragment
-        android:id="@+id/revenueDetailFragment"
-        android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.RevenueDetailFragment"
-        android:label="fragment_revenue_detail"
-        tools:layout="@layout/fragment_revenue_detail" />
+        android:id="@+id/ordersFragment2"
+        tools:layout="@layout/fragment_orders"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.OrdersRevenuesFragment"
+        android:label="OrdersFragment">
+        <action
+            android:id="@+id/action_ordersFragment2_to_orderDetailFragment2"
+            app:destination="@id/orderDetailFragmentREvenue" />
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_order_detail"
+        android:id="@+id/orderDetailFragmentREvenue"
+        android:name="com.thuypham.ptithcm.mytiki.feature.employee.revenue.OrderRevenueDetailFragment"
+        android:label="OrderDetailFragment" />
+
 </navigation>

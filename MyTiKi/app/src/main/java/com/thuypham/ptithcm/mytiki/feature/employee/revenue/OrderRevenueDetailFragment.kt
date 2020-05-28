@@ -1,7 +1,8 @@
-package com.thuypham.ptithcm.mytiki.feature.employee.order
+package com.thuypham.ptithcm.mytiki.feature.employee.revenue
 
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.BaseFragment
@@ -14,7 +15,10 @@ import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.viewmodel.OrderViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class OrderRevenueDetailFragment : BaseFragment<FragmentOrderDetailBinding>() {
 
     override val layoutId: Int = R.layout.fragment_order_detail
     private val orderViewModel: OrderViewModel by viewModel()
@@ -30,7 +34,6 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() {
         super.initView()
         order = arguments?.get(Constant.ORDER) as? Order
         viewBinding.order = order
-        viewBinding.fragment = this
         order?.id?.let { orderViewModel.getOrderDetail(it) }
         viewBinding.rvOrderDetail.adapter = productAdapter
 
@@ -52,6 +55,7 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() {
 
     override fun setEvents() {
         super.setEvents()
+
         viewBinding.btnChangeStatus.setOnClickListener { changeStatusOrder() }
 //        viewBinding.spOrderStatus.onItemSelectedListener =
 //            object : AdapterView.OnItemSelectedListener {
@@ -68,7 +72,7 @@ class OrderDetailFragment : BaseFragment<FragmentOrderDetailBinding>() {
 //            }
     }
 
-    fun changeStatusOrder() {
+    private fun changeStatusOrder() {
         order?.status?.plus(1)?.let {
             order?.id?.let { it1 ->
                 order?.status = it

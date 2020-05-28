@@ -144,67 +144,6 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/item_product_confirm" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/the_provisional_amount"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_temp_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/_1_290_000"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/transportation_fee"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_price_shipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/_1_290_000"
-                    android:textColor="@color/colorTextHint"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
-
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -241,16 +180,6 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/btn_payment_conf"
             app:layout_constraintEnd_toEndOf="@id/btn_payment_conf" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="50dp"
-            android:text="@string/including_vat"
-            android:textColor="@color/colorTextHint"
-            app:layout_constraintEnd_toEndOf="@id/tv_price_cart_conf"
-            app:layout_constraintTop_toBottomOf="@id/tv_price_cart_conf" />
 
         <TextView
             android:id="@+id/btn_payment_conf"

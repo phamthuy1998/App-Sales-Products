@@ -35,43 +35,46 @@ class RevenueRepositoryImpl : RevenueRepository {
         var query: Query?
         var price: Long
         var dateStr: String
+        val arrDate: ArrayList<String> = arrayListOf()
+//        val arrPrice: ArrayList<Long> = arrayListOf()
+
         for (dateOrder in totalDateInMoth downTo 1 step 1) {
             dateStr = formatNumber(dateOrder) + "/" + formatNumber(month) + "/" + formatNumber(year)
+            arrDate.add(dateStr)
+            query = databaseRef()?.child(Constant.ORDER)
+                ?.orderByChild(Constant.ORDER_DATE_SEARCH)?.equalTo(dateStr)
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        price = 0
+                        for (ds in dataSnapshot.children) {
+                            order = ds.getValue(Order::class.java)
+                            order?.let { listOrder.add(it) }
+                            price += order?.price ?: 0
+                        }
+                        listRevenue.add(Revenue(arrDate[listRevenue.size], listOrder.size, price))
+                        if (dateOrder == 1) {
+                            responseListProduct.value = listRevenue
+                            networkState.postValue(NetworkState.LOADED)
+                        }
+                    } else {
+                        listRevenue.add(Revenue(arrDate[listRevenue.size], 0, 0))
+                        if (dateOrder == 1) {
+                            responseListProduct.value = listRevenue
+                            networkState.postValue(NetworkState.LOADED)
+                        }
+                    }
+                }
 
-//            query = databaseRef()?.child(Constant.ORDER)
-//                ?.orderByChild(Constant.ORDER_DATE_SEARCH)?.equalTo(dateStr)
-//            val valueEventListener = object : ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    if (dataSnapshot.exists()) {
-//                        price = 0
-//                        for (ds in dataSnapshot.children) {
-//                            order = ds.getValue(Order::class.java)
-//                            order?.let { listOrder.add(it) }
-//                            price += order?.price ?: 0
-//                        }
-//                        listRevenue.add(Revenue(dateStr, listOrder.size, price))
-//                        if (dateOrder == 1) {
-//                            responseListProduct.value = listRevenue
-//                            networkState.postValue(NetworkState.LOADED)
-//                        }
-//                    } else {
-//                        listRevenue.add(Revenue(dateStr, 0, 0))
-//                        if (dateOrder == 1) {
-//                            responseListProduct.value = listRevenue
-//                            networkState.postValue(NetworkState.LOADED)
-//                        }
-//                    }
-//                }
-//
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    listRevenue.add(Revenue(dateStr, 0, 0))
-//                    if (dateOrder == 1) {
-//                        responseListProduct.value = listRevenue
-//                        networkState.postValue(NetworkState.LOADED)
-//                    }
-//                }
-//            }
-//            query?.addValueEventListener(valueEventListener)
+                override fun onCancelled(databaseError: DatabaseError) {
+                    listRevenue.add(Revenue(arrDate[listRevenue.size], 0, 0))
+                    if (dateOrder == 1) {
+                        responseListProduct.value = listRevenue
+                        networkState.postValue(NetworkState.LOADED)
+                    }
+                }
+            }
+            query?.addValueEventListener(valueEventListener)
         }
 
         return ResultData(
@@ -80,8 +83,11 @@ class RevenueRepositoryImpl : RevenueRepository {
         )
     }
 
-    private fun getOrderRevenueByDate(dateStr: String) : MutableLiveData<Revenue>{
-        val revenueLiveData = MutableLiveData<Revenue>()
+    private fun getOrderRevenueByDate(dateStr: String): ResultData<Revenue> {
+        val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<Revenue>()
+        networkState.postValue(NetworkState.LOADING)
+
         val listOrder = ArrayList<Order>()
         var price: Long
         var order: Order?
@@ -97,22 +103,69 @@ class RevenueRepositoryImpl : RevenueRepository {
                         order?.let { listOrder.add(it) }
                         price += order?.price ?: 0
                     }
-                    revenue = Revenue(dateStr, listOrder.size,price)
-                    revenueLiveData.value = revenue
+                    revenue = Revenue(dateStr, listOrder.size, price)
+                    response.value = revenue
                 } else {
-                    revenue=Revenue(dateStr, 0, 0)
-                    revenueLiveData.value = revenue
+                    revenue = Revenue(dateStr, 0, 0)
+                    response.value = revenue
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                revenue=Revenue(dateStr, 0, 0)
-                revenueLiveData.value = revenue
+                revenue = Revenue(dateStr, 0, 0)
+                response.value = revenue
             }
         }
         query?.addValueEventListener(valueEventListener)
 
-        return revenueLiveData
+        return ResultData(
+            data = response,
+            networkState = networkState
+        )
+    }
+
+    fun getRevenueByDate(
+        dateStr: String
+    ): ResultData<Revenue> {
+
+        val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<Revenue>()
+        networkState.postValue(NetworkState.LOADING)
+
+        val listOrder = ArrayList<Order>()
+        var price: Long
+        var order: Order?
+        var revenue: Revenue?
+        val query = databaseRef()?.child(Constant.ORDER)
+            ?.orderByChild(Constant.ORDER_DATE_SEARCH)?.equalTo(dateStr)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    price = 0
+                    for (ds in dataSnapshot.children) {
+                        order = ds.getValue(Order::class.java)
+                        order?.let { listOrder.add(it) }
+                        price += order?.price ?: 0
+                    }
+                    revenue = Revenue(dateStr, listOrder.size, price)
+                    response.value = revenue
+                } else {
+                    revenue = Revenue(dateStr, 0, 0)
+                    response.value = revenue
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                revenue = Revenue(dateStr, 0, 0)
+                response.value = revenue
+            }
+        }
+        query?.addValueEventListener(valueEventListener)
+
+        return ResultData(
+            data = response,
+            networkState = networkState
+        )
     }
 
 }

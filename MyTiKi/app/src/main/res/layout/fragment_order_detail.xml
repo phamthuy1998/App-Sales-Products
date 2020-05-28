@@ -5,17 +5,18 @@
 
     <data>
 
+        <import type="android.view.View"/>
         <variable
             name="order"
             type="com.thuypham.ptithcm.mytiki.data.Order" />
 
         <variable
-            name="totalPrice"
+            name="tranFee"
             type="Long" />
 
         <variable
-            name="tranFee"
-            type="Long" />
+            name="fragment"
+            type="com.thuypham.ptithcm.mytiki.feature.employee.order.OrderDetailFragment" />
     </data>
 
     <LinearLayout
@@ -203,7 +204,7 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_product_order_detail"
+                    android:id="@+id/rvOrderDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhiteBG"
@@ -217,66 +218,6 @@
                     android:layout_height="5dp"
                     android:layout_marginTop="16dp"
                     android:background="@color/grayLight" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:text="@string/the_provisional_amount"
-                        android:textColor="@color/colorTextHint"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_price_temp_order_detail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:text="@string/_1_290_000"
-                        android:textColor="@color/colorTextHint"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:text="@string/transportation_fee"
-                        android:textColor="@color/colorTextHint"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_price_shipping_order_detail"
-                        txtPriceNoStrike="@{tranFee}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:textColor="@color/colorTextHint"
-                        android:textSize="14sp"
-                        tools:text="@string/_1_290_000" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -297,7 +238,7 @@
 
                     <TextView
                         android:id="@+id/tv_price_amount_order_detail"
-                        txtPriceNoStrike="@{totalPrice+tranFee}"
+                        txtPriceNoStrike="@{order.price}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -314,7 +255,19 @@
                     android:id="@+id/spOrderStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_margin="@dimen/default_margin" />
+
+                <TextView
+                    android:textColor="@color/colorBlueDark"
+                    android:textStyle="bold"
+                    txtStatusChange="@{order.status}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    app:layout_constraintStart_toEndOf="@id/tv_tt_order_detail_status"
+                    app:layout_constraintTop_toTopOf="@id/tv_tt_order_detail_status"
+                    tools:text="@string/order_id" />
 
                 <Button
                     android:id="@+id/btnChangeStatus"
@@ -323,19 +276,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="16dp"
+                    android:enabled="@{order.status!=3 &amp; order.status!=4}"
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginEnd="16dp"
                     android:linksClickable="true"
                     android:text="@string/toggle_order_status"
                     android:textColor="@android:color/white" />
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginTop="16dp"
                     android:background="@color/grayLight" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

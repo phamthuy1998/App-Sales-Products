@@ -15,7 +15,7 @@ data class Order(
     var date: String? = null,
     var dateSearch: String? = null,
     var price: Long? = null,
-    var status: Long? = null
+    var status: Int? = null
 ) : Serializable , DynamicSearchAdapter.Searchable {
     override fun getSearchCriteria(): String = "$name $phone $address $date $price"
     @Exclude
