@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.data.ProductAdd
 import com.thuypham.ptithcm.mytiki.data.ResultData
 
 interface ProductRepository {
@@ -19,4 +20,6 @@ interface ProductRepository {
     fun getProductByID(productID: String): ResultData<Product>
     fun updateProduct(product: Product): MutableLiveData<NetworkState>
     fun delProduct(productID: String): MutableLiveData<NetworkState>
+
+    suspend fun sendNotification(product: ProductAdd)
 }

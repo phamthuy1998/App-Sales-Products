@@ -2,6 +2,14 @@ package com.thuypham.ptithcm.mytiki.util
 
 object Constant {
     // Account
+    const val AppID = "ef8eedb8-b509-4d57-b96c-7f40b7e0c2ea"
+    const val Authorization = "AAAAWM-v4IY:APA91bEu_81o9O-HRiUTW9qcFAZqwqDTF0HpB1wUhjD_1X6bXtvpdbX_K40Bf5tXehPgMA0W28w1A9oP_DPq-gXu0bfB_e9po9fr47K-p_0Fv2wdZWQ0gjPcHjtoG794xYtK2lL5HPWL"
+
+
+    const val TOPIC_NEW_PRODUCT = "/topics/newProduct"
+
+     const val BASE_URL = "https://fcm.googleapis.com"
+
     const val MY_PREFERENCES = "myPreferences"
     const val EMAIL_OR_PHONE = "emailorphone"
     const val PASSWORD = "password"
@@ -81,6 +89,8 @@ object Constant {
     const val ADMIN = 1
     const val EMPLOYEE = 2
     const val CUSTOMER = 3
+    const val IS_CUSTOMER = "IsCustomer"
+
 
     const val REVENUE = "REVENUE"
     const val REVENUE_DATE = "date"

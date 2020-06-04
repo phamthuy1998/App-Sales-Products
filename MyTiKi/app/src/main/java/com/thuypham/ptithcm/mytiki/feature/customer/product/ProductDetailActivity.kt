@@ -261,7 +261,6 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-
     private fun checkFavoriteProduct(id: String?, like: Boolean) {
         val user: FirebaseUser? = mAuth?.currentUser
         if (like) {

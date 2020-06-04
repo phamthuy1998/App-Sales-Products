@@ -1,8 +1,16 @@
 package com.thuypham.ptithcm.mytiki.util
 
+import android.content.Context
 import android.os.Handler
+import com.thuypham.ptithcm.mytiki.R
 import java.text.DecimalFormat
 import java.util.regex.Pattern
+import javax.mail.Authenticator
+import javax.mail.Message
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 fun after(delay: Long, process: () -> Unit) {
     Handler().postDelayed({
@@ -51,3 +59,43 @@ fun formatNumber(number: Int) =
 
 
 fun formatPrice(price: Long?) = DecimalFormat("#,###,###").format(price) + " đ"
+
+fun getRandomString(length: Int): String {
+    val allowedChars = ('A'..'Z') + ('a'..'z')
+    return (1..length)
+        .map { allowedChars.random() }
+        .joinToString("")
+}
+
+
+fun Context.sendMail(emailReceive: String, randomStr :String): MimeMessage {
+    val from = "congnghephanmemptithcm@gmail.com" //Sender email
+    val properties = System.getProperties()
+
+    with(properties) {
+        put("mail.smtp.host", "smtp.mail.yahoo.com") //Configure smtp host
+        put("mail.smtp.port", "587") //Configure port
+        put("mail.smtp.starttls.enable", "true") //Enable TLS
+        put("mail.smtp.auth", "true") //Enable authentication
+    }
+
+    val auth = object : Authenticator() {
+        override fun getPasswordAuthentication() =
+            PasswordAuthentication(from, "quankhung123") //Credentials of the sender email
+    }
+
+    val session = Session.getDefaultInstance(properties, auth)
+    val message = MimeMessage(session)
+
+    with(message) {
+        setFrom(InternetAddress(from))
+        addRecipient(Message.RecipientType.TO, InternetAddress(emailReceive))
+        subject = getString(R.string.confirmOrder) //Email subject
+        setContent(
+            "<html><body><h1>${getString(R.string.emailContent)}$randomStr</h1></body></html>",
+            "text/html; charset=utf-8"
+        ) //Sending html message, you may change to send text here.
+    }
+
+    return message
+}

@@ -7,34 +7,47 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.sg.vivastory.ext.getTxtTrim
 import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.data.Address
 import com.thuypham.ptithcm.mytiki.data.Order
 import com.thuypham.ptithcm.mytiki.data.OrderDetail
 import com.thuypham.ptithcm.mytiki.data.ProductCartDetail
+import com.thuypham.ptithcm.mytiki.ext.AppExecutors
+import com.thuypham.ptithcm.mytiki.ext.Credentials
+import com.thuypham.ptithcm.mytiki.ext.gone
+import com.thuypham.ptithcm.mytiki.ext.visible
 import com.thuypham.ptithcm.mytiki.feature.customer.address.adapter.AddressAdapter
 import com.thuypham.ptithcm.mytiki.feature.customer.main.MainActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.OrderActivity
 import com.thuypham.ptithcm.mytiki.feature.customer.order.adapter.ProductConfirmAdapter
 import com.thuypham.ptithcm.mytiki.util.Constant
+import com.thuypham.ptithcm.mytiki.util.getRandomString
 import com.thuypham.ptithcm.mytiki.util.isPhoneValid
 import kotlinx.android.synthetic.main.activity_address.*
 import kotlinx.android.synthetic.main.dialog_add_new_address.*
 import kotlinx.android.synthetic.main.dialog_cofirm_order.*
+import kotlinx.android.synthetic.main.dialog_confirm_email.*
 import kotlinx.android.synthetic.main.dialog_order_success.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.mail.*
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
+
 
 class AddressActivity : AppCompatActivity() {
 
+    private lateinit var appExecutors: AppExecutors
     lateinit var mDatabaseReference: DatabaseReference
     private var mDatabase: FirebaseDatabase? = null
     private var mAuth: FirebaseAuth? = null
@@ -47,8 +60,12 @@ class AddressActivity : AppCompatActivity() {
     var productList = ArrayList<ProductCartDetail>()
     private var productAdapter: ProductConfirmAdapter? = null
 
+    private var codeEmail = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appExecutors = AppExecutors()
+
+
         setContentView(R.layout.activity_address)
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
@@ -135,10 +152,87 @@ class AddressActivity : AppCompatActivity() {
             if (addressList.isEmpty()) {
                 Toast.makeText(this, R.string.err_address_empty, Toast.LENGTH_LONG).show()
             } else {
-                showDialogConfirmOrder()
+                val randomStr = getRandomString(6)
+                val email = mAuth?.currentUser?.email?.let { it1 ->
+                    progressAddress.visible()
+                    sendEmail(it1, randomStr)
+
+                }
             }
         }
     }
+
+    private fun sendEmail(emailReceive:String,randomStr :String){
+        appExecutors.diskIO().execute {
+            val props = System.getProperties()
+            props.put("mail.smtp.host", "smtp.gmail.com")
+            props.put("mail.smtp.socketFactory.port", "465")
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
+            props.put("mail.smtp.auth", "true")
+            props.put("mail.smtp.port", "465")
+
+            val session =  Session.getInstance(props,
+                object : javax.mail.Authenticator() {
+                    //Authenticating the password
+                    override fun getPasswordAuthentication(): PasswordAuthentication {
+                        return PasswordAuthentication(Credentials.EMAIL, Credentials.PASSWORD)
+                    }
+                })
+
+            try {
+                //Creating MimeMessage object
+                val mm = MimeMessage(session)
+                //Setting sender address
+                mm.setFrom(InternetAddress(Credentials.EMAIL))
+                //Adding receiver
+                mm.addRecipient(Message.RecipientType.TO, InternetAddress(emailReceive))
+                //Adding subject
+                mm.subject = getString(R.string.confirmOrder)
+                //Adding message
+                mm.setContent("<html><body><h1>${getString(R.string.emailContent)}$randomStr</h1></body></html>",
+                    "text/html; charset=utf-8")
+
+                //Sending email
+                Transport.send(mm)
+
+                appExecutors.mainThread().execute {
+                    progressAddress.gone()
+                    showDialogSendmail(randomStr)
+                }
+
+            } catch (e: MessagingException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+    private fun showDialogSendmail(randomStr: String) {
+        val dialog = Dialog(
+            this, Window.FEATURE_NO_TITLE
+        )
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_confirm_email)
+
+        dialog.btnConfirm.setOnClickListener {
+            if (dialog.edtCode.getTxtTrim() == "") {
+                dialog.edtCode.error = getString(R.string.errCode)
+                return@setOnClickListener
+            }
+            if (randomStr == dialog.edtCode.getTxtTrim()) {
+                dialog.dismiss()
+                showDialogConfirmOrder()
+            } else {
+                dialog.edtCode.error = getString(R.string.errCodeIncorrect)
+                Toast.makeText(this, getString(R.string.errCodeIncorrect), Toast.LENGTH_LONG).show()
+            }
+        }
+        dialog.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun showDialogConfirmOrder() {
@@ -243,7 +337,7 @@ class AddressActivity : AppCompatActivity() {
                 delAllCartOfUser()
 
                 dialog.dismiss()
-                showDialogInforOrder()
+                showDialogInfoOrder()
             }
         }
 
@@ -253,14 +347,14 @@ class AddressActivity : AppCompatActivity() {
 
     // Delete all cart of user
     private fun delAllCartOfUser() {
-        val user: FirebaseUser? = mAuth?.getCurrentUser();
+        val user: FirebaseUser? = mAuth?.currentUser;
         mDatabaseReference = mDatabase!!.reference
         val currentUserDb = mDatabaseReference.child(Constant.CART)
             .child(user!!.uid)
             .removeValue()
     }
 
-    private fun showDialogInforOrder() {
+    private fun showDialogInfoOrder() {
         val dialog = Dialog(
             this, android.R.style.Theme_Light_NoTitleBar
         )
@@ -272,24 +366,27 @@ class AddressActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             finishAffinity()
             startActivity(intent)
+            dialog.dismiss()
             finish()
         }
         dialog.btn_continue_shopping_dialog.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             finishAffinity()
             startActivity(intent)
+            dialog.dismiss()
             finish()
         }
         dialog.btn_view_order.setOnClickListener {
             val intent = Intent(this, OrderActivity::class.java)
             intent.putExtra("type_order", 0)
+            dialog.dismiss()
             startActivity(intent)
         }
         dialog.show()
     }
 
     //Theme_Light_NoTitleBar_Fullscreen
-    fun showDialogAddNewAddress() {
+    private fun showDialogAddNewAddress() {
         val dialog = Dialog(
             this, android.R.style.Theme_Light_NoTitleBar
         )

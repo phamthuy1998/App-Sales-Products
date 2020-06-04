@@ -122,6 +122,7 @@
     <string name="error_signup">Registration failed</string>
     <string name="error_input_email_not_exists">The email does not exist or is not registered</string>
     <string name="error_input_address_not_entered">Please enter your address</string>
+    <string name="errCode">Please enter your code</string>
     <string name="err_product_name">Please enter product name</string>
     <string name="errPrice">Please enter price of product</string>
     <string name="errProCount">Please enter product count</string>
@@ -256,5 +257,13 @@
     <string name="role_employee">Employee</string>
     <string name="role_customer">Customer</string>
     <string name="toggle_order_status">Toggle order status</string>
+    <string name="please_enter_the_code_sent_to_your_email_to_confirm_the_order">Please enter the code sent to your email to confirm the order</string>
+    <string name="your_code">Your code</string>
 
+
+
+    <string name="confirmOrder">Email confirm order</string>
+    <string name="errCodeIncorrect">The code you entered is incorrect</string>
+    <string name="emailContent">Please get this code to confirm your order, your code is: </string>
+    <string name="default_notification_channel_id">123</string>
 </resources>

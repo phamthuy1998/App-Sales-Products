@@ -9,21 +9,13 @@
         android:layout_height="match_parent"
         android:layoutDirection="ltr">
 
-        <FrameLayout
-            android:id="@+id/ctlAccountContainer"
+        <fragment
+            android:id="@+id/frAccountNavigator"
+            class="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
+            app:defaultNavHost="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:ignore="PrivateResource">
-
-            <fragment
-                android:id="@+id/frAccountNavigator"
-                class="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_account" />
-        </FrameLayout>
+            app:navGraph="@navigation/nav_account" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

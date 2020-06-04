@@ -16,19 +16,23 @@ import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.thuypham.ptithcm.mytiki.data.NetworkState
 import com.thuypham.ptithcm.mytiki.data.Product
+import com.thuypham.ptithcm.mytiki.data.ProductAdd
 import com.thuypham.ptithcm.mytiki.data.ResultData
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
+import com.thuypham.ptithcm.mytiki.services.NotificationApi
 import com.thuypham.ptithcm.mytiki.util.Constant
 import com.thuypham.ptithcm.mytiki.util.Constant.ID_CATEGORY_PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_DEL
 import com.thuypham.ptithcm.mytiki.util.Constant.PRODUCT_SALE
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.text.Normalizer
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
-class ProductRepositoryImpl : ProductRepository {
+class ProductRepositoryImpl(private val apiService: NotificationApi) : ProductRepository {
     private val firebaseDatabase: FirebaseDatabase? by lazy {
         FirebaseDatabase.getInstance()
     }
@@ -237,7 +241,7 @@ class ProductRepositoryImpl : ProductRepository {
         networkState.postValue(NetworkState.LOADING)
         val listProduct = ArrayList<Product>()
         var product: Product?
-        val query =databaseRef()?.child(PRODUCT)
+        val query = databaseRef()?.child(PRODUCT)
             ?.orderByChild(ID_CATEGORY_PRODUCT)?.equalTo(category)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -356,6 +360,7 @@ class ProductRepositoryImpl : ProductRepository {
             databaseRef()?.child(PRODUCT)?.child(product.id.toString())?.setValue(product)
                 ?.addOnCompleteListener {
                     networkState.value = NetworkState.LOADED
+                    responseSlide.value = product
                 }
                 ?.addOnFailureListener { err ->
                     networkState.postValue(NetworkState.error(err.message))
@@ -451,6 +456,12 @@ class ProductRepositoryImpl : ProductRepository {
                 networkState.postValue(NetworkState.error(err.message))
             }
         return networkState
+    }
+
+    override suspend fun sendNotification(product: ProductAdd) {
+        withContext(Dispatchers.IO) {
+             apiService.sendNotificationAsync(product)
+        }
     }
 
 }

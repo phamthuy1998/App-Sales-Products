@@ -4,11 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.thuypham.ptithcm.mytiki.data.Category
-import com.thuypham.ptithcm.mytiki.data.NetworkState
-import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.data.ResultData
+import androidx.lifecycle.viewModelScope
+import com.thuypham.ptithcm.mytiki.data.*
 import com.thuypham.ptithcm.mytiki.repository.ProductRepository
+import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
     var product = MutableLiveData<Product>().apply { value = Product() }
@@ -172,5 +172,14 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
 
     fun delProduct(productId: String) {
         responseDelProduct = repository.delProduct(productId)
+    }
+
+    /* Del product*/
+    private var responseSendNotification = MutableLiveData<JSONObject>()
+
+    fun sendNotificationAddNewProduct(product: ProductAdd) {
+        viewModelScope.launch {
+          repository.sendNotification(product)
+        }
     }
 }

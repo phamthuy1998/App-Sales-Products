@@ -69,7 +69,6 @@ class ProductOfCategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_of_category)
-
         getIdCategory()
         addEvent()
         productViewModel.getCartCount()

@@ -1,11 +1,14 @@
 package com.thuypham.ptithcm.mytiki.data
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.google.gson.annotations.SerializedName
 import com.thuypham.ptithcm.mytiki.base.DynamicSearchAdapter
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
+
 
 @Parcelize
 @IgnoreExtraProperties
@@ -39,3 +42,19 @@ data class Product(
         )
     }
 }
+@Parcelize
+@Keep
+data class ProductAdd(
+    var data: Data? = null,
+    var to: String? = null
+) : Parcelable
+
+@Parcelize
+@Keep
+data class Data(
+    var name: String? = null,
+    @SerializedName("id_product")
+    var idProduct: String? = null,
+    var title: String? = null,
+    var image: String? = null
+) : Parcelable

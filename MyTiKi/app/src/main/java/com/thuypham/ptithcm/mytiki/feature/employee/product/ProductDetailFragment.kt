@@ -16,9 +16,7 @@ import com.thuypham.ptithcm.mytiki.R
 import com.thuypham.ptithcm.mytiki.base.BaseActivity
 import com.thuypham.ptithcm.mytiki.base.BaseFragment
 import com.thuypham.ptithcm.mytiki.builder.toolbarFunctionQueue
-import com.thuypham.ptithcm.mytiki.data.Category
-import com.thuypham.ptithcm.mytiki.data.Product
-import com.thuypham.ptithcm.mytiki.data.Status
+import com.thuypham.ptithcm.mytiki.data.*
 import com.thuypham.ptithcm.mytiki.databinding.FragmentProductDetailBinding
 import com.thuypham.ptithcm.mytiki.ext.gone
 import com.thuypham.ptithcm.mytiki.ext.setupToolbar
@@ -143,8 +141,9 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
                 id_category = idCategoryInput
             }
 
-            if (productViewModel.product.value?.equals(product) == true&&imageUri==null) {
-                Toast.makeText(activity, getString(R.string.nothingChange), Toast.LENGTH_LONG).show()
+            if (productViewModel.product.value?.equals(product) == true && imageUri == null) {
+                Toast.makeText(activity, getString(R.string.nothingChange), Toast.LENGTH_LONG)
+                    .show()
                 return
             }
 
@@ -223,8 +222,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         }
 
         productViewModel.productAdd.observe(viewLifecycleOwner) {
-            //            viewBinding.product = it
             productViewModel.product.value = it
+            sendNotification(it)
         }
 
         productViewModel.networkAddProduct.observe(viewLifecycleOwner) {
@@ -256,5 +255,17 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         }
     }
 
+    private fun sendNotification(product: Product) {
+        val sendNotification = ProductAdd().apply {
+            data = Data().apply {
+                idProduct = product.id
+                name = product.name
+                image = product.image
+                title = "New product"
+            }
+            to = "/topics/newProduct"
+        }
+        productViewModel.sendNotificationAddNewProduct(sendNotification)
+    }
 
 }
